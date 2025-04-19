@@ -49,9 +49,9 @@ task.spawn(selectDevice)
 -- Chat spam 5 seconds after game load, max 4 times
 task.delay(5, function()
     local count = 0
-    while count < 4 do
+    while count < 2 do
         pcall(function()
-            game:GetService('TextChatService').TextChannels.RBXGeneral:SendAsync('hi')
+            game:GetService('TextChatService').TextChannels.RBXGeneral:SendAsync('/w')
         end)
         count += 1
         wait(5)
