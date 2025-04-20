@@ -48,7 +48,7 @@ task.spawn(selectDevice)
 
 task.delay(5, function()
     local count = 0
-    while count < 2 do
+    while count < 3 do
         pcall(function()
             game:GetService('TextChatService').TextChannels.RBXGeneral:SendAsync('/w')
         end)
