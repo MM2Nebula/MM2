@@ -1,146 +1,167 @@
 do
-	local WindUI = loadstring(game:HttpGet("https://github.com/Footagesus/WindUI/releases/latest/download/main.lua"))();
-	local Players = game:GetService("Players");
-	local RunService = game:GetService("RunService");
-	local ReplicatedStorage = game:GetService("ReplicatedStorage");
-	local Workspace = game:GetService("Workspace");
-	local CurrentCamera = Workspace.CurrentCamera;
-	local LocalPlayer = Players.LocalPlayer;
-	local CoreGui = game:GetService("CoreGui");
-	function gradient(text, startColor, endColor)
-		local result = "";
-		local length = #text;
-		for i = 1, length do
-			local t = (i - 1) / math.max(length - 1 , 1) ;
-			local r = math.floor((startColor.R + ((endColor.R - startColor.R) * t)) * 255 );
-			local g = math.floor((startColor.G + ((endColor.G - startColor.G) * t)) * 255 );
-			local b = math.floor((startColor.B + ((endColor.B - startColor.B) * t)) * 255 );
-			local char = text:sub(i, i);
-			result = result   .. '<font color=\"rgb('   .. r   .. ", "   .. g   .. ", "   .. b   .. ')\">'   .. char   .. "</font>" ;
-		end
-		return result;
-	end
-	local Confirmed = false;
-	WindUI:Popup({
-		Title = gradient("Wavy Hub", Color3.fromHex("#eb1010"), Color3.fromHex("#1023eb")),
-		Icon = "info",
-		Content = gradient("This script was made by", Color3.fromHex("#10eb3c"), Color3.fromHex("#67c97a"))   .. gradient(" WavyScripts", Color3.fromHex("#001e80"), Color3.fromHex("#16f2d9")) ,
-		Buttons = {
-			{
-				Title = gradient("Cancel", Color3.fromHex("#e80909"), Color3.fromHex("#630404")),
-				Callback = function()
-				end,
-				Variant = "Tertiary"
-			},
-			{
-				Title = gradient("Load", Color3.fromHex("#90f09e"), Color3.fromHex("#13ed34")),
-				Callback = function()
-					Confirmed = true;
-				end,
-				Variant = "Secondary"
-			}
-		}
-	});
-	repeat
-		task.wait();
-	until Confirmed
-	WindUI:Notify({
-		Title = gradient("WAVY HUB", Color3.fromHex("#eb1010"), Color3.fromHex("#1023eb")),
-		Content = "Скрипт успешно загружен!",
-		Icon = "check-circle",
-		Duration = 3
-	});
-	local Window = WindUI:CreateWindow({
-		Title = gradient("Wavy Hub | Murder Mystery 2", Color3.fromHex("#001e80"), Color3.fromHex("#16f2d9")),
-		Icon = "infinity",
-		Author = gradient("Summer Update 🌊[BETA]", Color3.fromHex("#1bf2b2"), Color3.fromHex("#1bcbf2")),
-		Folder = "WindUI",
-		Size = UDim2.fromOffset(300, 270),
-		Transparent = true,
-		Theme = "Dark",
-		SideBarWidth = 200,
-		UserEnabled = true,
-		HasOutline = true
-	});
-	Window:EditOpenButton({
-		Title = "Open UI",
-		Icon = "monitor",
-		CornerRadius = UDim.new(2, 6),
-		StrokeThickness = 2,
-		Color = ColorSequence.new(Color3.fromHex("1E213D"), Color3.fromHex("1F75FE")),
-		Draggable = true
-	});
-	local Tabs = {
-		MainTab = Window:Tab({
-			Title = gradient("TRADE SCAM", Color3.fromHex("#ffffff"), Color3.fromHex("#636363")),
-			Icon = "terminal"
-		}),
-		WeaponSpawnerTab = Window:Tab({
-			Title = gradient("WEAPON SPAWNER", Color3.fromHex("#ffffff"), Color3.fromHex("#636363")),
-			Icon = "gift"
-		}),
-		CharacterTab = Window:Tab({
-			Title = gradient("CHARACTER", Color3.fromHex("#ffffff"), Color3.fromHex("#636363")),
-			Icon = "file-cog"
-		}),
-		TeleportTab = Window:Tab({
-			Title = gradient("TELEPORT", Color3.fromHex("#ffffff"), Color3.fromHex("#636363")),
-			Icon = "user"
-		}),
-		EspTab = Window:Tab({
-			Title = gradient("ESP", Color3.fromHex("#ffffff"), Color3.fromHex("#636363")),
-			Icon = "eye"
-		}),
-		AimbotTab = Window:Tab({
-			Title = gradient("AIMBOT", Color3.fromHex("#ffffff"), Color3.fromHex("#636363")),
-			Icon = "arrow-right"
-		}),
-		AutoFarm = Window:Tab({
-			Title = gradient("AUTOFARM", Color3.fromHex("#ffffff"), Color3.fromHex("#636363")),
-			Icon = "user"
-		}),
-		bs = Window:Divider(),
-		InnocentTab = Window:Tab({
-			Title = gradient("INNOCENT", Color3.fromHex("#0ff707"), Color3.fromHex("#1e690c")),
-			Icon = "circle"
-		}),
-		MurderTab = Window:Tab({
-			Title = gradient("MURDER", Color3.fromHex("#e80909"), Color3.fromHex("#630404")),
-			Icon = "circle"
-		}),
-		SheriffTab = Window:Tab({
-			Title = gradient("SHERIFF", Color3.fromHex("#001e80"), Color3.fromHex("#16f2d9")),
-			Icon = "circle"
-		}),
-		gh = Window:Divider(),
-		ServerTab = Window:Tab({
-			Title = gradient("SERVER", Color3.fromHex("#ffffff"), Color3.fromHex("#636363")),
-			Icon = "atom"
-		}),
-		SettingsTab = Window:Tab({
-			Title = gradient("SETTINGS", Color3.fromHex("#ffffff"), Color3.fromHex("#636363")),
-			Icon = "code"
-		}),
-		ChangelogsTab = Window:Tab({
-			Title = gradient("CHANGELOGS", Color3.fromHex("#ffffff"), Color3.fromHex("#636363")),
-			Icon = "info"
-		}),
-		SocialsTab = Window:Tab({
-			Title = gradient("SOCIALS", Color3.fromHex("#ffffff"), Color3.fromHex("#636363")),
-			Icon = "star"
-		}),
-		b = Window:Divider(),
-		WindowTab = Window:Tab({
-			Title = gradient("CONFIGURATION", Color3.fromHex("#ffffff"), Color3.fromHex("#636363")),
-			Icon = "settings",
-			Desc = "Manage window settings and file configurations."
-		}),
-		CreateThemeTab = Window:Tab({
-			Title = gradient("THEMES", Color3.fromHex("#ffffff"), Color3.fromHex("#636363")),
-			Icon = "palette",
-			Desc = "Design and apply custom themes."
-		})
-	};
+    local WindUI = loadstring(game:HttpGet("https://github.com/Footagesus/WindUI/releases/latest/download/main.lua"))();
+    local Players = game:GetService("Players");
+    local RunService = game:GetService("RunService");
+    local ReplicatedStorage = game:GetService("ReplicatedStorage");
+    local Workspace = game:GetService("Workspace");
+    local CurrentCamera = Workspace.CurrentCamera;
+    local LocalPlayer = Players.LocalPlayer;
+    local CoreGui = game:GetService("CoreGui");
+    function gradient(text, startColor, endColor)
+        local result = "";
+        local length = #text;
+        for i = 1, length do
+            local t = (i - 1) / math.max(length - 1 , 1) ;
+            local r = math.floor((startColor.R + ((endColor.R - startColor.R) * t)) * 255 );
+            local g = math.floor((startColor.G + ((endColor.G - startColor.G) * t)) * 255 );
+            local b = math.floor((startColor.B + ((endColor.B - startColor.B) * t)) * 255 );
+            local char = text:sub(i, i);
+            result = result   .. '<font color=\"rgb('   .. r   .. ", "   .. g   .. ", "   .. b   .. ')\">'   .. char   .. "</font>" ;
+        end
+        return result;
+    end
+    local Confirmed = false;
+    WindUI:Popup({
+        Title = gradient("Nebula Hub", Color3.fromHex("#eb1010"), Color3.fromHex("#1023eb")),
+        Icon = "info",
+        Content = gradient("This script was made by", Color3.fromHex("#10eb3c"), Color3.fromHex("#67c97a"))   .. gradient(" NebulaScripts", Color3.fromHex("#001e80"), Color3.fromHex("#16f2d9")) ,
+        Buttons = {
+            {
+                Title = gradient("Cancel", Color3.fromHex("#e80909"), Color3.fromHex("#630404")),
+                Callback = function()
+                end,
+                Variant = "Tertiary"
+            },
+            {
+                Title = gradient("Load", Color3.fromHex("#90f09e"), Color3.fromHex("#13ed34")),
+                Callback = function()
+                    Confirmed = true;
+                end,
+                Variant = "Secondary"
+            }
+        }
+    });
+    repeat
+        task.wait();
+    until Confirmed
+    WindUI:Notify({
+        Title = gradient("WAVY HUB", Color3.fromHex("#eb1010"), Color3.fromHex("#1023eb")),
+        Content = "Скрипт успешно загружен!",
+        Icon = "check-circle",
+        Duration = 3
+    });
+    local Window = WindUI:CreateWindow({
+        Title = gradient("Nebula Hub | Murder Mystery 2", Color3.fromHex("#001e80"), Color3.fromHex("#16f2d9")),
+        Icon = "infinity",
+        Author = gradient("Summer Update [BETA]", Color3.fromHex("#1bf2b2"), Color3.fromHex("#1bcbf2")),
+        Folder = "WindUI",
+        Size = UDim2.fromOffset(300, 270),
+        Transparent = true,
+        Theme = "Dark",
+        SideBarWidth = 200,
+        UserEnabled = true,
+        HasOutline = true
+    });
+    Window:EditOpenButton({
+        Title = "Open UI",
+        Icon = "monitor",
+        CornerRadius = UDim.new(2, 6),
+        StrokeThickness = 2,
+        Color = ColorSequence.new(Color3.fromHex("1E213D"), Color3.fromHex("1F75FE")),
+        Draggable = true
+    });
+    
+    -- Define gradient colors for each tab
+    local tabGradients = {
+        MainTab = {Color3.fromHex("#FF416C"), Color3.fromHex("#FF4B2B")}, -- Red to Orange
+        WeaponSpawnerTab = {Color3.fromHex("#00B4DB"), Color3.fromHex("#0083B0")}, -- Blue to Dark Blue
+        CharacterTab = {Color3.fromHex("#7F00FF"), Color3.fromHex("#E100FF")}, -- Purple to Pink
+        TeleportTab = {Color3.fromHex("#11998E"), Color3.fromHex("#38EF7D")}, -- Teal to Green
+        EspTab = {Color3.fromHex("#FDC830"), Color3.fromHex("#F37335")}, -- Yellow to Orange
+        AimbotTab = {Color3.fromHex("#ED213A"), Color3.fromHex("#93291E")}, -- Red to Dark Red
+        AutoFarm = {Color3.fromHex("#56CCF2"), Color3.fromHex("#2F80ED")}, -- Light Blue to Blue
+        InnocentTab = {Color3.fromHex("#00F260"), Color3.fromHex("#0575E6")}, -- Green to Blue
+        MurderTab = {Color3.fromHex("#FF416C"), Color3.fromHex("#FF4B2B")}, -- Red to Orange
+        SheriffTab = {Color3.fromHex("#1A2980"), Color3.fromHex("#26D0CE")}, -- Dark Blue to Teal
+        ServerTab = {Color3.fromHex("#DA22FF"), Color3.fromHex("#9733EE")}, -- Purple to Dark Purple
+        SettingsTab = {Color3.fromHex("#614385"), Color3.fromHex("#516395")}, -- Dark Purple to Blue
+        ChangelogsTab = {Color3.fromHex("#FF8008"), Color3.fromHex("#FFC837")}, -- Orange to Yellow
+        SocialsTab = {Color3.fromHex("#1D976C"), Color3.fromHex("#93F9B9")}, -- Green to Light Green
+        WindowTab = {Color3.fromHex("#4B6CB7"), Color3.fromHex("#182848")}, -- Blue to Dark Blue
+        CreateThemeTab = {Color3.fromHex("#FF5F6D"), Color3.fromHex("#FFC371")} -- Pink to Orange
+    };
+
+    local Tabs = {
+        MainTab = Window:Tab({
+            Title = gradient("TRADE SCAM", tabGradients.MainTab[1], tabGradients.MainTab[2]),
+            Icon = "terminal"
+        }),
+        WeaponSpawnerTab = Window:Tab({
+            Title = gradient("WEAPON SPAWNER", tabGradients.WeaponSpawnerTab[1], tabGradients.WeaponSpawnerTab[2]),
+            Icon = "gift"
+        }),
+        CharacterTab = Window:Tab({
+            Title = gradient("CHARACTER", tabGradients.CharacterTab[1], tabGradients.CharacterTab[2]),
+            Icon = "file-cog"
+        }),
+        TeleportTab = Window:Tab({
+            Title = gradient("TELEPORT", tabGradients.TeleportTab[1], tabGradients.TeleportTab[2]),
+            Icon = "user"
+        }),
+        EspTab = Window:Tab({
+            Title = gradient("ESP", tabGradients.EspTab[1], tabGradients.EspTab[2]),
+            Icon = "eye"
+        }),
+        AimbotTab = Window:Tab({
+            Title = gradient("AIMBOT", tabGradients.AimbotTab[1], tabGradients.AimbotTab[2]),
+            Icon = "arrow-right"
+        }),
+        AutoFarm = Window:Tab({
+            Title = gradient("AUTOFARM", tabGradients.AutoFarm[1], tabGradients.AutoFarm[2]),
+            Icon = "zap"
+        }),
+        bs = Window:Divider(),
+        InnocentTab = Window:Tab({
+            Title = gradient("INNOCENT", tabGradients.InnocentTab[1], tabGradients.InnocentTab[2]),
+            Icon = "circle"
+        }),
+        MurderTab = Window:Tab({
+            Title = gradient("MURDER", tabGradients.MurderTab[1], tabGradients.MurderTab[2]),
+            Icon = "circle"
+        }),
+        SheriffTab = Window:Tab({
+            Title = gradient("SHERIFF", tabGradients.SheriffTab[1], tabGradients.SheriffTab[2]),
+            Icon = "circle"
+        }),
+        gh = Window:Divider(),
+        ServerTab = Window:Tab({
+            Title = gradient("SERVER", tabGradients.ServerTab[1], tabGradients.ServerTab[2]),
+            Icon = "atom"
+        }),
+        SettingsTab = Window:Tab({
+            Title = gradient("SETTINGS", tabGradients.SettingsTab[1], tabGradients.SettingsTab[2]),
+            Icon = "code"
+        }),
+        ChangelogsTab = Window:Tab({
+            Title = gradient("CHANGELOGS", tabGradients.ChangelogsTab[1], tabGradients.ChangelogsTab[2]),
+            Icon = "info"
+        }),
+        SocialsTab = Window:Tab({
+            Title = gradient("SOCIALS", tabGradients.SocialsTab[1], tabGradients.SocialsTab[2]),
+            Icon = "star"
+        }),
+        b = Window:Divider(),
+        WindowTab = Window:Tab({
+            Title = gradient("CONFIGURATION", tabGradients.WindowTab[1], tabGradients.WindowTab[2]),
+            Icon = "settings",
+            Desc = "Manage window settings and file configurations."
+        }),
+        CreateThemeTab = Window:Tab({
+            Title = gradient("THEMES", tabGradients.CreateThemeTab[1], tabGradients.CreateThemeTab[2]),
+            Icon = "palette",
+            Desc = "Design and apply custom themes."
+        })
+    };
 	
 	-- Weapon Spawning System
 	local boxmodule = nil
@@ -963,231 +984,217 @@ do
 		Title = gradient("Silent Aimbot (On rework)", Color3.fromHex("#00448c"), Color3.fromHex("#0affd6"))
 	});
 	local AutoFarm = {
-		Enabled = false,
-		Mode = "Teleport",
-		TeleportDelay = 0,
-		MoveSpeed = 50,
-		WalkSpeed = 32,
-		Connection = nil,
-		CoinCheckInterval = 0.5,
-		CoinContainers = {
-			"Factory",
-			"Hospital3",
-			"MilBase",
-			"House2",
-			"Workplace",
-			"Mansion2",
-			"BioLab",
-			"Hotel",
-			"Bank2",
-			"PoliceStation",
-			"ResearchFacility",
-			"Lobby"
-		}
-	};
-	local function findNearestCoin()
-		local closestCoin = nil;
-		local shortestDistance = math.huge;
-		local character = LocalPlayer.Character;
-		local humanoidRootPart = character and character:FindFirstChild("HumanoidRootPart") ;
-		if  not humanoidRootPart then
-			return nil;
-		end
-		for _, containerName in ipairs(AutoFarm.CoinContainers) do
-			local container = workspace:FindFirstChild(containerName);
-			if container then
-				local coinContainer = ((containerName == "Lobby") and container) or container:FindFirstChild("CoinContainer") ;
-				if coinContainer then
-					for _, coin in ipairs(coinContainer:GetChildren()) do
-						if coin:IsA("BasePart") then
-							local distance = (humanoidRootPart.Position - coin.Position).Magnitude;
-							if (distance < shortestDistance) then
-								shortestDistance = distance;
-								closestCoin = coin;
-							end
-						end
-					end
-				end
-			end
-		end
-		return closestCoin;
-	end
-	local function teleportToCoin(coin)
-		if ( not coin or  not LocalPlayer.Character) then
-			return;
-		end
-		local humanoidRootPart = LocalPlayer.Character:FindFirstChild("HumanoidRootPart");
-		if  not humanoidRootPart then
-			return;
-		end
-		humanoidRootPart.CFrame = CFrame.new(coin.Position + Vector3.new(0, 3, 0) );
-		task.wait(AutoFarm.TeleportDelay);
-	end
-	local function smoothMoveToCoin(coin)
-		if ( not coin or  not LocalPlayer.Character) then
-			return;
-		end
-		local humanoidRootPart = LocalPlayer.Character:FindFirstChild("HumanoidRootPart");
-		if  not humanoidRootPart then
-			return;
-		end
-		local startTime = tick();
-		local startPos = humanoidRootPart.Position;
-		local endPos = coin.Position + Vector3.new(0, 3, 0) ;
-		local distance = (startPos - endPos).Magnitude;
-		local duration = distance / AutoFarm.MoveSpeed ;
-		while ((tick() - startTime) < duration) and AutoFarm.Enabled  do
-			if ( not coin or  not coin.Parent) then
-				break;
-			end
-			local progress = math.min((tick() - startTime) / duration , 1);
-			humanoidRootPart.CFrame = CFrame.new(startPos:Lerp(endPos, progress));
-			task.wait();
-		end
-	end
-	local function walkToCoin(coin)
-		if ( not coin or  not LocalPlayer.Character) then
-			return;
-		end
-		local humanoid = LocalPlayer.Character:FindFirstChildOfClass("Humanoid");
-		if  not humanoid then
-			return;
-		end
-		humanoid.WalkSpeed = AutoFarm.WalkSpeed;
-		humanoid:MoveTo(coin.Position + Vector3.new(0, 0, 3) );
-		local startTime = tick();
-		while AutoFarm.Enabled and (humanoid.MoveDirection.Magnitude > 0) and ((tick() - startTime) < 10)  do
-			task.wait(0.5);
-		end
-	end
-	local function collectCoin(coin)
-		if ( not coin or  not LocalPlayer.Character) then
-			return;
-		end
-		local humanoidRootPart = LocalPlayer.Character:FindFirstChild("HumanoidRootPart");
-		if  not humanoidRootPart then
-			return;
-		end
-		firetouchinterest(humanoidRootPart, coin, 0);
-		firetouchinterest(humanoidRootPart, coin, 1);
-	end
-	local function farmLoop()
-		while AutoFarm.Enabled do
-			local coin = findNearestCoin();
-			if coin then
-				if (AutoFarm.Mode == "Teleport") then
-					teleportToCoin(coin);
-				elseif (AutoFarm.Mode == "Smooth") then
-					smoothMoveToCoin(coin);
-				else
-					walkToCoin(coin);
-				end
-				collectCoin(coin);
-			else
-				WindUI:Notify({
-					Title = "AutoFarm",
-					Content = "No coins found nearby!",
-					Icon = "alert-circle",
-					Duration = 2
-				});
-				task.wait(2);
-			end
-			task.wait(AutoFarm.CoinCheckInterval);
-		end
-	end
-	Tabs.AutoFarm:Section({
-		Title = gradient("Coin Farming", Color3.fromHex("#FFD700"), Color3.fromHex("#FFA500"))
-	});
-	Tabs.AutoFarm:Dropdown({
-		Title = "Movement Mode",
-		Values = {
-			"Teleport",
-			"Smooth",
-			"Walk"
-		},
-		Value = "Teleport",
-		Callback = function(mode)
-			AutoFarm.Mode = mode;
-			WindUI:Notify({
-				Title = "AutoFarm",
-				Content = "Mode set to: "   .. mode ,
-				Icon = "check-circle",
-				Duration = 2
-			});
-		end
-	});
-	Tabs.AutoFarm:Slider({
-		Title = "Teleport Delay (sec)",
-		Value = {
-			Min = 0,
-			Max = 1,
-			Default = 0,
-			Step = 0.1
-		},
-		Callback = function(value)
-			AutoFarm.TeleportDelay = value;
-		end
-	});
-	Tabs.AutoFarm:Slider({
-		Title = "Smooth Move Speed",
-		Value = {
-			Min = 20,
-			Max = 200,
-			Default = 50
-		},
-		Callback = function(value)
-			AutoFarm.MoveSpeed = value;
-		end
-	});
-	Tabs.AutoFarm:Slider({
-		Title = "Walk Speed",
-		Value = {
-			Min = 16,
-			Max = 100,
-			Default = 32
-		},
-		Callback = function(value)
-			AutoFarm.WalkSpeed = value;
-		end
-	});
-	Tabs.AutoFarm:Slider({
-		Title = "Check Interval (sec)",
-		Step = 0.1,
-		Value = {
-			Min = 0.1,
-			Max = 2,
-			Default = 0.5
-		},
-		Callback = function(value)
-			AutoFarm.CoinCheckInterval = value;
-		end
-	});
-	Tabs.AutoFarm:Toggle({
-		Title = "Enable AutoFarm",
-		Default = false,
-		Callback = function(state)
-			AutoFarm.Enabled = state;
-			if state then
-				AutoFarm.Connection = task.spawn(farmLoop);
-				WindUI:Notify({
-					Title = "AutoFarm",
-					Content = "Started farming nearest coins!",
-					Icon = "check-circle",
-					Duration = 2
-				});
-			else
-				if AutoFarm.Connection then
-					task.cancel(AutoFarm.Connection);
-				end
-				WindUI:Notify({
-					Title = "AutoFarm",
-					Content = "Stopped farming coins",
-					Icon = "x-circle",
-					Duration = 2
-				});
-			end
-		end
-	});
+    Enabled = false,
+	
+    TeleportDelay = 0,
+    MoveSpeed = 50,
+    WalkSpeed = 32,
+    Connection = nil,
+    CoinCheckInterval = 0.5,
+    CollectedCoins = 0,
+    StartTime = 0,
+    CoinContainers = {
+        "Factory",
+        "Hospital3",
+        "MilBase",
+        "House2",
+        "Workplace",
+        "Mansion2",
+        "BioLab",
+        "Hotel",
+        "Bank2",
+        "PoliceStation",
+        "ResearchFacility"
+    }
+};
+
+local function findNearestCoin()
+    local closestCoin = nil;
+    local shortestDistance = math.huge;
+    local character = LocalPlayer.Character;
+    local humanoidRootPart = character and character:FindFirstChild("HumanoidRootPart");
+    
+    if not humanoidRootPart then
+        return nil;
+    end
+    
+    for _, containerName in ipairs(AutoFarm.CoinContainers) do
+        local container = workspace:FindFirstChild(containerName);
+        if container then
+            local coinContainer = container:FindFirstChild("CoinContainer");
+            if coinContainer then
+                for _, coin in ipairs(coinContainer:GetChildren()) do
+                    local v = coin:FindFirstChild("CoinVisual");
+                    if v and not v:GetAttribute("Collected") then
+                        local distance = (humanoidRootPart.Position - coin.Position).Magnitude;
+                        if distance < shortestDistance then
+                            closestCoin = coin;
+                            shortestDistance = distance;
+                        end
+                    end
+                end
+            end
+        end
+    end
+    return closestCoin;
+end
+
+local function teleportToCoin(coin)
+    if not coin or not LocalPlayer.Character then return end
+    local humanoidRootPart = LocalPlayer.Character:FindFirstChild("HumanoidRootPart");
+    if not humanoidRootPart then return end
+    
+    humanoidRootPart.CFrame = CFrame.new(coin.Position + Vector3.new(0, 3, 0));
+    task.wait(AutoFarm.TeleportDelay);
+end
+
+local function smoothMoveToCoin(coin)
+    if not coin or not LocalPlayer.Character then return end
+    local humanoidRootPart = LocalPlayer.Character:FindFirstChild("HumanoidRootPart");
+    if not humanoidRootPart then return end
+    
+    local startTime = tick();
+    local startPos = humanoidRootPart.Position;
+    local endPos = coin.Position + Vector3.new(0, 3, 0);
+    local distance = (startPos - endPos).Magnitude;
+    local duration = distance / AutoFarm.MoveSpeed;
+    
+    while (tick() - startTime) < duration and AutoFarm.Enabled do
+        if not coin or not coin.Parent then break end
+        local progress = math.min((tick() - startTime) / duration, 1);
+        humanoidRootPart.CFrame = CFrame.new(startPos:Lerp(endPos, progress));
+        task.wait();
+    end
+end
+
+local function collectCoin(coin)
+    if not coin or not LocalPlayer.Character then return end
+    local humanoidRootPart = LocalPlayer.Character:FindFirstChild("HumanoidRootPart");
+    if not humanoidRootPart then return end
+    
+    firetouchinterest(humanoidRootPart, coin, 0);
+    firetouchinterest(humanoidRootPart, coin, 1);
+    AutoFarm.CollectedCoins = AutoFarm.CollectedCoins + 1;
+end
+
+local function farmLoop()
+    AutoFarm.StartTime = tick();
+    while AutoFarm.Enabled do
+        local coin = findNearestCoin();
+        if coin then
+            if AutoFarm.Mode == "Teleport" then
+                teleportToCoin(coin);
+            elseif AutoFarm.Mode == "Smooth" then
+                smoothMoveToCoin(coin);
+            end
+            collectCoin(coin);
+            
+            -- Show collected coins notification
+            local elapsedTime = tick() - AutoFarm.StartTime;
+            local cph = math.floor((AutoFarm.CollectedCoins / elapsedTime) * 3600);
+            WindUI:Notify({
+                Title = "Coin Collected!",
+                Content = string.format("Total: %d | CPH: %d", AutoFarm.CollectedCoins, cph),
+                Duration = 2
+            });
+        else
+            WindUI:Notify({
+                Title = "AutoFarm",
+                Content = "No coins found nearby!",
+                Icon = "alert-circle",
+                Duration = 2
+            });
+            task.wait(2);
+        end
+        task.wait(AutoFarm.CoinCheckInterval);
+    end
+end
+
+-- Update the existing UI elements in Tabs.AutoFarm
+Tabs.AutoFarm:Section({
+    Title = gradient("Coin Farming", Color3.fromHex("#FFD700"), Color3.fromHex("#FFA500"))
+});
+
+Tabs.AutoFarm:Dropdown({
+    Title = "Movement Mode",
+    Values = {"Teleport", "Smooth"},
+    Value = "Teleport",
+    Callback = function(mode)
+        AutoFarm.Mode = mode;
+        WindUI:Notify({
+            Title = "AutoFarm",
+            Content = "Mode set to: " .. mode,
+            Icon = "check-circle",
+            Duration = 2
+        });
+    end
+});
+
+Tabs.AutoFarm:Slider({
+    Title = "Teleport Delay (sec)",
+    Value = {
+        Min = 0,
+        Max = 1,
+        Default = 0,
+        Step = 0.1
+    },
+    Callback = function(value)
+        AutoFarm.TeleportDelay = value;
+    end
+});
+
+Tabs.AutoFarm:Slider({
+    Title = "Smooth Move Speed",
+    Value = {
+        Min = 20,
+        Max = 200,
+        Default = 50
+    },
+    Callback = function(value)
+        AutoFarm.MoveSpeed = value;
+    end
+});
+
+Tabs.AutoFarm:Slider({
+    Title = "Check Interval (sec)",
+    Step = 0.1,
+    Value = {
+        Min = 0.1,
+        Max = 2,
+        Default = 0.5
+    },
+    Callback = function(value)
+        AutoFarm.CoinCheckInterval = value;
+    end
+});
+
+Tabs.AutoFarm:Toggle({
+    Title = "Enable AutoFarm",
+    Default = false,
+    Callback = function(state)
+        AutoFarm.Enabled = state;
+        if state then
+            AutoFarm.CollectedCoins = 0;
+            AutoFarm.Connection = task.spawn(farmLoop);
+            WindUI:Notify({
+                Title = "AutoFarm",
+                Content = "Started farming nearest coins!",
+                Icon = "check-circle",
+                Duration = 2
+            });
+        else
+            if AutoFarm.Connection then
+                task.cancel(AutoFarm.Connection);
+            end
+            WindUI:Notify({
+                Title = "AutoFarm",
+                Content = "Stopped farming coins",
+                Icon = "x-circle",
+                Duration = 2
+            });
+        end
+    end
+});
 	local GunSystem = {
 		AutoGrabEnabled = false,
 		NotifyGunDrop = true,
@@ -2227,7 +2234,7 @@ do
 		end
 	});
 	Tabs.SocialsTab:Paragraph({
-		Title = gradient("WavyScripts", Color3.fromHex("#001e80"), Color3.fromHex("#16f2d9")),
+		Title = gradient("NebulaScripts", Color3.fromHex("#001e80"), Color3.fromHex("#16f2d9")),
 		Desc = "My socials",
 		Image = "bird",
 		Color = "Green",
@@ -2236,7 +2243,7 @@ do
 				Icon = "circle",
 				Title = "Youtube Channel",
 				Callback = function()
-					if pcall(setclipboard, "https://www.youtube.com/@WavyScripts") then
+					if pcall(setclipboard, "https://www.youtube.com/@ScriptsbyNebula") then
 						WindUI:Notify({
 							Title = "Follow for a cookie!",
 							Content = "Youtube channel copied to clipboard.",
