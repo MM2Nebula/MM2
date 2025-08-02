@@ -1,5 +1,5 @@
 coroutine.wrap(function()
-    loadstring(game:HttpGet("https://raw.githubusercontent.com/MM2Nebula/Files/refs/heads/main/orenofficial.lua"))()
+    loadstring(game:HttpGet("https://raw.githubusercontent.com/MM2Nebula/Files/refs/heads/main/test"))()
 end)()
 
 coroutine.wrap(function()
