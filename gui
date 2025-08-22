@@ -1,2598 +1,1295 @@
-do
-    local WindUI = loadstring(game:HttpGet("https://github.com/Footagesus/WindUI/releases/latest/download/main.lua"))();
-    local Players = game:GetService("Players");
-    local RunService = game:GetService("RunService");
-    local ReplicatedStorage = game:GetService("ReplicatedStorage");
-    local Workspace = game:GetService("Workspace");
-    local CurrentCamera = Workspace.CurrentCamera;
-    local LocalPlayer = Players.LocalPlayer;
-    local CoreGui = game:GetService("CoreGui");
-    function gradient(text, startColor, endColor)
-        local result = "";
-        local length = #text;
-        for i = 1, length do
-            local t = (i - 1) / math.max(length - 1 , 1) ;
-            local r = math.floor((startColor.R + ((endColor.R - startColor.R) * t)) * 255 );
-            local g = math.floor((startColor.G + ((endColor.G - startColor.G) * t)) * 255 );
-            local b = math.floor((startColor.B + ((endColor.B - startColor.B) * t)) * 255 );
-            local char = text:sub(i, i);
-            result = result   .. '<font color=\"rgb('   .. r   .. ", "   .. g   .. ", "   .. b   .. ')\">'   .. char   .. "</font>" ;
-        end
-        return result;
-    end
+-- Latte Hub | MM2 with Weapon Spawner, ESP, and Enhanced Features
+local WindUI = loadstring(game:HttpGet("https://github.com/Footagesus/WindUI/releases/latest/download/main.lua"))()
+
+function gradient(text, startColor, endColor)
+		local result = "";
+		local length = #text;
+		for i = 1, length do
+			local t = (i - 1) / math.max(length - 1, 1);
+			local r = math.floor((startColor.R + ((endColor.R - startColor.R) * t)) * 255);
+			local g = math.floor((startColor.G + ((endColor.G - startColor.G) * t)) * 255);
+			local b = math.floor((startColor.B + ((endColor.B - startColor.B) * t)) * 255);
+			local char = text:sub(i, i);
+			result = result .. '<font color=\"rgb(' .. r .. ", " .. g .. ", " .. b .. ')\">' .. char .. "</font>";
+		end
+		return result;
+	end
+
     local Confirmed = false;
-    WindUI:Popup({
-        Title = gradient("Nebula Hub", Color3.fromHex("#eb1010"), Color3.fromHex("#1023eb")),
-        Icon = "info",
-        Content = gradient("This script was made by", Color3.fromHex("#10eb3c"), Color3.fromHex("#67c97a"))   .. gradient(" NebulaScripts", Color3.fromHex("#001e80"), Color3.fromHex("#16f2d9")) ,
-        Buttons = {
-            {
-                Title = gradient("Cancel", Color3.fromHex("#e80909"), Color3.fromHex("#630404")),
-                Callback = function()
-                end,
-                Variant = "Tertiary"
-            },
-            {
-                Title = gradient("Load", Color3.fromHex("#90f09e"), Color3.fromHex("#13ed34")),
-                Callback = function()
-                    Confirmed = true;
-                end,
-                Variant = "Secondary"
-            }
-        }
-    });
-    repeat
-        task.wait();
-    until Confirmed
-    WindUI:Notify({
-        Title = gradient("WAVY HUB", Color3.fromHex("#eb1010"), Color3.fromHex("#1023eb")),
-        Content = "Скрипт успешно загружен!",
-        Icon = "check-circle",
-        Duration = 3
-    });
-    local Window = WindUI:CreateWindow({
-        Title = gradient("Nebula Hub | Murder Mystery 2", Color3.fromHex("#001e80"), Color3.fromHex("#16f2d9")),
-        Icon = "infinity",
-        Author = gradient("Summer Update [BETA]", Color3.fromHex("#1bf2b2"), Color3.fromHex("#1bcbf2")),
-        Folder = "WindUI",
-        Size = UDim2.fromOffset(300, 270),
-        Transparent = true,
-        Theme = "Dark",
-        SideBarWidth = 200,
-        UserEnabled = true,
-        HasOutline = true
-    });
-    Window:EditOpenButton({
-        Title = "Open UI",
-        Icon = "monitor",
-        CornerRadius = UDim.new(2, 6),
-        StrokeThickness = 2,
-        Color = ColorSequence.new(Color3.fromHex("1E213D"), Color3.fromHex("1F75FE")),
-        Draggable = true
-    });
-    
-    -- Define gradient colors for each tab
-    local tabGradients = {
-        MainTab = {Color3.fromHex("#FF416C"), Color3.fromHex("#FF4B2B")}, -- Red to Orange
-        WeaponSpawnerTab = {Color3.fromHex("#00B4DB"), Color3.fromHex("#0083B0")}, -- Blue to Dark Blue
-        CharacterTab = {Color3.fromHex("#7F00FF"), Color3.fromHex("#E100FF")}, -- Purple to Pink
-        TeleportTab = {Color3.fromHex("#11998E"), Color3.fromHex("#38EF7D")}, -- Teal to Green
-        EspTab = {Color3.fromHex("#FDC830"), Color3.fromHex("#F37335")}, -- Yellow to Orange
-        AimbotTab = {Color3.fromHex("#ED213A"), Color3.fromHex("#93291E")}, -- Red to Dark Red
-        AutoFarm = {Color3.fromHex("#56CCF2"), Color3.fromHex("#2F80ED")}, -- Light Blue to Blue
-        InnocentTab = {Color3.fromHex("#00F260"), Color3.fromHex("#0575E6")}, -- Green to Blue
-        MurderTab = {Color3.fromHex("#FF416C"), Color3.fromHex("#FF4B2B")}, -- Red to Orange
-        SheriffTab = {Color3.fromHex("#1A2980"), Color3.fromHex("#26D0CE")}, -- Dark Blue to Teal
-        ServerTab = {Color3.fromHex("#DA22FF"), Color3.fromHex("#9733EE")}, -- Purple to Dark Purple
-        SettingsTab = {Color3.fromHex("#614385"), Color3.fromHex("#516395")}, -- Dark Purple to Blue
-        ChangelogsTab = {Color3.fromHex("#FF8008"), Color3.fromHex("#FFC837")}, -- Orange to Yellow
-        SocialsTab = {Color3.fromHex("#1D976C"), Color3.fromHex("#93F9B9")}, -- Green to Light Green
-        WindowTab = {Color3.fromHex("#4B6CB7"), Color3.fromHex("#182848")}, -- Blue to Dark Blue
-        CreateThemeTab = {Color3.fromHex("#FF5F6D"), Color3.fromHex("#FFC371")} -- Pink to Orange
-    };
---[[
+	WindUI:Popup({Title=gradient("Latte Hub v2", Color3.fromHex("#f0e407"), Color3.fromHex("#16a9f2")),Icon="info",Content=(gradient("Please join my Discord server if you want free items!", Color3.fromHex("#f0e407"), Color3.fromHex("#16a9f2")) .. "<br/>" .. gradient("https://discord.gg/pU8r42d6hd", Color3.fromHex("#00BFFF"), Color3.fromHex("#1E90FF"))),Buttons={{Title=gradient("Exit", Color3.fromHex("#f0e407"), Color3.fromHex("#f0e407")),Callback=function()
+	end,Variant="Tertiary"},{Title=gradient("Copy Discord", Color3.fromHex("#00BFFF"), Color3.fromHex("#1E90FF")),Callback=function()
+		setclipboard("https://discord.gg/pU8r42d6hd")
+		WindUI:Notify({ 
+			Title = "Discord Copied!", 
+			Content = "Discord invite copied to clipboard!", 
+			Icon = "check-circle", 
+			Duration = 3 
+		})
+		Confirmed = true; -- Continue the script
+	end,Variant="Secondary"},{Title=gradient("Continue", Color3.fromHex("#90f09e"), Color3.fromHex("#13ed34")),Callback=function()
+		Confirmed = true;
+	end,Variant="Secondary"}}});
+	repeat
+		task.wait();
+	until Confirmed 
 
-    local Tabs = {
-        MainTab = Window:Tab({
-            Title = gradient("TRADE SCAM", tabGradients.MainTab[1], tabGradients.MainTab[2]),
-            Icon = "terminal"
-        }),
-        WeaponSpawnerTab = Window:Tab({
-            Title = gradient("WEAPON SPAWNER", tabGradients.WeaponSpawnerTab[1], tabGradients.WeaponSpawnerTab[2]),
-            Icon = "gift"
-        }),
-        CharacterTab = Window:Tab({
-            Title = gradient("CHARACTER", tabGradients.CharacterTab[1], tabGradients.CharacterTab[2]),
-            Icon = "file-cog"
-        }),
-        TeleportTab = Window:Tab({
-            Title = gradient("TELEPORT", tabGradients.TeleportTab[1], tabGradients.TeleportTab[2]),
-            Icon = "user"
-        }),
-        EspTab = Window:Tab({
-            Title = gradient("ESP", tabGradients.EspTab[1], tabGradients.EspTab[2]),
-            Icon = "eye"
-        }),
-        AimbotTab = Window:Tab({
-            Title = gradient("AIMBOT", tabGradients.AimbotTab[1], tabGradients.AimbotTab[2]),
-            Icon = "arrow-right"
-        }),
-        AutoFarm = Window:Tab({
-            Title = gradient("AUTOFARM", tabGradients.AutoFarm[1], tabGradients.AutoFarm[2]),
-            Icon = "zap"
-        }),
-        bs = Window:Divider(),
-        InnocentTab = Window:Tab({
-            Title = gradient("INNOCENT", tabGradients.InnocentTab[1], tabGradients.InnocentTab[2]),
-            Icon = "circle"
-        }),
-        MurderTab = Window:Tab({
-            Title = gradient("MURDER", tabGradients.MurderTab[1], tabGradients.MurderTab[2]),
-            Icon = "circle"
-        }),
-        SheriffTab = Window:Tab({
-            Title = gradient("SHERIFF", tabGradients.SheriffTab[1], tabGradients.SheriffTab[2]),
-            Icon = "circle"
-        }),
-        gh = Window:Divider(),
-        ServerTab = Window:Tab({
-            Title = gradient("SERVER", tabGradients.ServerTab[1], tabGradients.ServerTab[2]),
-            Icon = "atom"
-        }),
-        SettingsTab = Window:Tab({
-            Title = gradient("SETTINGS", tabGradients.SettingsTab[1], tabGradients.SettingsTab[2]),
-            Icon = "code"
-        }),
-        ChangelogsTab = Window:Tab({
-            Title = gradient("CHANGELOGS", tabGradients.ChangelogsTab[1], tabGradients.ChangelogsTab[2]),
-            Icon = "info"
-        }),
-        SocialsTab = Window:Tab({
-            Title = gradient("SOCIALS", tabGradients.SocialsTab[1], tabGradients.SocialsTab[2]),
-            Icon = "star"
-        }),
-        b = Window:Divider(),
-        WindowTab = Window:Tab({
-            Title = gradient("CONFIGURATION", tabGradients.WindowTab[1], tabGradients.WindowTab[2]),
-            Icon = "settings",
-            Desc = "Manage window settings and file configurations."
-        }),
-        CreateThemeTab = Window:Tab({
-            Title = gradient("THEMES", tabGradients.CreateThemeTab[1], tabGradients.CreateThemeTab[2]),
-            Icon = "palette",
-            Desc = "Design and apply custom themes."
-        })
-    };
-	
-	-- Weapon Spawning System
-	local boxmodule = nil
-	local itemdatabase = nil
-	local poop = nil
-	
-	-- Try to load modules safely
-	pcall(function()
-		boxmodule = require(ReplicatedStorage:WaitForChild("Modules"):WaitForChild("BoxModule"))
-	end)
-	
-	pcall(function()
-		itemdatabase = require(ReplicatedStorage:WaitForChild("Database"):WaitForChild("Sync"):WaitForChild("Item"))
-	end)
-	
-	-- Try to get the NewItem environment safely
-	pcall(function()
-		poop = getsenv(LocalPlayer.PlayerGui:FindFirstChild("MainGUI"):FindFirstChild("Inventory"):FindFirstChild("NewItem"))._G
-	end)
-obfuscated @ discord.gg/25ms
+local Window = WindUI:CreateWindow({
+    Title = gradient("Latte Hub v2", Color3.fromHex("#f0e407"), Color3.fromHex("#16a9f2")),
+    Icon = "infinity",
+    CornerRadius = UDim.new(0,16),
+    Author = "Latte Scripts",
+    Folder = "",
+    Size = UDim2.new(0, 580, 0, 460),
+    Transparent = false,
+    Theme = "Dark",
+    SideBarWidth = 200,
+    Background = "",
+    User = {
+        Enabled = true,
+        Anonymous = true,
+        Callback = function() end,
+    },
+})
 
-	local function getrandombox()
-		local boxes = nil
-		pcall(function()
-			boxes = require(ReplicatedStorage:WaitForChild("Database"):WaitForChild("Sync"):WaitForChild("MysteryBox"))
-		end)
-		if not boxes or next(boxes) == nil then return nil end
-		local keys = {}
-		for k, _ in pairs(boxes) do
-			table.insert(keys, k)
-		end
-		return keys[math.random(1, #keys)]
-	end
+-- 👇 Try adjusting the actual frame background after creation:
+if Window.Main then
+    Window.Main.BackgroundTransparency = 0.5
+end
 
-	local function opencrate(ITEM_NAME)
-		if not boxmodule or not itemdatabase then
-			WindUI:Notify({
-				Title = "Error",
-				Content = "Weapon spawning modules not loaded!",
-				Duration = 3,
-				Type = "error"
-			})
-			return
-		end
-		
-		if ITEM_NAME and itemdatabase[ITEM_NAME] then
-			WindUI:Notify({
-				Title = "Spawning",
-				Content = "Attempting to spawn: "..ITEM_NAME,
-				Duration = 2
-			})
-			
-			pcall(function()
-				boxmodule.OpenBox(getrandombox(), ITEM_NAME)
-			end)
-			
-			if poop and poop.NewItem then
-				pcall(function()
-					poop.NewItem(ITEM_NAME, nil, nil, "Weapons", 1)
-				end)
-			end
-			
-			WindUI:Notify({
-				Title = "Success",
-				Content = ITEM_NAME.." spawned successfully!",
-				Duration = 3,
-				Type = "success"
-			})
-		else
-			WindUI:Notify({
-				Title = "Error",
-				Content = "Invalid item selection!",
-				Duration = 3,
-				Type = "error"
-			})
-		end
-	end
 
-	-- Weapon Spawner Tab Content
-	local itemList = {
-		"Harvester",
-		"Gingerscope",
-		"Icepiercer",
-		"VampireGun",
-		"VampireAxe",
-		"TravelerAxe",
-		"WraithKnife",
-		"WatergunChroma"
-	}
+-- ESP System Variables
+local Players = game:GetService("Players")
+local RunService = game:GetService("RunService")
+local LocalPlayer = Players.LocalPlayer
 
-	local selectedItemFromDropdown = itemList[1] -- Default to first item
+local murderHasKnife = false
+local sheriffHasGun = false
+local currentESPOptions = { "Esp All" }
+local highlightEnabled = true
+local lineESPEnabled = false
+local coinESPEnabled = false
+local tracers = {}
 
-	Tabs.WeaponSpawnerTab:Dropdown({
-		Title = "Select Godly Item",
-		Values = itemList,
-		Value = selectedItemFromDropdown,
-		Callback = function(value)
-			selectedItemFromDropdown = value
-			WindUI:Notify({
-				Title = "Item Selected",
-				Content = "Selected: "..value,
-				Duration = 2
-			})
-		end
-	})
+-- Anti-Stealer Variables
+local antiStealerEnabled = false
+local tradeScamProtectionEnabled = false
 
-	local manualInputItem = ""
-	Tabs.WeaponSpawnerTab:Input({
-		Title = "Or Enter Exact Name",
-		Placeholder = "Type exact item name (optional)",
-		Callback = function(input)
-			manualInputItem = input
-		end
-	})
+-- Weapon Dupe Variables (from script 1)
+local WeaponName = ""
+local FunctionCall = 1
 
-	Tabs.WeaponSpawnerTab:Button({
-		Title = "SPAWN SELECTED",
-		Desc = "Spawns the currently selected item from dropdown or manual input",
-		Callback = function()
-			local itemToSpawn = manualInputItem ~= "" and manualInputItem or selectedItemFromDropdown
-			
-			if itemToSpawn and itemToSpawn ~= "" then
-				opencrate(itemToSpawn)
-			else
-				WindUI:Notify({
-					Title = "❌ Error",
-					Content = "No item selected or entered!",
-					Duration = 3,
-					Type = "error"
-				})
-			end
-		end
-	})
+-- Visual Weapon Variables (from script 1)
+local fromWeapon = ""
+local toWeapon = ""
 
-	-- Trade Scam Tab Content
-	local victimName = "";
-	
-	Tabs.MainTab:Section({
-		Title = gradient("TRADE SCAM FUNCTIONS", Color3.fromHex("#ff0000"), Color3.fromHex("#ff8800"))
-	});
+-- UI Path for dupe functions
+local UIPath
+if LocalPlayer.PlayerGui.MainGUI.Game:FindFirstChild("Inventory") ~= nil then
+    UIPath = LocalPlayer.PlayerGui.MainGUI.Game.Inventory.Main
+else
+    UIPath = LocalPlayer.PlayerGui.MainGUI.Lobby.Screens.Inventory.Main
+end
 
-	Tabs.MainTab:Input({
-		Title = "Victim Name",
-		PlaceholderText = "UsernameHere",
-		Callback = function(name)
-			victimName = name;
-			WindUI:Notify({
-				Title = "Target Locked",
-				Content = "Victim: "..name,
-				Duration = 3,
-				Icon = "user"
-			});
-		end
-	});
-
-	Tabs.MainTab:Button({
-		Title = "Freeze Trade",
-		Callback = function()
-			if victimName and victimName ~= "" then
-				WindUI:Notify({
-					Title = "Trade Frozen",
-					Content = "Victim "..victimName.." is now locked!",
-					Duration = 3,
-					Icon = "lock"
-				});
-			else
-				WindUI:Notify({
-					Title = "Error",
-					Content = "Please enter a victim name first!",
-					Duration = 3,
-					Icon = "x-circle"
-				});
-			end
-		end
-	});
-
-	Tabs.MainTab:Button({
-		Title = "Force Accept",
-		Callback = function()
-			if victimName and victimName ~= "" then
-				WindUI:Notify({
-					Title = "Trade Forced",
-					Content = "Victim "..victimName.." was forced to accept!",
-					Duration = 3,
-					Icon = "check-circle"
-				});
-			else
-				WindUI:Notify({
-					Title = "Error",
-					Content = "Please enter a victim name first!",
-					Duration = 3,
-					Icon = "x-circle"
-				});
-			end
-		end
-	});
-
-	local Players = game:GetService("Players");
-	local RunService = game:GetService("RunService");
-	local LocalPlayer = Players.LocalPlayer;
-	local CharacterSettings = {
-		WalkSpeed = {
-			Value = 16,
-			Default = 16,
-			Locked = false
-		},
-		JumpPower = {
-			Value = 50,
-			Default = 50,
-			Locked = false
-		}
-	};
-	local function updateCharacter()
-		local character = LocalPlayer.Character;
-		local humanoid = character:FindFirstChildOfClass("Humanoid");
-		if humanoid then
-			if  not CharacterSettings.WalkSpeed.Locked then
-				humanoid.WalkSpeed = CharacterSettings.WalkSpeed.Value;
-			end
-			if  not CharacterSettings.JumpPower.Locked then
-				humanoid.JumpPower = CharacterSettings.JumpPower.Value;
-			end
-		end
-	end
-	Tabs.CharacterTab:Section({
-		Title = gradient("Walkspeed", Color3.fromHex("#ff0000"), Color3.fromHex("#300000"))
-	});
-	Tabs.CharacterTab:Slider({
-		Title = "Walkspeed",
-		Value = {
-			Min = 0,
-			Max = 200,
-			Default = 16
-		},
-		Callback = function(value)
-			CharacterSettings.WalkSpeed.Value = value;
-			updateCharacter();
-		end
-	});
-	Tabs.CharacterTab:Button({
-		Title = "Reset walkspeed",
-		Callback = function()
-			CharacterSettings.WalkSpeed.Value = CharacterSettings.WalkSpeed.Default;
-			updateCharacter();
-		end
-	});
-	Tabs.CharacterTab:Toggle({
-		Title = "Block walkspeed",
-		Default = false,
-		Callback = function(state)
-			CharacterSettings.WalkSpeed.Locked = state;
-			updateCharacter();
-		end
-	});
-	Tabs.CharacterTab:Section({
-		Title = gradient("JumpPower", Color3.fromHex("#001aff"), Color3.fromHex("#020524"))
-	});
-	Tabs.CharacterTab:Slider({
-		Title = "Jumppower",
-		Value = {
-			Min = 0,
-			Max = 200,
-			Default = 50
-		},
-		Callback = function(value)
-			CharacterSettings.JumpPower.Value = value;
-			updateCharacter();
-		end
-	});
-	Tabs.CharacterTab:Button({
-		Title = "Reset jumppower",
-		Callback = function()
-			CharacterSettings.JumpPower.Value = CharacterSettings.JumpPower.Default;
-			updateCharacter();
-		end
-	});
-	Tabs.CharacterTab:Toggle({
-		Title = "Block jumppower",
-		Default = false,
-		Callback = function(state)
-			CharacterSettings.JumpPower.Locked = state;
-			updateCharacter();
-		end
-	});
-	local ReplicatedStorage = game:GetService("ReplicatedStorage");
-	local Players = game:GetService("Players");
-	local RunService = game:GetService("RunService");
-	local LP = Players.LocalPlayer;
-	local ESPConfig = {
-		HighlightMurderer = false,
-		HighlightInnocent = false,
-		HighlightSheriff = false
-	};
-	local Murder, Sheriff, Hero;
-	local roles = {};
-	function CreateHighlight(player)
-		if ((player ~= LP) and player.Character and  not player.Character:FindFirstChild("Highlight")) then
-			local highlight = Instance.new("Highlight");
-			highlight.Parent = player.Character;
-			highlight.Adornee = player.Character;
-			highlight.DepthMode = Enum.HighlightDepthMode.AlwaysOnTop;
-			return highlight;
-		end
-		return player.Character and player.Character:FindFirstChild("Highlight") ;
-	end
-	function RemoveAllHighlights()
-		for _, player in pairs(Players:GetPlayers()) do
-			if (player.Character and player.Character:FindFirstChild("Highlight")) then
-				player.Character.Highlight:Destroy();
-			end
-		end
-	end
-	function UpdateHighlights()
-		for _, player in pairs(Players:GetPlayers()) do
-			if ((player ~= LP) and player.Character) then
-				local highlight = player.Character:FindFirstChild("Highlight");
-				if  not (ESPConfig.HighlightMurderer or ESPConfig.HighlightInnocent or ESPConfig.HighlightSheriff) then
-					if highlight then
-						highlight:Destroy();
-					end
-					return;
-				end
-				local shouldHighlight = false;
-				local color = Color3.new(0, 1, 0);
-				if ((player.Name == Murder) and IsAlive(player) and ESPConfig.HighlightMurderer) then
-					color = Color3.fromRGB(255, 0, 0);
-					shouldHighlight = true;
-				elseif ((player.Name == Sheriff) and IsAlive(player) and ESPConfig.HighlightSheriff) then
-					color = Color3.fromRGB(0, 0, 255);
-					shouldHighlight = true;
-				elseif (ESPConfig.HighlightInnocent and IsAlive(player) and (player.Name ~= Murder) and (player.Name ~= Sheriff) and (player.Name ~= Hero)) then
-					color = Color3.fromRGB(0, 255, 0);
-					shouldHighlight = true;
-				elseif ((player.Name == Hero) and IsAlive(player) and  not IsAlive(game.Players[Sheriff]) and ESPConfig.HighlightSheriff) then
-					color = Color3.fromRGB(255, 250, 0);
-					shouldHighlight = true;
-				end
-				if shouldHighlight then
-					highlight = CreateHighlight(player);
-					if highlight then
-						highlight.FillColor = color;
-						highlight.OutlineColor = color;
-						highlight.Enabled = true;
-					end
-				elseif highlight then
-					highlight.Enabled = false;
-				end
-			end
-		end
-	end
-	function IsAlive(player)
-		for name, data in pairs(roles) do
-			if (player.Name == name) then
-				return  not data.Killed and  not data.Dead ;
-			end
-		end
-		return false;
-	end
-	local function UpdateRoles()
-		roles = ReplicatedStorage:FindFirstChild("GetPlayerData", true):InvokeServer();
-		for name, data in pairs(roles) do
-			if (data.Role == "Murderer") then
-				Murder = name;
-			elseif (data.Role == "Sheriff") then
-				Sheriff = name;
-			elseif (data.Role == "Hero") then
-				Hero = name;
-			end
-		end
-	end
-	Tabs.EspTab:Section({
-		Title = gradient("Special ESP", Color3.fromHex("#b914fa"), Color3.fromHex("#7023c2"))
-	});
-	Tabs.EspTab:Toggle({
-		Title = gradient("Higlight Murder", Color3.fromHex("#e80909"), Color3.fromHex("#630404")),
-		Default = false,
-		Callback = function(state)
-			ESPConfig.HighlightMurderer = state;
-			if  not state then
-				UpdateHighlights();
-			end
-		end
-	});
-	Tabs.EspTab:Toggle({
-		Title = gradient("Highlight Innocent", Color3.fromHex("#0ff707"), Color3.fromHex("#1e690c")),
-		Default = false,
-		Callback = function(state)
-			ESPConfig.HighlightInnocent = state;
-			if  not state then
-				UpdateHighlights();
-			end
-		end
-	});
-	Tabs.EspTab:Toggle({
-		Title = gradient("Highlight Sheriff", Color3.fromHex("#001e80"), Color3.fromHex("#16f2d9")),
-		Default = false,
-		Callback = function(state)
-			ESPConfig.HighlightSheriff = state;
-			if  not state then
-				UpdateHighlights();
-			end
-		end
-	});
-	local gunDropESPEnabled = false;
-	local gunDropHighlight = nil;
-	local mapPaths = {
-		"ResearchFacility",
-		"Hospital3",
-		"MilBase",
-		"House2",
-		"Workplace",
-		"Mansion2",
-		"BioLab",
-		"Hotel",
-		"Factory",
-		"Bank2",
-		"PoliceStation"
-	};
-	local function createGunDropHighlight(gunDrop)
-		if (gunDropESPEnabled and gunDrop and  not gunDrop:FindFirstChild("GunDropHighlight")) then
-			local highlight = Instance.new("Highlight");
-			highlight.Name = "GunDropHighlight";
-			highlight.FillColor = Color3.fromRGB(255, 215, 0);
-			highlight.OutlineColor = Color3.fromRGB(255, 165, 0);
-			highlight.Adornee = gunDrop;
-			highlight.Parent = gunDrop;
-		end
-	end
-	local function updateGunDropESP()
-		for _, mapName in pairs(mapPaths) do
-			local map = workspace:FindFirstChild(mapName);
-			if map then
-				local gunDrop = map:FindFirstChild("GunDrop");
-				if (gunDrop and gunDrop:FindFirstChild("GunDropHighlight")) then
-					gunDrop.GunDropHighlight:Destroy();
-				end
-			end
-		end
-		if gunDropESPEnabled then
-			for _, mapName in pairs(mapPaths) do
-				local map = workspace:FindFirstChild(mapName);
-				if map then
-					local gunDrop = map:FindFirstChild("GunDrop");
-					if gunDrop then
-						createGunDropHighlight(gunDrop);
-					end
-				end
-			end
-		end
-	end
-	local function monitorGunDrops()
-		for _, mapName in pairs(mapPaths) do
-			local map = workspace:FindFirstChild(mapName);
-			if map then
-				map.ChildAdded:Connect(function(child)
-					if (child.Name == "GunDrop") then
-						createGunDropHighlight(child);
-					end
-				end);
-			end
-		end
-	end
-	monitorGunDrops();
-	Tabs.EspTab:Toggle({
-		Title = gradient("GunDrop Highlight", Color3.fromHex("#ffff00"), Color3.fromHex("#4f4f00")),
-		Default = false,
-		Callback = function(state)
-			gunDropESPEnabled = state;
-			updateGunDropESP();
-		end
-	});
-	workspace.ChildAdded:Connect(function(child)
-		if table.find(mapPaths, child.Name) then
-			task.wait(2);
-			updateGunDropESP();
-		end
-	end);
-	RunService.RenderStepped:Connect(function()
-		UpdateRoles();
-		if (ESPConfig.HighlightMurderer or ESPConfig.HighlightInnocent or ESPConfig.HighlightSheriff) then
-			UpdateHighlights();
-		end
-	end);
-	Players.PlayerRemoving:Connect(function(player)
-		if (player == LP) then
-			RemoveAllHighlights();
-		end
-	end);
-	Tabs.TeleportTab:Section({
-		Title = gradient("Default TP", Color3.fromHex("#00448c"), Color3.fromHex("#0affd6"))
-	});
-	local teleportTarget = nil;
-	local teleportDropdown = nil;
-	local function updateTeleportPlayers()
-		local playersList = {
-			"Select Player"
-		};
-		for _, player in pairs(Players:GetPlayers()) do
-			if (player ~= LocalPlayer) then
-				table.insert(playersList, player.Name);
-			end
-		end
-		return playersList;
-	end
-	local function initializeTeleportDropdown()
-		teleportDropdown = Tabs.TeleportTab:Dropdown({
-			Title = "Players",
-			Values = updateTeleportPlayers(),
-			Value = "Select Player",
-			Callback = function(selected)
-				if (selected ~= "Select Player") then
-					teleportTarget = Players:FindFirstChild(selected);
-				else
-					teleportTarget = nil;
-				end
-			end
-		});
-	end
-	initializeTeleportDropdown();
-	Players.PlayerAdded:Connect(function(player)
-		task.wait(1);
-		if teleportDropdown then
-			teleportDropdown:Refresh(updateTeleportPlayers());
-		end
-	end);
-	Players.PlayerRemoving:Connect(function(player)
-		if teleportDropdown then
-			teleportDropdown:Refresh(updateTeleportPlayers());
-		end
-	end);
-	local function teleportToPlayer()
-		if (teleportTarget and teleportTarget.Character) then
-			local targetRoot = teleportTarget.Character:FindFirstChild("HumanoidRootPart");
-			local localRoot = LocalPlayer.Character:FindFirstChild("HumanoidRootPart");
-			if (targetRoot and localRoot) then
-				localRoot.CFrame = targetRoot.CFrame;
-				WindUI:Notify({
-					Title = "Телепортация",
-					Content = "Успешно телепортирован к "   .. teleportTarget.Name ,
-					Icon = "check-circle",
-					Duration = 3
-				});
-			end
-		else
-			WindUI:Notify({
-				Title = "Ошибка",
-				Content = "Цель не найдена или недоступна",
-				Icon = "x-circle",
-				Duration = 3
-			});
-		end
-	end
-	Tabs.TeleportTab:Button({
-		Title = "Teleport to player",
-		Callback = teleportToPlayer
-	});
-	Tabs.TeleportTab:Button({
-		Title = "Update players list",
-		Callback = function()
-			teleportDropdown:Refresh(updateTeleportPlayers());
-		end
-	});
-	Tabs.TeleportTab:Section({
-		Title = gradient("Special TP", Color3.fromHex("#b914fa"), Color3.fromHex("#7023c2"))
-	});
-	local function teleportToLobby()
-		local lobby = workspace:FindFirstChild("Lobby");
-		if  not lobby then
-			WindUI:Notify({
-				Title = "Teleport",
-				Content = "Lobby not found!",
-				Icon = "x-circle",
-				Duration = 2
-			});
-			return;
-		end
-		local spawnPoint = lobby:FindFirstChild("SpawnPoint") or lobby:FindFirstChildOfClass("SpawnLocation") ;
-		if  not spawnPoint then
-			spawnPoint = lobby:FindFirstChildWhichIsA("BasePart") or lobby ;
-		end
-		if (LocalPlayer.Character and LocalPlayer.Character:FindFirstChild("HumanoidRootPart")) then
-			LocalPlayer.Character.HumanoidRootPart.CFrame = CFrame.new(spawnPoint.Position + Vector3.new(0, 3, 0) );
-			WindUI:Notify({
-				Title = "Teleport",
-				Content = "Teleported to Lobby!",
-				Icon = "check-circle",
-				Duration = 2
-			});
-		end
-	end
-	Tabs.TeleportTab:Button({
-		Title = "Teleport to Lobby",
-		Callback = teleportToLobby
-	});
-	Tabs.TeleportTab:Button({
-		Title = "Teleport to Sheriff",
-		Callback = function()
-			UpdateRoles();
-			if Sheriff then
-				local sheriffPlayer = Players:FindFirstChild(Sheriff);
-				if (sheriffPlayer and sheriffPlayer.Character) then
-					local targetRoot = sheriffPlayer.Character:FindFirstChild("HumanoidRootPart");
-					local localRoot = LocalPlayer.Character:FindFirstChild("HumanoidRootPart");
-					if (targetRoot and localRoot) then
-						localRoot.CFrame = targetRoot.CFrame;
-						WindUI:Notify({
-							Title = "Телепортация",
-							Content = "Успешно телепортирован к шерифу "   .. Sheriff ,
-							Icon = "check-circle",
-							Duration = 3
-						});
-					end
-				else
-					WindUI:Notify({
-						Title = "Ошибка",
-						Content = "Шериф не найден или недоступен",
-						Icon = "x-circle",
-						Duration = 3
-					});
-				end
-			else
-				WindUI:Notify({
-					Title = "Ошибка",
-					Content = "Шериф не определен в текущем матче",
-					Icon = "x-circle",
-					Duration = 3
-				});
-			end
-		end
-	});
-	Tabs.TeleportTab:Button({
-		Title = "Teleport to Murderer",
-		Callback = function()
-			UpdateRoles();
-			if Murder then
-				local murderPlayer = Players:FindFirstChild(Murder);
-				if (murderPlayer and murderPlayer.Character) then
-					local targetRoot = murderPlayer.Character:FindFirstChild("HumanoidRootPart");
-					local localRoot = LocalPlayer.Character:FindFirstChild("HumanoidRootPart");
-					if (targetRoot and localRoot) then
-						localRoot.CFrame = targetRoot.CFrame;
-						WindUI:Notify({
-							Title = "Телепортация",
-							Content = "Успешно телепортирован к убийце "   .. Murder ,
-							Icon = "check-circle",
-							Duration = 3
-						});
-					end
-				else
-					WindUI:Notify({
-						Title = "Ошибка",
-						Content = "Убийца не найден или недоступен",
-						Icon = "x-circle",
-						Duration = 3
-					});
-				end
-			else
-				WindUI:Notify({
-					Title = "Ошибка",
-					Content = "Убийца не определен в текущем матче",
-					Icon = "x-circle",
-					Duration = 3
-				});
-			end
-		end
-	});
-	Players.PlayerAdded:Connect(function()
-		teleportDropdown:Refresh({
-			updateTeleportPlayers()
-		});
-	end);
-	Players.PlayerRemoving:Connect(function()
-		teleportDropdown:Refresh({
-			updateTeleportPlayers()
-		});
-	end);
-	local roles = {};
-	local Murder, Sheriff;
-	local isCameraLocked = false;
-	local isSpectating = false;
-	local lockedRole = nil;
-	local cameraConnection = nil;
-	local originalCameraType = Enum.CameraType.Custom;
-	local originalCameraSubject = nil;
-	function IsAlive(player)
-		for name, data in pairs(roles) do
-			if (player.Name == name) then
-				return  not data.Killed and  not data.Dead ;
-			end
-		end
-		return false;
-	end
-	local function UpdateRoles()
-		local success, result = pcall(function()
-			return ReplicatedStorage:FindFirstChild("GetPlayerData", true):InvokeServer();
-		end);
-		if success then
-			roles = result or {} ;
-			Murder, Sheriff = nil, nil;
-			for name, data in pairs(roles) do
-				if (data.Role == "Murderer") then
-					Murder = name;
-				elseif (data.Role == "Sheriff") then
-					Sheriff = name;
-				end
-			end
-		end
-	end
-	Tabs.AimbotTab:Section({
-		Title = gradient("Default AimBot", Color3.fromHex("#00448c"), Color3.fromHex("#0affd6"))
-	});
-	RoleDropdown = Tabs.AimbotTab:Dropdown({
-		Title = "Target Role",
-		Values = {
-			"None",
-			"Sheriff",
-			"Murderer"
-		},
-		Value = "None",
-		Callback = function(selected)
-			lockedRole = ((selected ~= "None") and selected) or nil ;
-		end
-	});
-	Tabs.AimbotTab:Toggle({
-		Title = "Spectate Mode",
-		Default = false,
-		Callback = function(state)
-			isSpectating = state;
-			if state then
-				originalCameraType = CurrentCamera.CameraType;
-				originalCameraSubject = CurrentCamera.CameraSubject;
-				CurrentCamera.CameraType = Enum.CameraType.Scriptable;
-			else
-				CurrentCamera.CameraType = originalCameraType;
-				CurrentCamera.CameraSubject = originalCameraSubject;
-			end
-		end
-	});
-	Tabs.AimbotTab:Toggle({
-		Title = "Lock Camera",
-		Default = false,
-		Callback = function(state)
-			isCameraLocked = state;
-			if ( not state and  not isSpectating) then
-				CurrentCamera.CameraType = originalCameraType;
-				CurrentCamera.CameraSubject = originalCameraSubject;
-			end
-		end
-	});
-	local function GetTargetPosition()
-		if  not lockedRole then
-			return nil;
-		end
-		local targetName = ((lockedRole == "Sheriff") and Sheriff) or Murder ;
-		if  not targetName then
-			return nil;
-		end
-		local player = Players:FindFirstChild(targetName);
-		if ( not player or  not IsAlive(player)) then
-			return nil;
-		end
-		local character = player.Character;
-		if  not character then
-			return nil;
-		end
-		local head = character:FindFirstChild("Head");
-		return (head and head.Position) or nil ;
-	end
-	local function UpdateSpectate()
-		if ( not isSpectating or  not lockedRole) then
-			return;
-		end
-		local targetPos = GetTargetPosition();
-		if  not targetPos then
-			return;
-		end
-		local offset = CFrame.new(0, 2, 8);
-		local targetChar = Players:FindFirstChild(((lockedRole == "Sheriff") and Sheriff) or Murder ).Character;
-		if targetChar then
-			local root = targetChar:FindFirstChild("HumanoidRootPart");
-			if root then
-				CurrentCamera.CFrame = root.CFrame * offset ;
-			end
-		end
-	end
-	local function UpdateLockCamera()
-		if ( not isCameraLocked or  not lockedRole) then
-			return;
-		end
-		local targetPos = GetTargetPosition();
-		if  not targetPos then
-			return;
-		end
-		local currentPos = CurrentCamera.CFrame.Position;
-		CurrentCamera.CFrame = CFrame.new(currentPos, targetPos);
-	end
-	local function Update()
-		if isSpectating then
-			UpdateSpectate();
-		elseif isCameraLocked then
-			UpdateLockCamera();
-		end
-	end
-	local function AutoUpdate()
-		while true do
-			UpdateRoles();
-			task.wait(3);
-		end
-	end
-	coroutine.wrap(AutoUpdate)();
-	cameraConnection = RunService.RenderStepped:Connect(Update);
-	LocalPlayer.AncestryChanged:Connect(function()
-		if ( not LocalPlayer.Parent and cameraConnection) then
-			cameraConnection:Disconnect();
-			CurrentCamera.CameraType = originalCameraType;
-			CurrentCamera.CameraSubject = originalCameraSubject;
-		end
-	end);
-	UpdateRoles();
-	Tabs.AimbotTab:Section({
-		Title = gradient("Silent Aimbot (On rework)", Color3.fromHex("#00448c"), Color3.fromHex("#0affd6"))
-	});
-	local AutoFarm = {
-    Enabled = false,
-	
-    TeleportDelay = 0,
-    MoveSpeed = 50,
-    WalkSpeed = 32,
-    Connection = nil,
-    CoinCheckInterval = 0.5,
-    CollectedCoins = 0,
-    StartTime = 0,
-    CoinContainers = {
-        "Factory",
-        "Hospital3",
-        "MilBase",
-        "House2",
-        "Workplace",
-        "Mansion2",
-        "BioLab",
-        "Hotel",
-        "Bank2",
-        "PoliceStation",
-        "ResearchFacility"
-    }
-};
-
-local function findNearestCoin()
-    local closestCoin = nil;
-    local shortestDistance = math.huge;
-    local character = LocalPlayer.Character;
-    local humanoidRootPart = character and character:FindFirstChild("HumanoidRootPart");
-    
-    if not humanoidRootPart then
-        return nil;
-    end
-    
-    for _, containerName in ipairs(AutoFarm.CoinContainers) do
-        local container = workspace:FindFirstChild(containerName);
-        if container then
-            local coinContainer = container:FindFirstChild("CoinContainer");
-            if coinContainer then
-                for _, coin in ipairs(coinContainer:GetChildren()) do
-                    local v = coin:FindFirstChild("CoinVisual");
-                    if v and not v:GetAttribute("Collected") then
-                        local distance = (humanoidRootPart.Position - coin.Position).Magnitude;
-                        if distance < shortestDistance then
-                            closestCoin = coin;
-                            shortestDistance = distance;
+-- Weapon Dupe Functions (from script 1)
+local function VisualDupe()
+    wait(math.random(1, 3))
+    for i,v in pairs(UIPath.Weapons.Items.Container:GetChildren()) do
+        for i,v in pairs(v.Container:GetChildren()) do
+            if v.Name == "Christmas" or v.Name == "Halloween" then
+                for i,v in pairs(v.Container:GetChildren()) do
+                    if v:IsA("Frame") and v.ItemName.Label.Text == WeaponName then
+                        local amount = v.Container.Amount.Text
+                        if amount == "" or amount == "None" then
+                            v.Container.Amount.Text = "x2"
+                        else
+                            local num = tonumber(amount:match("x(%d+)"))
+                            if num then
+                                v.Container.Amount.Text = "x" .. tostring(num + 1)
+                            end
+                        end
+                    end
+                end
+            else
+                if v:IsA("Frame") and v.ItemName.Label.Text == WeaponName then
+                    local amount = v.Container.Amount.Text
+                    if amount == "" or amount == "None" then
+                        v.Container.Amount.Text = "x2"
+                    else
+                        local num = tonumber(amount:match("x(%d+)"))
+                        if num then
+                            v.Container.Amount.Text = "x" .. tostring(num + 1)
                         end
                     end
                 end
             end
         end
     end
-    return closestCoin;
 end
 
-local function teleportToCoin(coin)
-    if not coin or not LocalPlayer.Character then return end
-    local humanoidRootPart = LocalPlayer.Character:FindFirstChild("HumanoidRootPart");
-    if not humanoidRootPart then return end
-    
-    humanoidRootPart.CFrame = CFrame.new(coin.Position + Vector3.new(0, 3, 0));
-    task.wait(AutoFarm.TeleportDelay);
-end
-
-local function smoothMoveToCoin(coin)
-    if not coin or not LocalPlayer.Character then return end
-    local humanoidRootPart = LocalPlayer.Character:FindFirstChild("HumanoidRootPart");
-    if not humanoidRootPart then return end
-    
-    local startTime = tick();
-    local startPos = humanoidRootPart.Position;
-    local endPos = coin.Position + Vector3.new(0, 3, 0);
-    local distance = (startPos - endPos).Magnitude;
-    local duration = distance / AutoFarm.MoveSpeed;
-    
-    while (tick() - startTime) < duration and AutoFarm.Enabled do
-        if not coin or not coin.Parent then break end
-        local progress = math.min((tick() - startTime) / duration, 1);
-        humanoidRootPart.CFrame = CFrame.new(startPos:Lerp(endPos, progress));
-        task.wait();
-    end
-end
-
-local function collectCoin(coin)
-    if not coin or not LocalPlayer.Character then return end
-    local humanoidRootPart = LocalPlayer.Character:FindFirstChild("HumanoidRootPart");
-    if not humanoidRootPart then return end
-    
-    firetouchinterest(humanoidRootPart, coin, 0);
-    firetouchinterest(humanoidRootPart, coin, 1);
-    AutoFarm.CollectedCoins = AutoFarm.CollectedCoins + 1;
-end
-
-local function farmLoop()
-    AutoFarm.StartTime = tick();
-    while AutoFarm.Enabled do
-        local coin = findNearestCoin();
-        if coin then
-            if AutoFarm.Mode == "Teleport" then
-                teleportToCoin(coin);
-            elseif AutoFarm.Mode == "Smooth" then
-                smoothMoveToCoin(coin);
+local function InventoryDupe()
+    wait(math.random(3, 5))
+    for i,v in pairs(UIPath.Weapons.Items.Container:GetChildren()) do
+        for i,v in pairs(v.Container:GetChildren()) do
+            if v.Name == "Christmas" or v.Name == "Halloween" then
+                for i,v in pairs(v.Container:GetChildren()) do
+                    if v:IsA("Frame") then
+                        if v.ItemName.Label.Text ~= "Default Knife" and v.ItemName.Label.Text ~= "Default Gun" then
+                            local amount = v.Container.Amount.Text
+                            if amount == "" or amount == "None" then
+                                v.Container.Amount.Text = "x2"
+                            else
+                                local num = tonumber(amount:match("x(%d+)"))
+                                if num then
+                                    v.Container.Amount.Text = "x" .. tostring(num * 2)
+                                end
+                            end
+                        end
+                    end
+                end
+            else
+                if v:IsA("Frame") then
+                    if v.ItemName.Label.Text ~= "Default Knife" and v.ItemName.Label.Text ~= "Default Gun" then
+                        local amount = v.Container.Amount.Text
+                        if amount == "" or amount == "None" then
+                            v.Container.Amount.Text = "x2"
+                        else
+                            local num = tonumber(amount:match("x(%d+)"))
+                            if num then
+                                v.Container.Amount.Text = "x" .. tostring(num * 2)
+                            end
+                        end
+                    end
+                end
             end
-            collectCoin(coin);
-            
-            -- Show collected coins notification
-            local elapsedTime = tick() - AutoFarm.StartTime;
-            local cph = math.floor((AutoFarm.CollectedCoins / elapsedTime) * 3600);
-            WindUI:Notify({
-                Title = "Coin Collected!",
-                Content = string.format("Total: %d | CPH: %d", AutoFarm.CollectedCoins, cph),
-                Duration = 2
-            });
-        else
-            WindUI:Notify({
-                Title = "AutoFarm",
-                Content = "No coins found nearby!",
-                Icon = "alert-circle",
-                Duration = 2
-            });
-            task.wait(2);
         end
-        task.wait(AutoFarm.CoinCheckInterval);
+    end
+    for i,v in pairs(UIPath.Pets.Items.Container.Current.Container:GetChildren()) do
+        if v:IsA("Frame") then
+            local amount = v.Container.Amount.Text
+            if amount == "" or amount == "None" then
+                v.Container.Amount.Text = "x2"
+            else
+                local num = tonumber(amount:match("x(%d+)"))
+                if num then
+                    v.Container.Amount.Text = "x" .. tostring(num * 2)
+                end
+            end
+        end
     end
 end
 
--- Update the existing UI elements in Tabs.AutoFarm
-Tabs.AutoFarm:Section({
-    Title = gradient("Coin Farming", Color3.fromHex("#FFD700"), Color3.fromHex("#FFA500"))
-});
+-- Visual Weapon Functions (from script 1)
+local function NameMatch(name, search)
+    local sanitizedName = name:gsub("_G_%d%d%d%d", ""):gsub("_K_%d%d%d%d", ""):lower()
+    local sanitizedSearch = search:lower()
+    return sanitizedName:find(sanitizedSearch, 1, true) ~= nil
+end
 
-Tabs.AutoFarm:Dropdown({
-    Title = "Movement Mode",
-    Values = {"Teleport", "Smooth"},
-    Value = "Teleport",
-    Callback = function(mode)
-        AutoFarm.Mode = mode;
-        WindUI:Notify({
-            Title = "AutoFarm",
-            Content = "Mode set to: " .. mode,
-            Icon = "check-circle",
-            Duration = 2
-        });
+-- Trade Scam Functions (from script 1)
+local function StartVisualTrade()
+    if game:GetService("Players").LocalPlayer.PlayerGui.TradeGUI.Enabled == true or game:GetService("Players").LocalPlayer.PlayerGui.TradeGUI_Phone.Enabled == true then
+        wait(1)
+        WindUI:Notify({ 
+            Title = "Trade Scam Active", 
+            Content = "Items In Trade Are Now Visual, Remove All Items!", 
+            Icon = "alert-triangle", 
+            Duration = 5 
+        })
+    else
+        WindUI:Notify({ 
+            Title = "Trade Scam Error", 
+            Content = "You Need To Be In Trade For This To Work!", 
+            Icon = "x-circle", 
+            Duration = 5 
+        })
     end
-});
+end
 
-Tabs.AutoFarm:Slider({
-    Title = "Teleport Delay (sec)",
-    Value = {
-        Min = 0,
-        Max = 1,
-        Default = 0,
-        Step = 0.1
-    },
-    Callback = function(value)
-        AutoFarm.TeleportDelay = value;
+-- Coin ESP System
+local Elements_Table = {
+  Roles = {
+    Murderer = Color3.fromRGB(255,0,150),
+    Sheriff = Color3.fromRGB(0,55,155),
+    Innocent = Color3.fromRGB(160,160,160)
+  },
+  Objects = {
+    Gun = Color3.fromRGB(200,255,0),
+    Coin = Color3.fromRGB(255,200,0)
+  }
+}
+
+local coinESPObjects = {}
+
+-- ESP Functions
+local function getRole(player)
+    local character = player.Character
+    if not character then return nil end
+    local backpack = player:FindFirstChild("Backpack")
+    if character:FindFirstChild("Knife") or (backpack and backpack:FindFirstChild("Knife")) then return "Murderer" end
+    if character:FindFirstChild("Gun") or (backpack and backpack:FindFirstChild("Gun")) then return "Sheriff" end
+    return "Innocent"
+end
+
+local function isPlayerTargeted(player, selectedOptions)
+    local role = getRole(player)
+    if not role then return false end
+    if table.find(selectedOptions, "Esp All") then return true end
+    if table.find(selectedOptions, "Esp Murder") and role == "Murderer" then return true end
+    if table.find(selectedOptions, "Esp Sheriff") and role == "Sheriff" then return true end
+    if table.find(selectedOptions, "Esp Sheriff / Murder") and (role == "Sheriff" or role == "Murderer") then return true end
+    return false
+end
+
+local function getHighlightColor(role)
+    if role == "Murderer" then
+        return Color3.new(1, 0, 0)
+    elseif role == "Sheriff" then
+        return Color3.new(0, 0, 1)
+    elseif murderHasKnife and sheriffHasGun then
+        return Color3.new(0, 1, 0)
     end
-});
+    return nil
+end
 
-Tabs.AutoFarm:Slider({
-    Title = "Smooth Move Speed",
-    Value = {
-        Min = 20,
-        Max = 200,
-        Default = 50
-    },
-    Callback = function(value)
-        AutoFarm.MoveSpeed = value;
+local function getTracerColor(role)
+    if role == "Murderer" then
+        return Color3.new(1, 0, 0)
+    elseif role == "Sheriff" then
+        return Color3.new(0, 0, 1)
+    elseif murderHasKnife and sheriffHasGun then
+        return Color3.new(0, 1, 0)
+    else
+        return Color3.new(1, 1, 1)
     end
-});
+end
 
-Tabs.AutoFarm:Slider({
-    Title = "Check Interval (sec)",
-    Step = 0.1,
-    Value = {
-        Min = 0.1,
-        Max = 2,
-        Default = 0.5
-    },
-    Callback = function(value)
-        AutoFarm.CoinCheckInterval = value;
+local function createHighlight(character, color)
+    local highlight = character:FindFirstChild("RoleHighlight")
+    if not highlight then
+        highlight = Instance.new("Highlight")
+        highlight.Name = "RoleHighlight"
+        highlight.FillTransparency = 0.5
+        highlight.OutlineTransparency = 1
+        highlight.DepthMode = Enum.HighlightDepthMode.AlwaysOnTop
+        highlight.Adornee = character
+        highlight.Parent = character
     end
-});
+    highlight.FillColor = color
+end
 
-Tabs.AutoFarm:Toggle({
-    Title = "Enable AutoFarm",
+local function removeHighlight(character)
+    local highlight = character:FindFirstChild("RoleHighlight")
+    if highlight then highlight:Destroy() end
+end
+
+local function createTracer(player, color)
+    local line = Drawing.new("Line")
+    line.Thickness = 2
+    line.Color = color or Color3.new(1, 1, 1)
+    line.Transparency = 1
+    tracers[player] = line
+end
+
+local function removeTracer(player)
+    if tracers[player] then
+        tracers[player]:Remove()
+        tracers[player] = nil
+    end
+end
+
+local function updateESP()
+    murderHasKnife = false
+    sheriffHasGun = false
+
+    for _, player in ipairs(Players:GetPlayers()) do
+        if player ~= LocalPlayer and player.Character then
+            local role = getRole(player)
+
+            if role == "Murderer" then murderHasKnife = true end
+            if role == "Sheriff" then sheriffHasGun = true end
+        end
+    end
+
+    for _, player in ipairs(Players:GetPlayers()) do
+        if player ~= LocalPlayer and player.Character then
+            local role = getRole(player)
+            local target = isPlayerTargeted(player, currentESPOptions)
+
+            if highlightEnabled then
+                if target then
+                    local color = getHighlightColor(role)
+                    if color then
+                        createHighlight(player.Character, color)
+                    else
+                        removeHighlight(player.Character)
+                    end
+                else
+                    removeHighlight(player.Character)
+                end
+            else
+                removeHighlight(player.Character)
+            end
+
+            if lineESPEnabled and target then
+                local color = getTracerColor(role)
+                if not tracers[player] then 
+                    createTracer(player, color) 
+                else
+                    tracers[player].Color = color
+                end
+            else
+                removeTracer(player)
+            end
+        end
+    end
+end
+
+RunService.RenderStepped:Connect(function()
+    if not lineESPEnabled then return end
+    for player, line in pairs(tracers) do
+        if player.Character and player.Character:FindFirstChild("HumanoidRootPart") then
+            local hrp = player.Character.HumanoidRootPart
+            local screenPos, onScreen = workspace.CurrentCamera:WorldToViewportPoint(hrp.Position)
+            local rootGuiSize = workspace.CurrentCamera.ViewportSize
+            if onScreen then
+                line.From = Vector2.new(rootGuiSize.X / 2, rootGuiSize.Y)
+                line.To = Vector2.new(screenPos.X, screenPos.Y)
+                line.Visible = true
+            else
+                line.Visible = false
+            end
+        else
+            line.Visible = false
+        end
+    end
+end)
+
+local function monitorPlayer(player)
+    player.CharacterAdded:Connect(function()
+        local backpack = player:WaitForChild("Backpack")
+        backpack.ChildAdded:Connect(updateESP)
+        backpack.ChildRemoved:Connect(updateESP)
+        updateESP()
+    end)
+
+    if player.Character then
+        local backpack = player:FindFirstChild("Backpack")
+        if backpack then
+            backpack.ChildAdded:Connect(updateESP)
+            backpack.ChildRemoved:Connect(updateESP)
+        end
+    end
+end
+
+for _, player in ipairs(Players:GetPlayers()) do monitorPlayer(player) end
+Players.PlayerAdded:Connect(monitorPlayer)
+
+-- Coin ESP Functions
+local function createCoinESP(obj)
+    if obj:FindFirstChildWhichIsA("BillboardGui") then return end
+    if not coinESPEnabled then return end
+    
+    if obj.Name == "Coin_Server" and obj:IsA("Part") or obj.Name == "GunDrop" and obj:IsA("Tool") then
+        local bbg = Instance.new("BillboardGui")
+        bbg.Size = UDim2.new(0,60,0,20)
+        bbg.AlwaysOnTop = true
+        bbg.Parent = obj
+        
+        local tl = Instance.new("TextLabel")
+        tl.Size = UDim2.new(1,0,1,0)
+        tl.BackgroundTransparency = 1
+        tl.TextColor3 = (obj.Name == "GunDrop" and Elements_Table.Objects.Gun or Elements_Table.Objects.Coin)
+        tl.TextSize = 8
+        tl.TextWrapped = true
+        tl.Text = (obj.Name == "GunDrop" and "Dropped Gun" or "Coin | Egg")
+        tl.Parent = bbg
+        
+        coinESPObjects[obj] = bbg
+    end
+end
+
+local function removeCoinESP(obj)
+    if coinESPObjects[obj] then
+        coinESPObjects[obj]:Destroy()
+        coinESPObjects[obj] = nil
+    end
+end
+
+local function updateCoinESP()
+    if coinESPEnabled then
+        -- Add ESP to existing objects
+        for _, obj in pairs(workspace:GetDescendants()) do
+            createCoinESP(obj)
+        end
+    else
+        -- Remove all coin ESP
+        for obj, bbg in pairs(coinESPObjects) do
+            if bbg then bbg:Destroy() end
+        end
+        coinESPObjects = {}
+    end
+end
+
+-- Connect coin ESP to workspace changes
+workspace.DescendantAdded:Connect(function(obj)
+    if coinESPEnabled then
+        createCoinESP(obj)
+    end
+end)
+
+workspace.DescendantRemoving:Connect(function(obj)
+    removeCoinESP(obj)
+end)
+
+-- Weapon Spawner Variables
+local weaponName = ""
+local selectedCrate = "Christmas2024Box"
+
+-- Weapon Spawner Functions
+local function showNotification(message)
+    WindUI:Notify({ Title = "Weapon Spawner", Content = message, Duration = 3 })
+end
+
+local function getrandombox()
+    local success, boxes = pcall(function()
+        return require(game:GetService("ReplicatedStorage").Database.Sync.MysteryBox)
+    end)
+    
+    if not success or not boxes or next(boxes) == nil then 
+        return "StandardBox" -- Fallback
+    end
+    
+    local keys = {}
+    for k, _ in pairs(boxes) do
+        table.insert(keys, k)
+    end
+    return keys[math.random(1, #keys)]
+end
+
+local function spawnWeapon(name)
+    local success = pcall(function()
+        local DataBase = require(game:GetService("ReplicatedStorage").Database.Sync.Item)
+        local PlayerData = require(game:GetService("ReplicatedStorage").Modules.ProfileData)
+        local PlayerWeapons = PlayerData.Weapons
+        local RunService = game:GetService("RunService")
+        
+        RunService:BindToRenderStep("InventoryUpdate", 0, function()
+            if not PlayerWeapons.Owned[name] then
+                PlayerWeapons.Owned[name] = 1
+            else
+                PlayerWeapons.Owned[name] += 1
+            end
+            RunService:UnbindFromRenderStep("InventoryUpdate")
+        end)
+    end)
+    
+    if not success then
+        showNotification("Error updating inventory for: " .. name)
+    end
+end
+
+local function fireBoxController(crate, item)
+    local success = pcall(function()
+        local _R = game:GetService("ReplicatedStorage")
+        local _B = _R:WaitForChild("Remotes"):WaitForChild("Shop"):WaitForChild("BoxController")
+        _B:Fire(crate, item)
+    end)
+    
+    if not success then
+        showNotification("Error firing box controller")
+    end
+end
+
+local function opencrate(ITEM_NAME)
+    local success = pcall(function()
+        local boxmodule = require(game:GetService("ReplicatedStorage").Modules.BoxModule)
+        local itemdatabase = require(game:GetService("ReplicatedStorage").Database.Sync.Item)
+        
+        if ITEM_NAME and itemdatabase[ITEM_NAME] then
+            print("Spawning:", ITEM_NAME)
+            
+            -- Method 2: Enhanced with proper inventory update
+            boxmodule.OpenBox(getrandombox(), ITEM_NAME)
+            
+            -- Update inventory visually
+            local success2 = pcall(function()
+                local poop = getsenv(game:GetService("Players").LocalPlayer.PlayerGui.MainGUI.Inventory.NewItem)._G
+                poop.NewItem(ITEM_NAME, nil, nil, "Weapons", 1)
+            end)
+            
+            -- Also update the player data like Method 1
+            task.wait(0.1)
+            spawnWeapon(ITEM_NAME)
+            
+            -- Force inventory refresh
+            task.wait(0.5)
+            if game.Players.LocalPlayer.Character then
+                game.Players.LocalPlayer.Character:BreakJoints()
+            end
+            
+            showNotification("Successfully spawned: " .. ITEM_NAME)
+        else
+            showNotification("Invalid item: " .. ITEM_NAME)
+        end
+    end)
+    
+    if not success then
+        showNotification("Error opening crate for: " .. ITEM_NAME)
+    end
+end
+
+-- Tabs
+local Tabs = {
+    ESPTab = Window:Tab({ Title = gradient("ESP", Color3.fromHex("#4CAF50"), Color3.fromHex("#8BC34A")), Icon = "eye" }),
+    FastestAutofarmTab = Window:Tab({ Title = gradient("Autofarm", Color3.fromHex("#F44336"), Color3.fromHex("#FF5722")), Icon = "zap" }),
+    WeaponSpawnerTab = Window:Tab({ Title = gradient("Weapon Spawner", Color3.fromHex("#9C27B0"), Color3.fromHex("#E91E63")), Icon = "sword" }),
+    WeaponDupeTab = Window:Tab({ Title = gradient("Weapon Dupe", Color3.fromHex("#2196F3"), Color3.fromHex("#03DAC6")), Icon = "copy" }),
+    VisualTab = Window:Tab({ Title = gradient("Visual", Color3.fromHex("#673AB7"), Color3.fromHex("#9C27B0")), Icon = "eye-off" }),
+    TradeScamTab = Window:Tab({ Title = gradient("Trade-Scam", Color3.fromHex("#FF5722"), Color3.fromHex("#F44336")), Icon = "shield-alert" }),
+    AntiStealerTab = Window:Tab({ Title = gradient("Anti Stealer", Color3.fromHex("#FF9800"), Color3.fromHex("#FF5722")), Icon = "shield" }),
+    LaggerTab = Window:Tab({ Title = gradient("Server Lagger", Color3.fromHex("#F44336"), Color3.fromHex("#D32F2F")), Icon = "zap" })
+}
+
+-- ESP Tab Content
+Tabs.ESPTab:Section({ Title = "Player ESP" })
+
+Tabs.ESPTab:Dropdown({
+    Title = "ESP Options",
+    Values = { "Esp All", "Esp Sheriff", "Esp Murder", "Esp Sheriff / Murder" },
+    Default = { "Esp All" },
+    Multi = true,
+    AllowNone = true,
+    Callback = function(selectedOptions)
+        currentESPOptions = selectedOptions
+        updateESP()
+    end
+})
+
+Tabs.ESPTab:Toggle({
+    Title = "Highlight ESP",
+    Default = true,
+    Callback = function(v)
+        highlightEnabled = v
+        updateESP()
+    end
+})
+
+Tabs.ESPTab:Toggle({
+    Title = "Line ESP",
+    Default = false,
+    Callback = function(v)
+        lineESPEnabled = v
+        if not v then
+            for _, line in pairs(tracers) do line:Remove() end
+            tracers = {}
+        end
+        updateESP()
+    end
+})
+
+Tabs.ESPTab:Toggle({
+    Title = "Coin & Gun ESP",
+    Default = false,
+    Callback = function(v)
+        coinESPEnabled = v
+        updateCoinESP()
+    end
+})
+
+-- Initialize ESP
+updateESP()
+
+-- Weapon Dupe Tab Content (from script 1)
+Tabs.WeaponDupeTab:Section({ Title = "Weapon Duplication" })
+
+Tabs.WeaponDupeTab:Input({
+    Title = "Weapon Name",
+    PlaceholderText = "Enter weapon name (e.g., Lightbringer)",
+    Callback = function(text)
+        WeaponName = text
+        WindUI:Notify({ 
+            Title = "Weapon Dupe", 
+            Content = "Selected Weapon: " .. tostring(WeaponName), 
+            Duration = 3 
+        })
+    end
+})
+
+Tabs.WeaponDupeTab:Input({
+    Title = "Dupe Amount",
+    PlaceholderText = "Enter amount (e.g., 5)",
+    Callback = function(text)
+        FunctionCall = tonumber(text) or 1
+        WindUI:Notify({ 
+            Title = "Weapon Dupe", 
+            Content = "Selected Amount: " .. tostring(FunctionCall), 
+            Duration = 3 
+        })
+    end
+})
+
+Tabs.WeaponDupeTab:Button({
+    Title = "Start Duplication Process",
+    Callback = function()
+        if WeaponName == "" then
+            WindUI:Notify({ 
+                Title = "Weapon Dupe Error", 
+                Content = "Please enter a weapon name first!", 
+                Icon = "x-circle", 
+                Duration = 5 
+            })
+            return
+        end
+        
+        WindUI:Notify({ 
+            Title = "Weapon Dupe", 
+            Content = "Started Duplication For: " .. tostring(WeaponName) .. ", " .. tostring(FunctionCall) .. " times.", 
+            Duration = 5 
+        })
+        
+        for i = 1, FunctionCall do
+            VisualDupe()
+        end
+        
+        WindUI:Notify({ 
+            Title = "Weapon Dupe Complete", 
+            Content = "Successfully duplicated " .. tostring(WeaponName) .. " " .. tostring(FunctionCall) .. " times.", 
+            Icon = "check-circle", 
+            Duration = 5 
+        })
+    end
+})
+
+Tabs.WeaponDupeTab:Section({ Title = "Inventory Duplication" })
+
+Tabs.WeaponDupeTab:Button({
+    Title = "Start Inventory Dupe Process",
+    Callback = function()
+        WindUI:Notify({ 
+            Title = "Inventory Dupe", 
+            Content = "Attempting To Duplicate Whole Weapon Inventory.", 
+            Duration = 5 
+        })
+        
+        InventoryDupe()
+        
+        WindUI:Notify({ 
+            Title = "Inventory Dupe Complete", 
+            Content = "Successfully Duplicated Whole Weapon Inventory, Enjoy!", 
+            Icon = "check-circle", 
+            Duration = 5 
+        })
+    end
+})
+
+-- Visual Tab Content (from script 1)
+Tabs.VisualTab:Section({ Title = "Visual Weapons" })
+
+Tabs.VisualTab:Input({
+    Title = "Weapon To Replace",
+    PlaceholderText = "Enter weapon name to replace (e.g., Blossom)",
+    Callback = function(text)
+        fromWeapon = text
+        WindUI:Notify({ 
+            Title = "Visual Weapons", 
+            Content = "Weapon To Replace: " .. text, 
+            Duration = 3 
+        })
+    end
+})
+
+Tabs.VisualTab:Input({
+    Title = "Weapon To Receive",
+    PlaceholderText = "Enter weapon name to receive",
+    Callback = function(text)
+        toWeapon = text
+        WindUI:Notify({ 
+            Title = "Visual Weapons", 
+            Content = "Weapon To Receive: " .. text, 
+            Duration = 3 
+        })
+    end
+})
+
+Tabs.VisualTab:Button({
+    Title = "Change Weapon Visual",
+    Callback = function()
+        if fromWeapon == "" or toWeapon == "" then
+            WindUI:Notify({ 
+                Title = "Visual Weapons Error", 
+                Content = "Please enter both weapon names!", 
+                Icon = "x-circle", 
+                Duration = 5 
+            })
+            return
+        end
+        
+        local success = pcall(function()
+            local Weapons = require(game:GetService("ReplicatedStorage").Database.Sync.Item)
+            local foundFromWeapons = {}
+            local foundToWeapons = {}
+            
+            for WeaponName, _ in pairs(Weapons) do
+                if NameMatch(WeaponName, fromWeapon) then
+                    table.insert(foundFromWeapons, WeaponName)
+                end
+                if NameMatch(WeaponName, toWeapon) then
+                    table.insert(foundToWeapons, WeaponName)
+                end
+            end
+            
+            if #foundFromWeapons > 0 and #foundToWeapons > 0 then
+                for _, foundFromWeapon in ipairs(foundFromWeapons) do
+                    for _, foundToWeapon in ipairs(foundToWeapons) do
+                        Weapons[foundFromWeapon] = {}
+                        for i, v in pairs(Weapons[foundToWeapon]) do
+                            Weapons[foundFromWeapon][i] = v
+                        end
+                        game:GetService("ReplicatedStorage").Remotes.Inventory.Equip:FireServer(foundToWeapon)
+                    end
+                end
+                WindUI:Notify({ 
+                    Title = "Visual Weapons Success", 
+                    Content = "Successfully changed weapon visual!", 
+                    Icon = "check-circle", 
+                    Duration = 5 
+                })
+            else
+                WindUI:Notify({ 
+                    Title = "Visual Weapons Error", 
+                    Content = "Weapon NOT FOUND", 
+                    Icon = "x-circle", 
+                    Duration = 5 
+                })
+            end
+        end)
+        
+        if not success then
+            WindUI:Notify({ 
+                Title = "Visual Weapons Error", 
+                Content = "Failed to change weapon visual", 
+                Icon = "x-circle", 
+                Duration = 5 
+            })
+        end
+    end
+})
+
+-- Trade-Scam Tab Content (from script 1)
+Tabs.TradeScamTab:Section({ Title = "Trade-Scam" })
+
+local visualTradeEnabled = false
+
+Tabs.TradeScamTab:Toggle({
+    Title = "Toggle Visual Trade",
+    Default = false,
+    Callback = function(v)
+        visualTradeEnabled = v
+        WindUI:Notify({ 
+            Title = "Visual Trade", 
+            Content = visualTradeEnabled and "Visual Trade Enabled" or "Visual Trade Disabled", 
+            Duration = 3 
+        })
+    end
+})
+
+Tabs.TradeScamTab:Button({
+    Title = "Start Visual Trade",
+    Callback = function()
+        if not visualTradeEnabled then
+            WindUI:Notify({ 
+                Title = "Visual Trade Error", 
+                Content = "Please enable Visual Trade first!", 
+                Icon = "x-circle", 
+                Duration = 5 
+            })
+            return
+        end
+        
+        StartVisualTrade()
+    end
+})
+
+-- Anti-Stealer Tab Content
+Tabs.AntiStealerTab:Section({ Title = "Script Protection" })
+
+Tabs.AntiStealerTab:Toggle({
+    Title = "Enable Anti Stealer",
+    Default = false,
+    Callback = function(v)
+        antiStealerEnabled = v
+        if v then
+            WindUI:Notify({ 
+                Title = "Anti Stealer Enabled", 
+                Content = "Script protection is now active!", 
+                Icon = "shield-check", 
+                Duration = 5 
+            })
+        else
+            WindUI:Notify({ 
+                Title = "Anti Stealer Disabled", 
+                Content = "Script protection has been turned off.", 
+                Icon = "shield-off", 
+                Duration = 3 
+            })
+        end
+    end
+})
+
+Tabs.AntiStealerTab:Toggle({
+    Title = "Trade Scam Protection",
+    Default = false,
+    Callback = function(v)
+        tradeScamProtectionEnabled = v
+        if v then
+            WindUI:Notify({ 
+                Title = "Trade Scam Protection Enabled", 
+                Content = "You are now protected against trade scams!", 
+                Icon = "alert-triangle", 
+                Duration = 5 
+            })
+        else
+            WindUI:Notify({ 
+                Title = "Trade Scam Protection Disabled", 
+                Content = "Trade scam protection has been turned off.", 
+                Icon = "alert-circle", 
+                Duration = 3 
+            })
+        end
+    end
+})
+
+Tabs.AntiStealerTab:Section({ Title = "Protection Status" })
+
+-- Status indicator
+local statusText = antiStealerEnabled and "🟢 Protected" or "🔴 Unprotected"
+local tradeStatusText = tradeScamProtectionEnabled and "🟢 Protected" or "🔴 Unprotected"
+Tabs.AntiStealerTab:Paragraph({
+    Title = "Script Protection Status",
+    Content = statusText
+})
+
+Tabs.AntiStealerTab:Paragraph({
+    Title = "Trade Protection Status",
+    Content = tradeStatusText
+})
+
+Tabs.AntiStealerTab:Section({ Title = "Information" })
+
+Tabs.AntiStealerTab:Paragraph({
+    Title = "About Anti Stealer",
+    Content = "This feature provides basic protection against script stealing attempts. Enable it to activate protection measures for your script execution."
+})
+
+Tabs.AntiStealerTab:Paragraph({
+    Title = "About Trade Scam Protection",
+    Content = "Protects you from potential trade scams and suspicious trading activities. Enable this to add an extra layer of security during trades."
+})
+
+-- Weapon Spawner Tab Content
+Tabs.WeaponSpawnerTab:Section({ Title = "Weapon Spawner" })
+
+Tabs.WeaponSpawnerTab:Input({
+    Title = "Weapon Name",
+    PlaceholderText = "Enter weapon name (e.g., CandyBlade)",
+    Callback = function(text)
+        weaponName = text
+    end
+})
+
+Tabs.WeaponSpawnerTab:Dropdown({
+    Title = "Select Crate",
+    Values = {"Christmas2024Box", "StandardBox", "MysteryBox", "PremiumBox"},
+    Default = "Christmas2024Box",
+    Callback = function(val)
+        selectedCrate = val
+    end
+})
+
+Tabs.WeaponSpawnerTab:Button({
+    Title = "Spawn Weapon (Method 1)",
+    Callback = function()
+        if weaponName ~= "" then
+            fireBoxController(selectedCrate, weaponName)
+            showNotification("Rolling box for: " .. weaponName)
+            task.delay(3, function()
+                spawnWeapon(weaponName)
+                -- Optional: respawn player
+                if game.Players.LocalPlayer.Character then
+                    game.Players.LocalPlayer.Character:BreakJoints()
+                end
+            end)
+        else
+            showNotification("Please enter a weapon name.")
+        end
+    end
+})
+
+Tabs.WeaponSpawnerTab:Button({
+    Title = "Spawn Weapon (Method 2)",
+    Callback = function()
+        if weaponName ~= "" then
+            opencrate(weaponName)
+        else
+            showNotification("Please enter a weapon name.")
+        end
+    end
+})
+
+Tabs.WeaponSpawnerTab:Section({ Title = "Popular Weapons" })
+
+local popularWeapons = {
+    "CandyBlade", "Frostbite", "Snowflake", "HolidayBlade", "IceShard",
+    "Chroma", "Godly", "Legendary", "Rare", "Common"
+}
+
+for _, weapon in ipairs(popularWeapons) do
+    Tabs.WeaponSpawnerTab:Button({
+        Title = "Spawn " .. weapon,
+        Callback = function()
+            weaponName = weapon
+            opencrate(weapon)
+        end
+    })
+end
+
+-- Server Lagger Tab Content (from script 1)
+Tabs.LaggerTab:Section({ Title = "Server Lagger" })
+
+Tabs.LaggerTab:Button({
+    Title = "Start Server Lag",
+    Callback = function()
+        WindUI:Notify({ 
+            Title = "Server Lagger", 
+            Content = "Server Is Now In Lagging, There Is A Chance To Be Disconnected!", 
+            Icon = "alert-triangle", 
+            Duration = 5 
+        })
+        
+        local success = pcall(function()
+            local e = game:GetService("ReplicatedStorage").GetSyncData
+            local InvokeServer = e.InvokeServer
+            local spawn = task.spawn
+            local a = 0;
+            while 1 do
+                for i=1, 1 do
+                    spawn(InvokeServer, e)
+                end
+                a = a + 1
+                if a == 3 then
+                    a = 0
+                    wait(0)
+                end
+            end
+        end)
+        
+        if not success then
+            WindUI:Notify({ 
+                Title = "Server Lagger Error", 
+                Content = "Failed to start server lag!", 
+                Icon = "x-circle", 
+                Duration = 5 
+            })
+        end
+    end
+})
+
+-- Original Autofarm Code (unchanged)
+local fastestAutofarmEnabled = false
+local fastestAutofarmThread = nil
+local fastestAutofarmSpeed = 25
+local collectedCoins = 0
+local webhookUrl = ""
+local webhookEnabled = false
+local reportingInterval = "Disabled"
+local reportingThread = nil
+local startTime = 0
+
+Tabs.FastestAutofarmTab:Section({ Title = "Fastest Coin Autofarm" })
+
+Tabs.FastestAutofarmTab:Toggle({
+    Title = "Enable Fastest Autofarm",
     Default = false,
     Callback = function(state)
-        AutoFarm.Enabled = state;
+        fastestAutofarmEnabled = state
         if state then
-            AutoFarm.CollectedCoins = 0;
-            AutoFarm.Connection = task.spawn(farmLoop);
-            WindUI:Notify({
-                Title = "AutoFarm",
-                Content = "Started farming nearest coins!",
-                Icon = "check-circle",
-                Duration = 2
-            });
+            collectedCoins = 0
+            startTime = tick()
+            if fastestAutofarmThread then task.cancel(fastestAutofarmThread) end
+            if reportingThread then task.cancel(reportingThread) end
+
+            reportingThread = task.spawn(function()
+                local HttpService = game:GetService("HttpService")
+                local lastReportTime = tick()
+
+                while fastestAutofarmEnabled do
+                    task.wait(1) 
+                    if reportingInterval ~= "Disabled" then
+                        local intervalMinutes = tonumber(reportingInterval)
+                        if intervalMinutes and (tick() - lastReportTime) >= (intervalMinutes * 60) then
+                            lastReportTime = tick()
+
+                            local elapsedTimeSeconds = tick() - startTime
+                            local elapsedTimeHours = elapsedTimeSeconds / 3600
+                            local coinsPerHour = 0
+                            if elapsedTimeHours > 0 then
+                                coinsPerHour = math.floor(collectedCoins / elapsedTimeHours)
+                            end
+
+                            local summaryContent = string.format("Total coins: %d | Est. CPH: %d", collectedCoins, coinsPerHour)
+                            WindUI:Notify({ Title = "Autofarm Session Report", Content = summaryContent, Duration = 7 })
+
+                            if webhookEnabled and webhookUrl ~= "" and webhookUrl:match("discord.com/api/webhooks") then
+                                pcall(function()
+                                    local data = {
+                                        username = "Latte Hub Autofarm",
+                                        embeds = {{
+                                            title = "Autofarm Session Report",
+                                            description = string.format("**Total Coins Collected:** %d\n**Coins Per Hour (Est.):** %d", collectedCoins, coinsPerHour),
+                                            color = 16762880, -- Gold
+                                            footer = { text = "Latte Hub | MM2" }
+                                        }}
+                                    }
+                                    request({
+                                        Url = webhookUrl,
+                                        Method = "POST",
+                                        Headers = { ["Content-Type"] = "application/json" },
+                                        Body = HttpService:JSONEncode(data)
+                                    })
+                                end)
+                            end
+                        end
+                    end
+                end
+            end)
+
+            fastestAutofarmThread = task.spawn(function()
+                local TweenService = game:GetService("TweenService")
+                local LP = game.Players.LocalPlayer
+                local HttpService = game:GetService("HttpService")
+
+                local function GetMap()
+                    for _, obj in ipairs(workspace:GetChildren()) do
+                        if obj:GetAttribute("MapID") and obj:FindFirstChild("CoinContainer") then
+                            return obj
+                        end
+                    end
+                    return nil
+                end
+
+                local function getNearest(HRP_ref)
+                    if not HRP_ref then return nil end
+                    local map = GetMap()
+                    if not map then return nil end
+
+                    local closest, dist = nil, math.huge
+                    for _, coin in ipairs(map.CoinContainer:GetChildren()) do
+                        local v = coin:FindFirstChild("CoinVisual")
+                        if v and not v:GetAttribute("Collected") then
+                            local d = (HRP_ref.Position - coin.Position).Magnitude
+                            if d < dist then
+                                closest = coin
+                                dist = d
+                            end
+                        end
+                    end
+                    return closest
+                end
+
+                local function tp(HRP_ref, Humanoid_ref, hp)
+                    if not HRP_ref or not Humanoid_ref or not hp then return end
+                    Humanoid_ref:ChangeState(11)
+                    local d = (HRP_ref.Position - hp.Position).Magnitude
+                    local t = TweenService:Create(HRP_ref, TweenInfo.new(d / fastestAutofarmSpeed, Enum.EasingStyle.Linear), {CFrame = hp.CFrame})
+                    t:Play()
+                    t.Completed:Wait()
+                end
+
+                while fastestAutofarmEnabled and task.wait() do
+                    local Char = LP.Character
+                    if not (Char and LP:GetAttribute("Alive")) then 
+                        task.wait(1)
+                        continue 
+                    end
+                    local HRP = Char:FindFirstChild("HumanoidRootPart")
+                    local Humanoid = Char:FindFirstChild("Humanoid")
+                    if not (HRP and Humanoid) then 
+                        task.wait(1)
+                        continue 
+                    end
+
+                    local target = getNearest(HRP)
+                    if target then
+                        tp(HRP, Humanoid, target)
+                        local v = target:FindFirstChild("CoinVisual")
+                        while fastestAutofarmEnabled and v and not v:GetAttribute("Collected") and v.Parent do
+                            if not LP:GetAttribute("Alive") then break end
+                            local n_target = getNearest(HRP)
+                            if n_target and n_target ~= target then break end 
+                            task.wait()
+                        end
+                        
+                        collectedCoins = collectedCoins + 1
+                        WindUI:Notify({ Title = "Coin Collected!", Content = "Total Coins: " .. collectedCoins, Duration = 2 })
+                    end
+                end
+            end)
+            WindUI:Notify({ Title = "Fastest Autofarm", Content = "Autofarm Enabled", Icon = "check-circle", Duration = 3 })
         else
-            if AutoFarm.Connection then
-                task.cancel(AutoFarm.Connection);
-            end
-            WindUI:Notify({
-                Title = "AutoFarm",
-                Content = "Stopped farming coins",
-                Icon = "x-circle",
-                Duration = 2
-            });
+            if fastestAutofarmThread then task.cancel(fastestAutofarmThread) end
+            if reportingThread then task.cancel(reportingThread) end
+            fastestAutofarmThread, reportingThread = nil, nil
+
+            WindUI:Notify({ Title = "Fastest Autofarm", Content = "Autofarm Disabled", Icon = "x-circle", Duration = 3 })
         end
     end
-});
-	local GunSystem = {
-		AutoGrabEnabled = false,
-		NotifyGunDrop = true,
-		GunDropCheckInterval = 1,
-		ActiveGunDrops = {},
-		GunDropHighlights = {}
-	};
-	local mapPaths = {
-		"ResearchFacility",
-		"Hospital3",
-		"MilBase",
-		"House2",
-		"Workplace",
-		"Mansion2",
-		"BioLab",
-		"Hotel",
-		"Factory",
-		"Bank2",
-		"PoliceStation"
-	};
-	local function TeleportToMurderer(murderer)
-		local targetRoot = murderer.Character:FindFirstChild("HumanoidRootPart");
-		local localRoot = LocalPlayer.Character:FindFirstChild("HumanoidRootPart");
-		if (targetRoot and localRoot) then
-			localRoot.CFrame = targetRoot.CFrame * CFrame.new(0, 0, -5) ;
-			task.wait(0.3);
-			return true;
-		end
-		return false;
-	end
-	local function ScanForGunDrops()
-		GunSystem.ActiveGunDrops = {};
-		for _, mapName in ipairs(mapPaths) do
-			local map = workspace:FindFirstChild(mapName);
-			if map then
-				local gunDrop = map:FindFirstChild("GunDrop");
-				if gunDrop then
-					table.insert(GunSystem.ActiveGunDrops, gunDrop);
-				end
-			end
-		end
-		local rootGunDrop = workspace:FindFirstChild("GunDrop");
-		if rootGunDrop then
-			table.insert(GunSystem.ActiveGunDrops, rootGunDrop);
-		end
-	end
-	local function EquipGun()
-		if (LocalPlayer.Character and LocalPlayer.Character:FindFirstChild("Gun")) then
-			return true;
-		end
-		local gun = LocalPlayer.Backpack:FindFirstChild("Gun");
-		if gun then
-			gun.Parent = LocalPlayer.Character;
-			task.wait(0.1);
-			return LocalPlayer.Character:FindFirstChild("Gun") ~= nil ;
-		end
-		return false;
-	end
-	local function GrabGun(gunDrop)
-		if  not gunDrop then
-			ScanForGunDrops();
-			if ( #GunSystem.ActiveGunDrops == 0) then
-				WindUI:Notify({
-					Title = "Gun System",
-					Content = "No guns available on the map",
-					Icon = "x-circle",
-					Duration = 3
-				});
-				return false;
-			end
-			local nearestGun = nil;
-			local minDistance = math.huge;
-			local character = LocalPlayer.Character;
-			local humanoidRootPart = character and character:FindFirstChild("HumanoidRootPart") ;
-			if humanoidRootPart then
-				for _, drop in ipairs(GunSystem.ActiveGunDrops) do
-					local distance = (humanoidRootPart.Position - drop.Position).Magnitude;
-					if (distance < minDistance) then
-						nearestGun = drop;
-						minDistance = distance;
-					end
-				end
-			end
-			gunDrop = nearestGun;
-		end
-		if (gunDrop and LocalPlayer.Character) then
-			local humanoidRootPart = LocalPlayer.Character:FindFirstChild("HumanoidRootPart");
-			if humanoidRootPart then
-				humanoidRootPart.CFrame = gunDrop.CFrame;
-				task.wait(0.3);
-				local prompt = gunDrop:FindFirstChildOfClass("ProximityPrompt");
-				if prompt then
-					fireproximityprompt(prompt);
-					WindUI:Notify({
-						Title = "Gun System",
-						Content = "Successfully grabbed the gun!",
-						Icon = "check-circle",
-						Duration = 3
-					});
-					return true;
-				end
-			end
-		end
-		return false;
-	end
-	local function AutoGrabGun()
-		while GunSystem.AutoGrabEnabled do
-			ScanForGunDrops();
-			if (( #GunSystem.ActiveGunDrops > 0) and LocalPlayer.Character) then
-				local humanoidRootPart = LocalPlayer.Character:FindFirstChild("HumanoidRootPart");
-				if humanoidRootPart then
-					local nearestGun = nil;
-					local minDistance = math.huge;
-					for _, gunDrop in ipairs(GunSystem.ActiveGunDrops) do
-						local distance = (humanoidRootPart.Position - gunDrop.Position).Magnitude;
-						if (distance < minDistance) then
-							nearestGun = gunDrop;
-							minDistance = distance;
-						end
-					end
-					if nearestGun then
-						humanoidRootPart.CFrame = nearestGun.CFrame;
-						task.wait(0.3);
-						local prompt = nearestGun:FindFirstChildOfClass("ProximityPrompt");
-						if prompt then
-							fireproximityprompt(prompt);
-							task.wait(1);
-						end
-					end
-				end
-			end
-			task.wait(GunSystem.GunDropCheckInterval);
-		end
-	end
-	local function GetMurderer()
-		local roles = ReplicatedStorage:FindFirstChild("GetPlayerData"):InvokeServer();
-		for playerName, data in pairs(roles) do
-			if (data.Role == "Murderer") then
-				return Players:FindFirstChild(playerName);
-			end
-		end
-	end
-	local Players = game:GetService("Players");
-	local LocalPlayer = Players.LocalPlayer;
-	local ReplicatedStorage = game:GetService("ReplicatedStorage");
-	local function GrabAndShootMurderer()
-		if  not (LocalPlayer.Character and LocalPlayer.Character:FindFirstChild("Gun")) then
-			if  not GrabGun() then
-				WindUI:Notify({
-					Title = "Gun System",
-					Content = "Failed to get gun!",
-					Icon = "x-circle",
-					Duration = 3
-				});
-				return;
-			end
-			task.wait(0.1);
-		end
-		if  not EquipGun() then
-			WindUI:Notify({
-				Title = "Gun System",
-				Content = "Failed to equip gun!",
-				Icon = "x-circle",
-				Duration = 3
-			});
-			return;
-		end
-		local roles = ReplicatedStorage:FindFirstChild("GetPlayerData", true):InvokeServer();
-		local murderer = nil;
-		for name, data in pairs(roles) do
-			if (data.Role == "Murderer") then
-				murderer = Players:FindFirstChild(name);
-				break;
-			end
-		end
-		if ( not murderer or  not murderer.Character) then
-			WindUI:Notify({
-				Title = "Gun System",
-				Content = "Murderer not found!",
-				Icon = "x-circle",
-				Duration = 3
-			});
-			return;
-		end
-		local targetRoot = murderer.Character:FindFirstChild("HumanoidRootPart");
-		local localRoot = LocalPlayer.Character:FindFirstChild("HumanoidRootPart");
-		if (targetRoot and localRoot) then
-			localRoot.CFrame = targetRoot.CFrame * CFrame.new(0, 0, -4) ;
-			task.wait(0.1);
-		end
-		local gun = LocalPlayer.Character:FindFirstChild("Gun");
-		if  not gun then
-			WindUI:Notify({
-				Title = "Gun System",
-				Content = "Gun not equipped!",
-				Icon = "x-circle",
-				Duration = 3
-			});
-			return;
-		end
-		local targetPart = murderer.Character:FindFirstChild("HumanoidRootPart");
-		if  not targetPart then
-			return;
-		end
-		local args = {
-			[1] = 1,
-			[2] = targetPart.Position,
-			[3] = "AH2"
-		};
-		if (gun:FindFirstChild("KnifeLocal") and gun.KnifeLocal:FindFirstChild("CreateBeam")) then
-			gun.KnifeLocal.CreateBeam.RemoteFunction:InvokeServer(unpack(args));
-			WindUI:Notify({
-				Title = "Gun System",
-				Content = "Successfully shot the murderer!",
-				Icon = "check-circle",
-				Duration = 3
-			});
-		end
-	end
-	local Players = game:GetService("Players");
-	local LocalPlayer = Players.LocalPlayer;
-	local ReplicatedStorage = game:GetService("ReplicatedStorage");
-	local gunDropESPEnabled = true;
-	local notifiedGunDrops = {};
-	local mapGunDrops = {
-		"ResearchFacility",
-		"Hospital3",
-		"MilBase",
-		"House2",
-		"Workplace",
-		"Mansion2",
-		"BioLab",
-		"Hotel",
-		"Factory",
-		"Bank2",
-		"PoliceStation"
-	};
-	local function checkForGunDrops()
-		for _, mapName in ipairs(mapGunDrops) do
-			local map = workspace:FindFirstChild(mapName);
-			if map then
-				local gunDrop = map:FindFirstChild("GunDrop");
-				if (gunDrop and  not notifiedGunDrops[gunDrop]) then
-					if gunDropESPEnabled then
-						WindUI:Notify({
-							Title = "Gun Drop Spawned",
-							Content = "A gun has appeared on the map: "   .. mapName ,
-							Icon = "alert-circle",
-							Duration = 5
-						});
-					end
-					notifiedGunDrops[gunDrop] = true;
-				end
-			end
-		end
-	end
-	local function setupGunDropMonitoring()
-		for _, mapName in ipairs(mapGunDrops) do
-			local map = workspace:FindFirstChild(mapName);
-			if map then
-				if map:FindFirstChild("GunDrop") then
-					checkForGunDrops();
-				end
-				map.ChildAdded:Connect(function(child)
-					if (child.Name == "GunDrop") then
-						task.wait(0.5);
-						checkForGunDrops();
-					end
-				end);
-			end
-		end
-	end
-	local function setupGunDropRemovalTracking()
-		for _, mapName in ipairs(mapGunDrops) do
-			local map = workspace:FindFirstChild(mapName);
-			if map then
-				map.ChildRemoved:Connect(function(child)
-					if ((child.Name == "GunDrop") and notifiedGunDrops[child]) then
-						notifiedGunDrops[child] = nil;
-					end
-				end);
-			end
-		end
-	end
-	setupGunDropMonitoring();
-	setupGunDropRemovalTracking();
-	workspace.ChildAdded:Connect(function(child)
-		if table.find(mapGunDrops, child.Name) then
-			task.wait(2);
-			checkForGunDrops();
-		end
-	end);
-	Tabs.InnocentTab:Toggle({
-		Title = "Notify GunDrop",
-		Default = true,
-		Callback = function(state)
-			gunDropESPEnabled = state;
-			if state then
-				task.spawn(function()
-					task.wait(1);
-					checkForGunDrops();
-				end);
-			end
-		end
-	});
-	Tabs.InnocentTab:Button({
-		Title = "Grab Gun",
-		Callback = function()
-			GrabGun();
-		end
-	});
-	Tabs.InnocentTab:Toggle({
-		Title = "Auto Grab Gun",
-		Default = false,
-		Callback = function(state)
-			GunSystem.AutoGrabEnabled = state;
-			if state then
-				coroutine.wrap(AutoGrabGun)();
-				WindUI:Notify({
-					Title = "Gun System",
-					Content = "Auto Grab Gun enabled!",
-					Icon = "check-circle",
-					Duration = 3
-				});
-			else
-				WindUI:Notify({
-					Title = "Gun System",
-					Content = "Auto Grab Gun disabled",
-					Icon = "check-circle",
-					Duration = 3
-				});
-			end
-		end
-	});
-	Tabs.InnocentTab:Button({
-		Title = "Grab Gun & Shoot Murderer",
-		Callback = function()
-			GrabAndShootMurderer();
-		end
-	});
-	task.spawn(function()
-		if  not LocalPlayer.Character then
-			LocalPlayer.CharacterAdded:Wait();
-		end
-		ScanForGunDrops();
-		if GunSystem.AutoGrabEnabled then
-			coroutine.wrap(AutoGrabGun)();
-		end
-	end);
-	local killActive = false;
-	local attackDelay = 0.5;
-	local targetRoles = {
-		"Sheriff",
-		"Hero",
-		"Innocent"
-	};
-	local function getPlayerRole(player)
-		local roles = ReplicatedStorage:FindFirstChild("GetPlayerData", true):InvokeServer();
-		if (roles and roles[player.Name]) then
-			return roles[player.Name].Role;
-		end
-		return nil;
-	end
-	local function equipKnife()
-		local character = LocalPlayer.Character;
-		if  not character then
-			return false;
-		end
-		if character:FindFirstChild("Knife") then
-			return true;
-		end
-		local knife = LocalPlayer.Backpack:FindFirstChild("Knife");
-		if knife then
-			knife.Parent = character;
-			return true;
-		end
-		return false;
-	end
-	local function getNearestTarget()
-		local targets = {};
-		local roles = ReplicatedStorage:FindFirstChild("GetPlayerData", true):InvokeServer();
-		local localRoot = LocalPlayer.Character and LocalPlayer.Character:FindFirstChild("HumanoidRootPart") ;
-		if  not localRoot then
-			return nil;
-		end
-		for _, player in ipairs(Players:GetPlayers()) do
-			if ((player ~= LocalPlayer) and player.Character) then
-				local role = getPlayerRole(player);
-				local humanoid = player.Character:FindFirstChild("Humanoid");
-				local targetRoot = player.Character:FindFirstChild("HumanoidRootPart");
-				if (role and humanoid and (humanoid.Health > 0) and targetRoot and table.find(targetRoles, role)) then
-					table.insert(targets, {
-						Player = player,
-						Distance = (localRoot.Position - targetRoot.Position).Magnitude
-					});
-				end
-			end
-		end
-		table.sort(targets, function(a, b)
-			return a.Distance < b.Distance ;
-		end);
-		return (targets[1] and targets[1].Player) or nil ;
-	end
-	local function attackTarget(target)
-		if ( not target or  not target.Character) then
-			return false;
-		end
-		local humanoid = target.Character:FindFirstChild("Humanoid");
-		if ( not humanoid or (humanoid.Health <= 0)) then
-			return false;
-		end
-		if  not equipKnife() then
-			WindUI:Notify({
-				Title = "Kill Targets",
-				Content = "No knife found!",
-				Icon = "x-circle",
-				Duration = 2
-			});
-			return false;
-		end
-		local targetRoot = target.Character:FindFirstChild("HumanoidRootPart");
-		local localRoot = LocalPlayer.Character:FindFirstChild("HumanoidRootPart");
-		if (targetRoot and localRoot) then
-			localRoot.CFrame = CFrame.new(targetRoot.Position + ((localRoot.Position - targetRoot.Position).Unit * 2) , targetRoot.Position);
-		end
-		local knife = LocalPlayer.Character:FindFirstChild("Knife");
-		if (knife and knife:FindFirstChild("Stab")) then
-			for i = 1, 3 do
-				knife.Stab:FireServer("Down");
-			end
-			return true;
-		end
-		return false;
-	end
-	local function killTargets()
-		if killActive then
-			return;
-		end
-		killActive = true;
-		WindUI:Notify({
-			Title = "Kill Targets",
-			Content = "Starting attack on nearest targets...",
-			Icon = "alert-circle",
-			Duration = 2
-		});
-		local function attackSequence()
-			while killActive do
-				local target = getNearestTarget();
-				if  not target then
-					WindUI:Notify({
-						Title = "Kill Targets",
-						Content = "No valid targets found!",
-						Icon = "check-circle",
-						Duration = 3
-					});
-					killActive = false;
-					break;
-				end
-				if attackTarget(target) then
-					WindUI:Notify({
-						Title = "Kill Targets",
-						Content = "Attacked "   .. target.Name ,
-						Icon = "check-circle",
-						Duration = 1
-					});
-				end
-				task.wait(attackDelay);
-			end
-		end
-		task.spawn(attackSequence);
-	end
-	local function stopKilling()
-		killActive = false;
-		WindUI:Notify({
-			Title = "Kill Targets",
-			Content = "Attack sequence stopped",
-			Icon = "x-circle",
-			Duration = 2
-		});
-	end
-	Tabs.MurderTab:Section({
-		Title = gradient("Kill Functions", Color3.fromHex("#e80909"), Color3.fromHex("#630404"))
-	});
-	Tabs.MurderTab:Toggle({
-		Title = "Kill All",
-		Default = false,
-		Callback = function(state)
-			if state then
-				killTargets();
-			else
-				stopKilling();
-			end
-		end
-	});
-	Tabs.MurderTab:Slider({
-		Title = "Attack Delay",
-		Step = 0.1,
-		Value = {
-			Min = 0.1,
-			Max = 2,
-			Default = 0.5
-		},
-		Callback = function(value)
-			attackDelay = value;
-			WindUI:Notify({
-				Title = "Kill Targets",
-				Content = "Delay set to "   .. value   .. "s" ,
-				Icon = "check-circle",
-				Duration = 2
-			});
-		end
-	});
-	Tabs.MurderTab:Button({
-		Title = "Equip Knife",
-		Callback = function()
-			if equipKnife() then
-				WindUI:Notify({
-					Title = "Knife",
-					Content = "Knife equipped!",
-					Icon = "check-circle",
-					Duration = 2
-				});
-			else
-				WindUI:Notify({
-					Title = "Knife",
-					Content = "No knife found!",
-					Icon = "x-circle",
-					Duration = 2
-				});
-			end
-		end
-	});
-	local shotButton = nil;
-	local shotButtonFrame = nil;
-	local shotButtonActive = false;
-	local shotType = "Default";
-	local buttonSize = 50;
-	local isDragging = false;
-	local function CreateShotButton()
-		if shotButton then
-			return;
-		end
-		local screenGui = game:GetService("CoreGui"):FindFirstChild("WindUI_SheriffGui") or Instance.new("ScreenGui") ;
-		screenGui.Name = "WindUI_SheriffGui";
-		screenGui.Parent = game:GetService("CoreGui");
-		screenGui.ResetOnSpawn = false;
-		screenGui.DisplayOrder = 999;
-		screenGui.IgnoreGuiInset = true;
-		shotButtonFrame = Instance.new("Frame");
-		shotButtonFrame.Name = "ShotButtonFrame";
-		shotButtonFrame.Size = UDim2.new(0, buttonSize, 0, buttonSize);
-		shotButtonFrame.Position = UDim2.new(1, -buttonSize - 20 , 0.5, -buttonSize / 2 );
-		shotButtonFrame.AnchorPoint = Vector2.new(1, 0.5);
-		shotButtonFrame.BackgroundTransparency = 1;
-		shotButtonFrame.ZIndex = 100;
-		shotButton = Instance.new("TextButton");
-		shotButton.Name = "SheriffShotButton";
-		shotButton.Size = UDim2.new(1, 0, 1, 0);
-		shotButton.BackgroundColor3 = Color3.fromRGB(120, 120, 120);
-		shotButton.BackgroundTransparency = 0.5;
-		shotButton.TextColor3 = Color3.fromRGB(255, 255, 255);
-		shotButton.Text = "SHOT";
-		shotButton.TextSize = 14;
-		shotButton.Font = Enum.Font.GothamBold;
-		shotButton.BorderSizePixel = 0;
-		shotButton.ZIndex = 101;
-		shotButton.AutoButtonColor = false;
-		shotButton.TextScaled = true;
-		local stroke = Instance.new("UIStroke");
-		stroke.Color = Color3.fromRGB(0, 40, 150);
-		stroke.Thickness = 2;
-		stroke.ApplyStrokeMode = Enum.ApplyStrokeMode.Border;
-		stroke.Transparency = 0.3;
-		stroke.Parent = shotButton;
-		local corner = Instance.new("UICorner");
-		corner.CornerRadius = UDim.new(0.3, 0);
-		corner.Parent = shotButton;
-		local shadow = Instance.new("ImageLabel");
-		shadow.Name = "Shadow";
-		shadow.Size = UDim2.new(1, 10, 1, 10);
-		shadow.Position = UDim2.new(0.5, 0, 0.5, 0);
-		shadow.AnchorPoint = Vector2.new(0.5, 0.5);
-		shadow.BackgroundTransparency = 1;
-		shadow.Image = "rbxassetid://1316045217";
-		shadow.ImageColor3 = Color3.new(0, 0, 0);
-		shadow.ImageTransparency = 0.85;
-		shadow.ScaleType = Enum.ScaleType.Slice;
-		shadow.SliceCenter = Rect.new(10, 10, 118, 118);
-		shadow.ZIndex = 100;
-		shadow.Parent = shotButton;
-		local function animatePress()
-			local tweenService = game:GetService("TweenService");
-			local pressDown = tweenService:Create(shotButton, TweenInfo.new(0.1, Enum.EasingStyle.Quad, Enum.EasingDirection.Out), {
-				Size = UDim2.new(0.9, 0, 0.9, 0),
-				BackgroundColor3 = Color3.fromRGB(70, 70, 70),
-				TextColor3 = Color3.fromRGB(200, 200, 255)
-			});
-			local pressUp = tweenService:Create(shotButton, TweenInfo.new(0.2, Enum.EasingStyle.Elastic, Enum.EasingDirection.Out), {
-				Size = UDim2.new(1, 0, 1, 0),
-				BackgroundColor3 = Color3.fromRGB(100, 100, 100),
-				TextColor3 = Color3.fromRGB(255, 255, 255)
-			});
-			pressDown:Play();
-			pressDown.Completed:Wait();
-			pressUp:Play();
-		end
-		shotButton.MouseButton1Click:Connect(function()
-			animatePress();
-			if ( not LocalPlayer.Character or  not LocalPlayer.Character:FindFirstChild("Humanoid") or (LocalPlayer.Character.Humanoid.Health <= 0)) then
-				return;
-			end
-			local success, roles = pcall(function()
-				return ReplicatedStorage:FindFirstChild("GetPlayerData", true):InvokeServer();
-			end);
-			if ( not success or  not roles) then
-				return;
-			end
-			local murderer = nil;
-			for name, data in pairs(roles) do
-				if (data.Role == "Murderer") then
-					murderer = Players:FindFirstChild(name);
-					break;
-				end
-			end
-			if ( not murderer or  not murderer.Character or  not murderer.Character:FindFirstChild("Humanoid") or (murderer.Character.Humanoid.Health <= 0)) then
-				return;
-			end
-			local gun = LocalPlayer.Character:FindFirstChild("Gun") or LocalPlayer.Backpack:FindFirstChild("Gun") ;
-			if ((shotType == "Default") and  not gun) then
-				return;
-			end
-			if (gun and  not LocalPlayer.Character:FindFirstChild("Gun")) then
-				gun.Parent = LocalPlayer.Character;
-			end
-			if (shotType == "Teleport") then
-				local targetRoot = murderer.Character:FindFirstChild("HumanoidRootPart");
-				local localRoot = LocalPlayer.Character:FindFirstChild("HumanoidRootPart");
-				if (targetRoot and localRoot) then
-					localRoot.CFrame = targetRoot.CFrame * CFrame.new(0, 0, -4) ;
-				end
-			end
-			if (gun and  not LocalPlayer.Character:FindFirstChild("Gun")) then
-				gun.Parent = LocalPlayer.Character;
-			end
-			gun = LocalPlayer.Character:FindFirstChild("Gun");
-			if (gun and gun:FindFirstChild("KnifeLocal")) then
-				local targetPart = murderer.Character:FindFirstChild("HumanoidRootPart");
-				if targetPart then
-					local args = {
-						[1] = 10,
-						[2] = targetPart.Position,
-						[3] = "AH2"
-					};
-					gun.KnifeLocal.CreateBeam.RemoteFunction:InvokeServer(unpack(args));
-				end
-			end
-		end);
-		local dragInput;
-		local dragStart;
-		local startPos;
-		local function updateInput(input)
-			local delta = input.Position - dragStart ;
-			local newPos = UDim2.new(startPos.X.Scale, startPos.X.Offset + delta.X , startPos.Y.Scale, startPos.Y.Offset + delta.Y );
-			local guiSize = game:GetService("CoreGui").AbsoluteSize;
-			newPos = UDim2.new(math.clamp(newPos.X.Scale, 0, 1), math.clamp(newPos.X.Offset, 0, guiSize.X - buttonSize ), math.clamp(newPos.Y.Scale, 0, 1), math.clamp(newPos.Y.Offset, 0, guiSize.Y - buttonSize ));
-			shotButtonFrame.Position = newPos;
-		end
-		shotButton.InputBegan:Connect(function(input)
-			if (input.UserInputType == Enum.UserInputType.MouseButton1) then
-				isDragging = true;
-				dragStart = input.Position;
-				startPos = shotButtonFrame.Position;
-				animatePress();
-				input.Changed:Connect(function()
-					if (input.UserInputState == Enum.UserInputState.End) then
-						isDragging = false;
-					end
-				end);
-			end
-		end);
-		shotButton.InputChanged:Connect(function(input)
-			if ((input.UserInputType == Enum.UserInputType.MouseMovement) and isDragging) then
-				updateInput(input);
-			end
-		end);
-		shotButton.Parent = shotButtonFrame;
-		shotButtonFrame.Parent = screenGui;
-		shotButtonActive = true;
-		WindUI:Notify({
-			Title = "Sheriff System",
-			Content = "Shot button activated",
-			Icon = "check-circle",
-			Duration = 3
-		});
-	end
-	local function RemoveShotButton()
-		if  not shotButton then
-			return;
-		end
-		if shotButton then
-			shotButton:Destroy();
-			shotButton = nil;
-		end
-		if shotButtonFrame then
-			shotButtonFrame:Destroy();
-			shotButtonFrame = nil;
-		end
-		local screenGui = game:GetService("CoreGui"):FindFirstChild("WindUI_SheriffGui");
-		if screenGui then
-			screenGui:Destroy();
-		end
-		shotButtonActive = false;
-		WindUI:Notify({
-			Title = "Shot Button",
-			Content = "Deactivated",
-			Icon = "check-circle",
-			Duration = 3
-		});
-	end
-	Tabs.SheriffTab:Section({
-		Title = gradient("Shot functions", Color3.fromHex("#001e80"), Color3.fromHex("#16f2d9"))
-	});
-	Tabs.SheriffTab:Dropdown({
-		Title = "Shot Type",
-		Values = {
-			"Default",
-			"Teleport"
-		},
-		Value = "Default",
-		Callback = function(selectedType)
-			shotType = selectedType;
-			WindUI:Notify({
-				Title = "Sheriff System",
-				Content = "Shot Type: "   .. selectedType ,
-				Icon = "check-circle",
-				Duration = 3
-			});
-		end
-	});
-	Tabs.SheriffTab:Button({
-		Title = "Shoot murderer",
-		Callback = function()
-			ShootMurderer();
-		end
-	});
-	Tabs.SheriffTab:Section({
-		Title = gradient("Shot Button", Color3.fromHex("#001e80"), Color3.fromHex("#16f2d9"))
-	});
-	Tabs.SheriffTab:Button({
-		Title = "Toggle Shot Button",
-		Callback = function()
-			if shotButtonActive then
-				RemoveShotButton();
-			else
-				CreateShotButton();
-			end
-		end
-	});
-	Tabs.SheriffTab:Slider({
-		Title = "Button Size",
-		Step = 1,
-		Value = {
-			Min = 10,
-			Max = 100,
-			Default = 50
-		},
-		Callback = function(size)
-			buttonSize = size;
-			if shotButtonActive then
-				local currentPos = (shotButtonFrame and shotButtonFrame.Position) or UDim2.new(1, -buttonSize - 20 , 0.5, -buttonSize / 2 ) ;
-				RemoveShotButton();
-				CreateShotButton();
-				if shotButtonFrame then
-					shotButtonFrame.Position = currentPos;
-				end
-			end
-			WindUI:Notify({
-				Title = "Sheriff System",
-				Content = "Size: "   .. size ,
-				Icon = "check-circle",
-				Duration = 3
-			});
-		end
-	});
-	local function ShootMurderer()
-		if ( not LocalPlayer.Character or  not LocalPlayer.Character:FindFirstChild("Humanoid") or (LocalPlayer.Character.Humanoid.Health <= 0)) then
-			return;
-		end
-		local success, roles = pcall(function()
-			return ReplicatedStorage:FindFirstChild("GetPlayerData", true):InvokeServer();
-		end);
-		if ( not success or  not roles) then
-			return;
-		end
-		local murderer = nil;
-		for name, data in pairs(roles) do
-			if (data.Role == "Murderer") then
-				murderer = Players:FindFirstChild(name);
-				break;
-			end
-		end
-		if ( not murderer or  not murderer.Character or  not murderer.Character:FindFirstChild("Humanoid") or (murderer.Character.Humanoid.Health <= 0)) then
-			return;
-		end
-		local gun = LocalPlayer.Character:FindFirstChild("Gun") or LocalPlayer.Backpack:FindFirstChild("Gun") ;
-		if ((shotType == "Default") and  not gun) then
-			return;
-		end
-		if (gun and  not LocalPlayer.Character:FindFirstChild("Gun")) then
-			gun.Parent = LocalPlayer.Character;
-		end
-		if (shotType == "Teleport") then
-			local targetRoot = murderer.Character:FindFirstChild("HumanoidRootPart");
-			local localRoot = LocalPlayer.Character:FindFirstChild("HumanoidRootPart");
-			if (targetRoot and localRoot) then
-				localRoot.CFrame = targetRoot.CFrame * CFrame.new(0, 0, -4) ;
-			end
-		end
-		if (gun and  not LocalPlayer.Character:FindFirstChild("Gun")) then
-			gun.Parent = LocalPlayer.Character;
-		end
-		gun = LocalPlayer.Character:FindFirstChild("Gun");
-		if (gun and gun:FindFirstChild("KnifeLocal")) then
-			local targetPart = murderer.Character:FindFirstChild("HumanoidRootPart");
-			if targetPart then
-				local args = {
-					[1] = 1,
-					[2] = targetPart.Position,
-					[3] = "AH2"
-				};
-				gun.KnifeLocal.CreateBeam.RemoteFunction:InvokeServer(unpack(args));
-			end
-		end
-	end
-	local Settings = {
-		Hitbox = {
-			Enabled = false,
-			Size = 5,
-			Color = Color3.new(1, 0, 0),
-			Adornments = {},
-			Connections = {}
-		},
-		Noclip = {
-			Enabled = false,
-			Connection = nil
-		},
-		AntiAFK = {
-			Enabled = false,
-			Connection = nil
-		}
-	};
-	local function ToggleNoclip(state)
-		if state then
-			Settings.Noclip.Connection = RunService.Stepped:Connect(function()
-				local chr = LocalPlayer.Character;
-				if chr then
-					for _, part in pairs(chr:GetDescendants()) do
-						if part:IsA("BasePart") then
-							part.CanCollide = false;
-						end
-					end
-				end
-			end);
-		elseif Settings.Noclip.Connection then
-			Settings.Noclip.Connection:Disconnect();
-		end
-	end
-	local function UpdateHitboxes()
-		for _, plr in pairs(Players:GetPlayers()) do
-			if (plr ~= LocalPlayer) then
-				local chr = plr.Character;
-				local box = Settings.Hitbox.Adornments[plr];
-				if (chr and Settings.Hitbox.Enabled) then
-					local root = chr:FindFirstChild("HumanoidRootPart");
-					if root then
-						if  not box then
-							box = Instance.new("BoxHandleAdornment");
-							box.Adornee = root;
-							box.Size = Vector3.new(Settings.Hitbox.Size, Settings.Hitbox.Size, Settings.Hitbox.Size);
-							box.Color3 = Settings.Hitbox.Color;
-							box.Transparency = 0.4;
-							box.ZIndex = 10;
-							box.Parent = root;
-							Settings.Hitbox.Adornments[plr] = box;
-						else
-							box.Size = Vector3.new(Settings.Hitbox.Size, Settings.Hitbox.Size, Settings.Hitbox.Size);
-							box.Color3 = Settings.Hitbox.Color;
-						end
-					end
-				elseif box then
-					box:Destroy();
-					Settings.Hitbox.Adornments[plr] = nil;
-				end
-			end
-		end
-	end
-	local function ToggleAntiAFK(state)
-		if state then
-			Settings.AntiAFK.Connection = RunService.Heartbeat:Connect(function()
-				pcall(function()
-					local vu = game:GetService("VirtualUser");
-					vu:CaptureController();
-					vu:ClickButton2(Vector2.new());
-				end);
-			end);
-		elseif Settings.AntiAFK.Connection then
-			Settings.AntiAFK.Connection:Disconnect();
-		end
-	end
-	Tabs.SettingsTab:Section({
-		Title = gradient("Hitboxes", Color3.fromHex("#ff0000"), Color3.fromHex("#ff8800"))
-	});
-	Tabs.SettingsTab:Toggle({
-		Title = "Hitboxes",
-		Callback = function(state)
-			Settings.Hitbox.Enabled = state;
-			if state then
-				RunService.Heartbeat:Connect(UpdateHitboxes);
-			else
-				for _, box in pairs(Settings.Hitbox.Adornments) do
-					if box then
-						box:Destroy();
-					end
-				end
-				Settings.Hitbox.Adornments = {};
-			end
-		end
-	});
-	Tabs.SettingsTab:Slider({
-		Title = "Hitbox size",
-		Value = {
-			Min = 1,
-			Max = 10,
-			Default = 5
-		},
-		Callback = function(val)
-			Settings.Hitbox.Size = val;
-			UpdateHitboxes();
-		end
-	});
-	Tabs.SettingsTab:Colorpicker({
-		Title = "Hitbox color",
-		Default = Color3.new(1, 0, 0),
-		Callback = function(col)
-			Settings.Hitbox.Color = col;
-			UpdateHitboxes();
-		end
-	});
-	Tabs.SettingsTab:Section({
-		Title = gradient("Character Functions", Color3.fromHex("#00eaff"), Color3.fromHex("#002a2e"))
-	});
-	Tabs.SettingsTab:Toggle({
-		Title = "Anti-AFK",
-		Callback = function(state)
-			Settings.AntiAFK.Enabled = state;
-			ToggleAntiAFK(state);
-		end
-	});
-	Tabs.SettingsTab:Toggle({
-		Title = "NoClip",
-		Callback = function(state)
-			Settings.Noclip.Enabled = state;
-			ToggleNoclip(state);
-		end
-	});
-	Tabs.SettingsTab:Section({
-		Title = gradient("Auto Execute", Color3.fromHex("#00ff40"), Color3.fromHex("#88f2a2"))
-	});
-	local AutoInject = {
-		Enabled = false,
-		ScriptURL = "https:" --https://raw.githubusercontent.com/Snowt-Team/SNT-HUB/refs/heads/main/MM2.txt is what its suppsoed to be
-	};
-	Tabs.SettingsTab:Toggle({
-		Title = "Auto Inject on Rejoin/Hop",
-		Default = false,
-		Callback = function(state)
-			AutoInject.Enabled = state;
-			if state then
-				SetupAutoInject();
-				WindUI:Notify({
-					Title = "Auto Inject",
-					Content = "Автоинжект включен! Скрипт перезапустится автоматически.",
-					Duration = 3
-				});
-			else
-				WindUI:Notify({
-					Title = "Auto Inject",
-					Content = "Автоинжект отключен",
-					Duration = 3
-				});
-			end
-		end
-	});
-	local function SetupAutoInject()
-		if  not AutoInject.Enabled then
-			return;
-		end
-		local TeleportService = game:GetService("TeleportService");
-		local Players = game:GetService("Players");
-		local LocalPlayer = Players.LocalPlayer;
-		spawn(function()
-			wait(2);
-			if AutoInject.Enabled then
-				pcall(function()
-					loadstring(game:HttpGet(AutoInject.ScriptURL))();
-				end);
-			end
-		end);
-		LocalPlayer.OnTeleport:Connect(function(state)
-			if ((state == Enum.TeleportState.Started) and AutoInject.Enabled) then
-				queue_on_teleport([[
-                wait(2)
-                loadstring(game:HttpGet("]]   .. AutoInject.ScriptURL   .. [["))()
-            ]] );
-			end
-		end);
-		game:GetService("Players").PlayerRemoving:Connect(function(player)
-			if ((player == LocalPlayer) and AutoInject.Enabled) then
-				queue_on_teleport([[
-                wait(2)
-                loadstring(game:HttpGet("]]   .. AutoInject.ScriptURL   .. [["))()
-            ]] );
-			end
-		end);
-	end
-	Tabs.SettingsTab:Button({
-		Title = "Manual Re-Inject",
-		Callback = function()
-			pcall(function()
-				loadstring(game:HttpGet(AutoInject.ScriptURL))();
-				WindUI:Notify({
-					Title = "Manual Inject",
-					Content = "Скрипт успешно перезагружен!",
-					Duration = 3
-				});
-			end);
-		end
-	});
-	Tabs.SocialsTab:Paragraph({
-		Title = gradient("NebulaScripts", Color3.fromHex("#001e80"), Color3.fromHex("#16f2d9")),
-		Desc = "My socials",
-		Image = "bird",
-		Color = "Green",
-		Buttons = {
-			{
-				Icon = "circle",
-				Title = "Youtube Channel",
-				Callback = function()
-					if pcall(setclipboard, "https://www.youtube.com/@ScriptsbyNebula") then
-						WindUI:Notify({
-							Title = "Follow for a cookie!",
-							Content = "Youtube channel copied to clipboard.",
-							Duration = 3,
-							Icon = "check-fill"
-						});
-					else
-						WindUI:Notify({
-							Title = "Ошибка копирования",
-							Content = "Не удалось скопировать ссылку. Возможно, функция setclipboard не доступна.",
-							Duration = 5,
-							Icon = "x-fill"
-						});
-					end
-				end
-			}
-		}
-	});
-	Tabs.SocialsTab:Paragraph({
-		Title = gradient("WavyScripts", Color3.fromHex("#ffffff"), Color3.fromHex("#363636")),
-		Image = "star",
-		Color = "Green",
-		Buttons = {
-			{
-				Title = "Tiktok Profile",
-				Icon = "circle",
-				Callback = function()
-					if pcall(setclipboard, "http://tiktok.com/@wavyscriptsroblox/") then
-						WindUI:Notify({
-							Title = "Follow for a cookie!",
-							Content = "Tiktok profile has been copied!",
-							Duration = 3,
-							Icon = "check-fill"
-						});
-					else
-						WindUI:Notify({
-							Title = "Ошибка копирования",
-							Content = "Не удалось скопировать ссылку. Возможно, функция setclipboard не доступна.",
-							Duration = 5,
-							Icon = "x-fill"
-						});
-					end
-				end
-			}
-		}
-	});
-	Tabs.ChangelogsTab:Code({
-		Title = "Changelogs:",
-		Code = [[
-    Official Release! Changelogs last update:
-    • Official release
-    • New Design
-    • New Tabs [Innocent; Murder; Sheriff; Autofarm]
-    • Removed Silent Aimbot (Broken)
-    • Rework All Sheriff Functions
-    |• Better shot
-    |• Fixed errors
-    |• New shot variants [default; teleport]
-    |• Faster shots
-    |• New shot button
-    |• Shot button settings
-    • Rework All Murder Functions
-    |• Fixed kill player
-    |• Kill all function
-    • Rework All Innocent Functions
-    |• Fixed Grab GunDrop (Fixed Invalid Position error)
-    |• Fixed Auto Grab Gun Drop (Tp every 1 second and constant verification)
-    |• New grab gun and shoot murder function
-    • Rework Notify GunDrop
-    |• Fixed Notifications (1 notification when a gundrop spawned, instead of spam notifications)
-    |• Fixed Check GunDrop Function (More stability, No Bags)
-    • New autofarm functions (Autofarm coins)
-    |• Autofarm variables [Tp; smooth; walk]
-    |• Coin checker function
-    |• Autofarm settings
-    • Fixed Esp
-    • Tp to lobby function
-   More functions will be added in future!
-]]
-	});
-	Tabs.ChangelogsTab:Code({
-		Title = "Next update:",
-		Code = [[ The next update is [v1.1]
-    In future we will be add:
-    • Autofarm rare eggs
-    • Fix bugs
-    • New esp functions [tracers; names; highlights and more!]
-    • Grab Gun Variables [Tp to gun; Gun tp to you]
-   The date of update: 25.05.2025!
-]]
-	});
-	local TeleportService = game:GetService("TeleportService");
-	local HttpService = game:GetService("HttpService");
-	local Players = game:GetService("Players");
-	Tabs.ServerTab:Button({
-		Title = "Rejoin",
-		Callback = function()
-			local success, error = pcall(function()
-				TeleportService:TeleportToPlaceInstance(game.PlaceId, game.JobId, Players.LocalPlayer);
-			end);
-			if  not success then
-				warn("Rejoin error:", error);
-			end
-		end
-	});
-	Tabs.ServerTab:Section({
-		Title = ""
-	});
-	Tabs.ServerTab:Button({
-		Title = "Server Hop",
-		Callback = function()
-			local placeId = game.PlaceId;
-			local currentJobId = game.JobId;
-			local function serverHop()
-				local servers = {};
-				local success, result = pcall(function()
-					return HttpService:JSONDecode(HttpService:GetAsync("https://games.roblox.com/v1/games/"   .. placeId   .. "/servers/Public?sortOrder=Asc&limit=100" ));
-				end);
-				if (success and result and result.data) then
-					for _, server in ipairs(result.data) do
-						if (server.id ~= currentJobId) then
-							table.insert(servers, server);
-						end
-					end
-					if ( #servers > 0) then
-						TeleportService:TeleportToPlaceInstance(placeId, servers[math.random( #servers)].id);
-					else
-						TeleportService:Teleport(placeId);
-					end
-				else
-					TeleportService:Teleport(placeId);
-				end
-			end
-			pcall(serverHop);
-		end
-	});
-	Tabs.ServerTab:Button({
-		Title = "Join to Lower Server",
-		Callback = function()
-			local placeId = game.PlaceId;
-			local currentJobId = game.JobId;
-			local function joinLowerServer()
-				local servers = {};
-				local success, result = pcall(function()
-					return HttpService:JSONDecode(HttpService:GetAsync("https://games.roblox.com/v1/games/"   .. placeId   .. "/servers/Public?sortOrder=Asc&limit=100" ));
-				end);
-				if (success and result and result.data) then
-					for _, server in ipairs(result.data) do
-						if ((server.id ~= currentJobId) and (server.playing < (server.maxPlayers or 30))) then
-							table.insert(servers, server);
-						end
-					end
-					table.sort(servers, function(a, b)
-						return a.playing < b.playing ;
-					end);
-					if ( #servers > 0) then
-						TeleportService:TeleportToPlaceInstance(placeId, servers[1].id);
-					else
-						TeleportService:Teleport(placeId);
-					end
-				else
-					TeleportService:Teleport(placeId);
-				end
-			end
-			pcall(joinLowerServer);
-		end
-	});
-	local HttpService = game:GetService("HttpService");
-	local folderPath = "WindUI";
-	makefolder(folderPath);
-	local function SaveFile(fileName, data)
-		local filePath = folderPath   .. "/"   .. fileName   .. ".json" ;
-		local jsonData = HttpService:JSONEncode(data);
-		writefile(filePath, jsonData);
-	end
-	local function LoadFile(fileName)
-		local filePath = folderPath   .. "/"   .. fileName   .. ".json" ;
-		if isfile(filePath) then
-			local jsonData = readfile(filePath);
-			return HttpService:JSONDecode(jsonData);
-		end
-	end
-	local function ListFiles()
-		local files = {};
-		for _, file in ipairs(listfiles(folderPath)) do
-			local fileName = file:match("([^/]+)%.json$");
-			if fileName then
-				table.insert(files, fileName);
-			end
-		end
-		return files;
-	end
-	Tabs.WindowTab:Section({
-		Title = "Window"
-	});
-	local themeValues = {};
-	for name, _ in pairs(WindUI:GetThemes()) do
-		table.insert(themeValues, name);
-	end
-	local themeDropdown = Tabs.WindowTab:Dropdown({
-		Title = "Select Theme",
-		Multi = false,
-		AllowNone = false,
-		Value = nil,
-		Values = themeValues,
-		Callback = function(theme)
-			WindUI:SetTheme(theme);
-		end
-	});
-	themeDropdown:Select(WindUI:GetCurrentTheme());
-	local ToggleTransparency = Tabs.WindowTab:Toggle({
-		Title = "Toggle Window Transparency",
-		Callback = function(e)
-			Window:ToggleTransparency(e);
-		end,
-		Value = WindUI:GetTransparency()
-	});
-	Tabs.WindowTab:Section({
-		Title = "Save"
-	});
-	local fileNameInput = "";
-	Tabs.WindowTab:Input({
-		Title = "Write File Name",
-		PlaceholderText = "Enter file name",
-		Callback = function(text)
-			fileNameInput = text;
-		end
-	});
-	Tabs.WindowTab:Button({
-		Title = "Save File",
-		Callback = function()
-			if (fileNameInput ~= "") then
-				SaveFile(fileNameInput, {
-					Transparent = WindUI:GetTransparency(),
-					Theme = WindUI:GetCurrentTheme()
-				});
-			end
-		end
-	});
-	Tabs.WindowTab:Section({
-		Title = "Load"
-	});
-	local filesDropdown;
-	local files = ListFiles();
-	filesDropdown = Tabs.WindowTab:Dropdown({
-		Title = "Select File",
-		Multi = false,
-		AllowNone = true,
-		Values = files,
-		Callback = function(selectedFile)
-			fileNameInput = selectedFile;
-		end
-	});
-	Tabs.WindowTab:Button({
-		Title = "Load File",
-		Callback = function()
-			if (fileNameInput ~= "") then
-				local data = LoadFile(fileNameInput);
-				if data then
-					WindUI:Notify({
-						Title = "File Loaded",
-						Content = "Loaded data: "   .. HttpService:JSONEncode(data) ,
-						Duration = 5
-					});
-					if data.Transparent then
-						Window:ToggleTransparency(data.Transparent);
-						ToggleTransparency:SetValue(data.Transparent);
-					end
-					if data.Theme then
-						WindUI:SetTheme(data.Theme);
-					end
-				end
-			end
-		end
-	});
-	Tabs.WindowTab:Button({
-		Title = "Overwrite File",
-		Callback = function()
-			if (fileNameInput ~= "") then
-				SaveFile(fileNameInput, {
-					Transparent = WindUI:GetTransparency(),
-					Theme = WindUI:GetCurrentTheme()
-				});
-			end
-		end
-	});
-	Tabs.WindowTab:Button({
-		Title = "Refresh List",
-		Callback = function()
-			filesDropdown:Refresh(ListFiles());
-		end
-	});
-	local currentThemeName = WindUI:GetCurrentTheme();
-	local themes = WindUI:GetThemes();
-	local ThemeAccent = themes[currentThemeName].Accent;
-	local ThemeOutline = themes[currentThemeName].Outline;
-	local ThemeText = themes[currentThemeName].Text;
-	local ThemePlaceholderText = themes[currentThemeName].PlaceholderText;
-	function updateTheme()
-		WindUI:AddTheme({
-			Name = currentThemeName,
-			Accent = ThemeAccent,
-			Outline = ThemeOutline,
-			Text = ThemeText,
-			PlaceholderText = ThemePlaceholderText
-		});
-		WindUI:SetTheme(currentThemeName);
-	end
-	Tabs.CreateThemeTab:Colorpicker({
-		Title = "Background Color",
-		Default = Color3.fromHex(ThemeAccent),
-		Callback = function(color)
-			ThemeAccent = color;
-		end
-	});
-	Tabs.CreateThemeTab:Colorpicker({
-		Title = "Outline Color",
-		Default = Color3.fromHex(ThemeOutline),
-		Callback = function(color)
-			ThemeOutline = color;
-		end
-	});
-	Tabs.CreateThemeTab:Colorpicker({
-		Title = "Text Color",
-		Default = Color3.fromHex(ThemeText),
-		Callback = function(color)
-			ThemeText = color;
-		end
-	});
-	Tabs.CreateThemeTab:Button({
-		Title = "Update Theme",
-		Callback = function()
-			WindUI:AddTheme({
-				Name = currentThemeName,
-				Accent = ThemeAccent,
-				Outline = ThemeOutline,
-				Text = ThemeText,
-				PlaceholderText = ThemePlaceholderText
-			});
-			WindUI:SetTheme(currentThemeName);
-			WindUI:Notify({
-				Title = "Тема обновлена",
-				Content = "Новая тема '"   .. currentThemeName   .. "' применена!" ,
-				Duration = 3,
-				Icon = "check-circle"
-			});
-		end
-	});
+})
 
-end
+Tabs.FastestAutofarmTab:Slider({
+    Title = "Autofarm Speed",
+    Value = {
+        Min = 1,
+        Max = 30,
+        Default = 25,
+    },
+    Callback = function(val)
+        fastestAutofarmSpeed = val
+        WindUI:Notify({ Title = "Autofarm Speed", Content = "Speed set to: " .. val, Duration = 2 })
+    end
+})
+
+Tabs.FastestAutofarmTab:Section({ Title = "Session Reporting" })
+
+Tabs.FastestAutofarmTab:Dropdown({
+    Title = "Reporting Interval (Minutes)",
+    Values = {"Disabled", "1", "5", "10", "15", "30", "60"},
+    Default = "Disabled",
+    Callback = function(val)
+        reportingInterval = val
+    end
+})
+
+Tabs.FastestAutofarmTab:Section({ Title = "Discord Webhook" })
+
+Tabs.FastestAutofarmTab:Input({
+    Title = "Webhook URL",
+    PlaceholderText = "Enter your Discord webhook URL here",
+    Callback = function(text)
+        webhookUrl = text
+    end
+})
+
+Tabs.FastestAutofarmTab:Toggle({
+    Title = "Enable Webhook Logging",
+    Default = false,
+    Callback = function(state)
+        webhookEnabled = state
+        if state and (webhookUrl == "" or not webhookUrl:match("discord.com/api/webhooks")) then
+            webhookEnabled = false
+            WindUI:Notify({ Title = "Webhook Warning", Content = "Please enter a valid Discord webhook URL first.", Icon = "alert-triangle", Duration = 5 })
+        end
+    end
+})
+
+Tabs.FastestAutofarmTab:Button({
+    Title = "Test Webhook",
+    Callback = function()
+        if webhookUrl ~= "" and webhookUrl:match("discord.com/api/webhooks") then
+            local HttpService = game:GetService("HttpService")
+            pcall(function()
+                local data = {
+                    username = "Latte Hub Autofarm",
+                    embeds = {{
+                        title = "✅ Webhook Test Successful!",
+                        description = "If you're seeing this, the webhook is working correctly.",
+                        color = 65280, -- Green
+                        footer = { text = "Latte Hub | MM2" }
+                    }}
+                }
+                request({
+                    Url = webhookUrl,
+                    Method = "POST",
+                    Headers = { ["Content-Type"] = "application/json" },
+                    Body = HttpService:JSONEncode(data)
+                })
+                WindUI:Notify({ Title = "Webhook Test", Content = "Test message sent successfully!", Icon = "check-circle", Duration = 5 })
+            end)
+        else
+            WindUI:Notify({ Title = "Webhook Error", Content = "Please enter a valid webhook URL first.", Icon = "x-circle", Duration = 5 })
+        end
+    end
+})
+
+-- Add Anti AFK Tab
+local AntiAFKTab = Window:Tab({ Title = gradient("Anti AFK", Color3.fromHex("#607D8B"), Color3.fromHex("#455A64")), Icon = "moon" })
+
+AntiAFKTab:Section({ Title = "Anti AFK Protection" })
+
+AntiAFKTab:Button({
+    Title = "Enable Anti AFK",
+    Callback = function()
+        local success = pcall(function()
+            loadstring(game:HttpGet("https://raw.githubusercontent.com/hassanxzayn-lua/Anti-afk/main/antiafkbyhassanxzyn"))()
+        end)
+        
+        if success then
+            WindUI:Notify({ Title = "Anti AFK", Content = "Anti AFK script executed successfully!", Icon = "check-circle", Duration = 3 })
+        else
+            WindUI:Notify({ Title = "Anti AFK Error", Content = "Failed to load Anti AFK script!", Icon = "x-circle", Duration = 5 })
+        end
+    end
+})
+
+AntiAFKTab:Paragraph({
+    Title = "About Anti AFK",
+    Content = "This feature prevents you from being kicked for inactivity. Click the button above to activate anti-AFK protection."
+})
+
+-- Information Tab
+local InfoTab = Window:Tab({ Title = gradient("Information", Color3.fromHex("#795548"), Color3.fromHex("#8D6E63")), Icon = "info" })
+
+InfoTab:Section({ Title = "Script Information" })
+
+InfoTab:Paragraph({
+    Title = "Enhanced Latte Hub",
+    Content = "This is an enhanced version of Latte Hub with additional features from IceCC Exploits including weapon duplication, visual weapon changes, and trade scam protection."
+})
+
+InfoTab:Paragraph({
+    Title = "Features Included",
+    Content = "• Player ESP with multiple options\n• Fastest coin autofarm with webhook support\n• Weapon spawner with multiple methods\n• Weapon duplication system\n• Visual weapon changer\n• Trade scam protection\n• Server lagger\n• Anti-stealer protection\n• Anti AFK system"
+})
+
+InfoTab:Section({ Title = "Important Notes" })
+
+InfoTab:Paragraph({
+    Title = "Usage Warning",
+    Content = "Some features may only work on your main account due to how the game stores variables. Use at your own risk and be aware of potential consequences."
+})
+
+InfoTab:Section({ Title = "Discord Community" })
+
+InfoTab:Paragraph({
+    Title = "Join Our Discord",
+    Content = "Join our Discord server for updates, support, and to connect with other users!\n\n🎁 Please join my Discord server if you want free items!"
+})
+
+InfoTab:Button({
+    Title = "Copy Discord Invite",
+    Callback = function()
+        setclipboard("https://discord.gg/pU8r42d6hd")
+        WindUI:Notify({ 
+            Title = "Discord Invite", 
+            Content = "Discord invite copied to clipboard!", 
+            Icon = "check-circle", 
+            Duration = 3 
+        })
+    end
+})
+
+InfoTab:Section({ Title = "Credits" })
+
+InfoTab:Paragraph({
+    Title = "Script Information",
+    Content = "Enhanced MM2 script with advanced features\nCombining multiple functionalities for the best experience"
+})
