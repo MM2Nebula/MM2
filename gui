@@ -17,9 +17,9 @@ end
 
 local Confirmed = false;
 WindUI:Popup({
-    Title = gradient("Merged MM2 Hub", Color3.fromHex("#f0e407"), Color3.fromHex("#16a9f2")),
+    Title = gradient("Latte MM2 Hub", Color3.fromHex("#f0e407"), Color3.fromHex("#16a9f2")),
     Icon = "info",
-    Content = (gradient("Enhanced MM2 Script with Latte + Nebula Features!", Color3.fromHex("#f0e407"), Color3.fromHex("#16a9f2")) .. "<br/>" .. gradient("https://discord.gg/pU8r42d6hd", Color3.fromHex("#00BFFF"), Color3.fromHex("#1E90FF"))),
+    Content = (gradient("Enhanced MM2 Script with Latte Scripts!", Color3.fromHex("#f0e407"), Color3.fromHex("#16a9f2")) .. "<br/>" .. gradient("https://discord.gg/pU8r42d6hd", Color3.fromHex("#00BFFF"), Color3.fromHex("#1E90FF"))),
     Buttons = {
         {
             Title = gradient("Exit", Color3.fromHex("#f0e407"), Color3.fromHex("#f0e407")),
