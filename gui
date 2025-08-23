@@ -55,10 +55,10 @@ repeat
 until Confirmed 
 
 local Window = WindUI:CreateWindow({
-    Title = gradient("Merged MM2 Hub", Color3.fromHex("#f0e407"), Color3.fromHex("#16a9f2")),
+    Title = gradient("Latte MM2 Hub", Color3.fromHex("#f0e407"), Color3.fromHex("#16a9f2")),
     Icon = "infinity",
     CornerRadius = UDim.new(0,16),
-    Author = "Latte + Nebula Scripts",
+    Author = "Latte Scripts",
     Folder = "",
     Size = UDim2.new(0, 500, 0, 400),  -- Smaller than the original 580x460
     Transparent = false,
@@ -1633,8 +1633,8 @@ Tabs.SheriffTab:Slider({
 Tabs.InfoTab:Section({ Title = "Script Information" })
 
 Tabs.InfoTab:Paragraph({
-    Title = "Merged MM2 Hub",
-    Content = "This is a merged version combining the best features from both Latte Hub and Nebula Hub, providing a comprehensive MM2 experience."
+    Title = "Latte MM2 Hub",
+    Content = "This is a merged version combining the best features from Latte Hub, providing a comprehensive MM2 experience."
 })
 
 Tabs.InfoTab:Paragraph({
