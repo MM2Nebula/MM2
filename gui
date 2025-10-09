@@ -1,7 +1,13 @@
--- Merged MM2 Script | Latte Hub + Nebula Hub Features
-local WindUI = loadstring(game:HttpGet("https://github.com/Footagesus/WindUI/releases/latest/download/main.lua"))()
--- This file was protected using Luraph Obfuscator v14.4.1 [https://lura.ph/]
+-- Merged MM2 Script | Latte Hub + Nebula Hub Features - Obsidian UI Version
+local repo = "https://raw.githubusercontent.com/deividcomsono/Obsidian/main/"
+local Library = loadstring(game:HttpGet(repo .. "Library.lua"))()
+local ThemeManager = loadstring(game:HttpGet(repo .. "addons/ThemeManager.lua"))()
+local SaveManager = loadstring(game:HttpGet(repo .. "addons/SaveManager.lua"))()
 
+local Options = Library.Options
+local Toggles = Library.Toggles
+
+-- Enhanced gradient function for Obsidian UI
 function gradient(text, startColor, endColor)
     local result = "";
     local length = #text;
@@ -11,66 +17,29 @@ function gradient(text, startColor, endColor)
         local g = math.floor((startColor.G + ((endColor.G - startColor.G) * t)) * 255);
         local b = math.floor((startColor.B + ((endColor.B - startColor.B) * t)) * 255);
         local char = text:sub(i, i);
-        result = result .. '<font color=\"rgb(' .. r .. ", " .. g .. ", " .. b .. ')\">' .. char .. "</font>";
+        result = result .. '<font color="rgb(' .. r .. ", " .. g .. ", " .. b .. ')">' .. char .. "</font>";
     end
     return result;
 end
 
-local Confirmed = false;
-WindUI:Popup({
-    Title = gradient("Latte MM2 Hub", Color3.fromHex("#f0e407"), Color3.fromHex("#16a9f2")),
-    Icon = "info",
-    Content = (gradient("Enhanced MM2 Script with Latte Scripts!", Color3.fromHex("#f0e407"), Color3.fromHex("#16a9f2")) .. "<br/>" .. gradient("https://discord.gg/pU8r42d6hd", Color3.fromHex("#00BFFF"), Color3.fromHex("#1E90FF"))),
-    Buttons = {
-        {
-            Title = gradient("Exit", Color3.fromHex("#f0e407"), Color3.fromHex("#f0e407")),
-            Callback = function() end,
-            Variant = "Tertiary"
-        },
-        {
-            Title = gradient("Copy Discord", Color3.fromHex("#00BFFF"), Color3.fromHex("#1E90FF")),
-            Callback = function()
-                setclipboard("https://discord.gg/pU8r42d6hd")
-                WindUI:Notify({ 
-                    Title = "Discord Copied!", 
-                    Content = "Discord invite copied to clipboard!", 
-                    Icon = "check-circle", 
-                    Duration = 3 
-                })
-                Confirmed = true;
-            end,
-            Variant = "Secondary"
-        },
-        {
-            Title = gradient("Continue", Color3.fromHex("#90f09e"), Color3.fromHex("#13ed34")),
-            Callback = function()
-                Confirmed = true;
-            end,
-            Variant = "Secondary"
-        }
-    }
-});
+-- Initial popup
+local Confirmed = false
+Library:Notify({
+    Title = "Latte MM2 Hub",
+    Description = "Enhanced MM2 Script with Latte Scripts!\nhttps://discord.gg/pU8r42d6hd",
+    Time = 5
+})
 
-repeat
-    task.wait();
-until Confirmed 
-
-local Window = WindUI:CreateWindow({
-    Title = gradient("Latte MM2 Hub", Color3.fromHex("#f0e407"), Color3.fromHex("#16a9f2")),
-    Icon = "infinity",
-    CornerRadius = UDim.new(0,16),
-    Author = "Latte Scripts",
-    Folder = "",
-    Size = UDim2.new(0, 500, 0, 400),  -- Smaller than the original 580x460
-    Transparent = false,
-    Theme = "Dark",
-    SideBarWidth = 200,
-    Background = "",
-    User = {
-        Enabled = true,
-        Anonymous = true,
-        Callback = function() end,
-    },
+-- Create main window
+local Window = Library:CreateWindow({
+    Title = "Latte MM2 Hub",
+    Footer = "Enhanced MM2 Script | Latte Scripts",
+    Icon = 95816097006870,
+    NotifySide = "Right",
+    ShowCustomCursor = true,
+    Resizable = true,
+    Center = false,
+    AutoShow = true,
 })
 
 -- Services
@@ -81,6 +50,8 @@ local Workspace = game:GetService("Workspace")
 local CurrentCamera = Workspace.CurrentCamera
 local LocalPlayer = Players.LocalPlayer
 local CoreGui = game:GetService("CoreGui")
+local TweenService = game:GetService("TweenService")
+local UserInputService = game:GetService("UserInputService")
 
 -- ESP System Variables
 local murderHasKnife = false
@@ -124,6 +95,23 @@ local CharacterSettings = {
         Locked = false
     }
 };
+
+-- Advanced Features Variables
+local advancedESPEnabled = false
+local rainbowESPEnabled = false
+local distanceESPEnabled = false
+local healthESPEnabled = false
+local flyEnabled = false
+local flySpeed = 50
+local noclipEnabled = false
+local autoFarmEnabled = false
+local autoCollectCoins = false
+local autoCollectGuns = false
+local autoCollectKnives = false
+local rainbowCharacter = false
+local screenShake = false
+local particleEffects = false
+local currentGravity = 196.2
 
 -- ESP Functions
 local function getRole(player)
@@ -338,18 +326,16 @@ end
 local function StartVisualTrade()
     if game:GetService("Players").LocalPlayer.PlayerGui.TradeGUI.Enabled == true or game:GetService("Players").LocalPlayer.PlayerGui.TradeGUI_Phone.Enabled == true then
         wait(1)
-        WindUI:Notify({ 
-            Title = "Trade Scam Active", 
-            Content = "Items In Trade Are Now Visual, Remove All Items!", 
-            Icon = "alert-triangle", 
-            Duration = 5 
+        Library:Notify({
+            Title = "Trade Scam Active",
+            Description = "Items In Trade Are Now Visual, Remove All Items!",
+            Time = 5
         })
     else
-        WindUI:Notify({ 
-            Title = "Trade Scam Error", 
-            Content = "You Need To Be In Trade For This To Work!", 
-            Icon = "x-circle", 
-            Duration = 5 
+        Library:Notify({
+            Title = "Trade Scam Error",
+            Description = "You Need To Be In Trade For This To Work!",
+            Time = 5
         })
     end
 end
@@ -385,89 +371,100 @@ local function opencrate(ITEM_NAME)
                 poop.NewItem(ITEM_NAME, nil, nil, "Weapons", 1)
             end)
             
-            WindUI:Notify({
+            Library:Notify({
                 Title = "Success",
-                Content = "Successfully spawned: " .. ITEM_NAME,
-                Duration = 3,
-                Type = "success"
+                Description = "Successfully spawned: " .. ITEM_NAME,
+                Time = 3
             })
         else
-            WindUI:Notify({
+            Library:Notify({
                 Title = "Error",
-                Content = "Invalid item: " .. ITEM_NAME,
-                Duration = 3,
-                Type = "error"
+                Description = "Invalid item: " .. ITEM_NAME,
+                Time = 3
             })
         end
     end)
     
     if not success then
-        WindUI:Notify({
+        Library:Notify({
             Title = "Error",
-            Content = "Error opening crate for: " .. ITEM_NAME,
-            Duration = 3,
-            Type = "error"
+            Description = "Error opening crate for: " .. ITEM_NAME,
+            Time = 3
         })
     end
 end
 
--- Create all tabs
+-- Create tabs
 local Tabs = {
-    -- General Utility Tabs
-    ESPTab = Window:Tab({ Title = gradient("ESP", Color3.fromHex("#4CAF50"), Color3.fromHex("#8BC34A")), Icon = "eye" }),
-    CharacterTab = Window:Tab({ Title = gradient("CHARACTER", Color3.fromHex("#7F00FF"), Color3.fromHex("#E100FF")), Icon = "file-cog" }),
-    TeleportTab = Window:Tab({ Title = gradient("TELEPORT", Color3.fromHex("#11998E"), Color3.fromHex("#38EF7D")), Icon = "user" }),
-    WeaponSpawnerTab = Window:Tab({ Title = gradient("Weapon Spawner", Color3.fromHex("#9C27B0"), Color3.fromHex("#E91E63")), Icon = "sword" }),
-    WeaponDupeTab = Window:Tab({ Title = gradient("Weapon Dupe", Color3.fromHex("#2196F3"), Color3.fromHex("#03DAC6")), Icon = "copy" }),
-    VisualTab = Window:Tab({ Title = gradient("Visual", Color3.fromHex("#673AB7"), Color3.fromHex("#9C27B0")), Icon = "eye-off" }),
-    TradeScamTab = Window:Tab({ Title = gradient("Trade-Scam", Color3.fromHex("#FF5722"), Color3.fromHex("#F44336")), Icon = "shield-alert" }),
-    AntiStealerTab = Window:Tab({ Title = gradient("Anti Stealer", Color3.fromHex("#FF9800"), Color3.fromHex("#FF5722")), Icon = "shield" }),
-    LaggerTab = Window:Tab({ Title = gradient("Server Lagger", Color3.fromHex("#F44336"), Color3.fromHex("#D32F2F")), Icon = "zap" }),
-    AntiAFKTab = Window:Tab({ Title = gradient("Anti AFK", Color3.fromHex("#607D8B"), Color3.fromHex("#455A64")), Icon = "moon" }),
-    
-    -- Separator Tab
-    SeparatorTab = Window:Tab({ Title = gradient("━━━━━━━━", Color3.fromHex("#636E72"), Color3.fromHex("#636E72")), Icon = "minus" }),
-    
-    -- Role-Specific Tabs (Separated)
-    InnocentTab = Window:Tab({ Title = gradient("INNOCENT", Color3.fromHex("#00F260"), Color3.fromHex("#0575E6")), Icon = "circle" }),
-    MurderTab = Window:Tab({ Title = gradient("MURDER", Color3.fromHex("#FF416C"), Color3.fromHex("#FF4B2B")), Icon = "circle" }),
-    SheriffTab = Window:Tab({ Title = gradient("SHERIFF", Color3.fromHex("#1A2980"), Color3.fromHex("#26D0CE")), Icon = "circle" }),
-    
-    -- Information and Socials Tabs (at the end)
-    InfoTab = Window:Tab({ Title = gradient("Information", Color3.fromHex("#795548"), Color3.fromHex("#8D6E63")), Icon = "info" }),
-    SocialsTab = Window:Tab({ Title = gradient("SOCIALS", Color3.fromHex("#1D976C"), Color3.fromHex("#93F9B9")), Icon = "star" })
+    Main = Window:AddTab("Main", "user"),
+    ESP = Window:AddTab("ESP", "eye"),
+    Character = Window:AddTab("Character", "file-cog"),
+    Teleport = Window:AddTab("Teleport", "user"),
+    WeaponSpawner = Window:AddTab("Weapon Spawner", "sword"),
+    WeaponDupe = Window:AddTab("Weapon Dupe", "copy"),
+    Visual = Window:AddTab("Visual", "eye-off"),
+    TradeScam = Window:AddTab("Trade-Scam", "shield-alert"),
+    AntiStealer = Window:AddTab("Anti Stealer", "shield"),
+    Lagger = Window:AddTab("Server Lagger", "zap"),
+    AntiAFK = Window:AddTab("Anti AFK", "moon"),
+    Advanced = Window:AddTab("Advanced", "zap"),
+    AutoFarm = Window:AddTab("Auto Farm", "trending-up"),
+    Fun = Window:AddTab("Fun", "smile"),
+    Innocent = Window:AddTab("Innocent", "circle"),
+    Murder = Window:AddTab("Murder", "circle"),
+    Sheriff = Window:AddTab("Sheriff", "circle"),
+    Info = Window:AddTab("Information", "info"),
+    Socials = Window:AddTab("Socials", "star"),
+    ["UI Settings"] = Window:AddTab("UI Settings", "settings"),
 }
 
+-- Main Tab Content
+local MainGroup = Tabs.Main:AddLeftGroupbox("Main Features", "boxes")
+MainGroup:AddLabel("Welcome to Latte MM2 Hub!")
+MainGroup:AddLabel("Enhanced MM2 Script with all features", true)
+MainGroup:AddButton({
+    Text = "Copy Discord",
+    Func = function()
+        setclipboard("https://discord.gg/pU8r42d6hd")
+        Library:Notify({
+            Title = "Discord Copied!",
+            Description = "Discord invite copied to clipboard!",
+            Time = 3
+        })
+    end
+})
+
 -- ESP Tab Content
-Tabs.ESPTab:Section({ Title = "Player ESP" })
-
-Tabs.ESPTab:Dropdown({
-    Title = "ESP Options",
+local ESPGroup = Tabs.ESP:AddLeftGroupbox("Player ESP", "eye")
+ESPGroup:AddDropdown("ESPOptions", {
     Values = { "Esp All", "Esp Sheriff", "Esp Murder", "Esp Sheriff / Murder" },
-    Default = { "Esp All" },
+    Default = "Esp All",
     Multi = true,
-    AllowNone = true,
-    Callback = function(selectedOptions)
-        currentESPOptions = selectedOptions
+    Text = "ESP Options",
+    Tooltip = "Select which players to highlight",
+    Callback = function(Value)
+        currentESPOptions = Value
         updateESP()
     end
 })
 
-Tabs.ESPTab:Toggle({
-    Title = "Highlight ESP",
+ESPGroup:AddToggle("HighlightESP", {
+    Text = "Highlight ESP",
     Default = true,
-    Callback = function(v)
-        highlightEnabled = v
+    Tooltip = "Enable/disable player highlighting",
+    Callback = function(Value)
+        highlightEnabled = Value
         updateESP()
     end
 })
 
-Tabs.ESPTab:Toggle({
-    Title = "Line ESP",
+ESPGroup:AddToggle("LineESP", {
+    Text = "Line ESP",
     Default = false,
-    Callback = function(v)
-        lineESPEnabled = v
-        if not v then
+    Tooltip = "Draw lines to players",
+    Callback = function(Value)
+        lineESPEnabled = Value
+        if not Value then
             for _, line in pairs(tracers) do line:Remove() end
             tracers = {}
         end
@@ -476,304 +473,304 @@ Tabs.ESPTab:Toggle({
 })
 
 -- Character Tab Content
-Tabs.CharacterTab:Section({
-    Title = gradient("Walkspeed", Color3.fromHex("#ff0000"), Color3.fromHex("#300000"))
-});
-
-Tabs.CharacterTab:Slider({
-    Title = "Walkspeed",
-    Value = {
-        Min = 0,
-        Max = 200,
-        Default = 16
-    },
-    Callback = function(value)
-        CharacterSettings.WalkSpeed.Value = value;
-        updateCharacter();
+local CharacterGroup = Tabs.Character:AddLeftGroupbox("Character Settings", "file-cog")
+CharacterGroup:AddSlider("WalkSpeed", {
+    Text = "Walk Speed",
+    Default = 16,
+    Min = 0,
+    Max = 200,
+    Rounding = 0,
+    Suffix = " studs/s",
+    Tooltip = "Set your character's walk speed",
+    Callback = function(Value)
+        CharacterSettings.WalkSpeed.Value = Value
+        updateCharacter()
     end
-});
+})
 
-Tabs.CharacterTab:Button({
-    Title = "Reset walkspeed",
-    Callback = function()
-        CharacterSettings.WalkSpeed.Value = CharacterSettings.WalkSpeed.Default;
-        updateCharacter();
+CharacterGroup:AddButton({
+    Text = "Reset Walk Speed",
+    Func = function()
+        CharacterSettings.WalkSpeed.Value = CharacterSettings.WalkSpeed.Default
+        updateCharacter()
+        Library:Notify({
+            Title = "Walk Speed Reset",
+            Description = "Walk speed reset to default",
+            Time = 2
+        })
     end
-});
+})
 
-Tabs.CharacterTab:Toggle({
-    Title = "Block walkspeed",
+CharacterGroup:AddToggle("BlockWalkSpeed", {
+    Text = "Block Walk Speed",
     Default = false,
-    Callback = function(state)
-        CharacterSettings.WalkSpeed.Locked = state;
-        updateCharacter();
+    Tooltip = "Prevent walk speed from being changed",
+    Callback = function(Value)
+        CharacterSettings.WalkSpeed.Locked = Value
+        updateCharacter()
     end
-});
+})
 
-Tabs.CharacterTab:Section({
-    Title = gradient("JumpPower", Color3.fromHex("#001aff"), Color3.fromHex("#020524"))
-});
-
-Tabs.CharacterTab:Slider({
-    Title = "Jumppower",
-    Value = {
-        Min = 0,
-        Max = 200,
-        Default = 50
-    },
-    Callback = function(value)
-        CharacterSettings.JumpPower.Value = value;
-        updateCharacter();
+CharacterGroup:AddSlider("JumpPower", {
+    Text = "Jump Power",
+    Default = 50,
+    Min = 0,
+    Max = 200,
+    Rounding = 0,
+    Suffix = " power",
+    Tooltip = "Set your character's jump power",
+    Callback = function(Value)
+        CharacterSettings.JumpPower.Value = Value
+        updateCharacter()
     end
-});
+})
 
-Tabs.CharacterTab:Button({
-    Title = "Reset jumppower",
-    Callback = function()
-        CharacterSettings.JumpPower.Value = CharacterSettings.JumpPower.Default;
-        updateCharacter();
+CharacterGroup:AddButton({
+    Text = "Reset Jump Power",
+    Func = function()
+        CharacterSettings.JumpPower.Value = CharacterSettings.JumpPower.Default
+        updateCharacter()
+        Library:Notify({
+            Title = "Jump Power Reset",
+            Description = "Jump power reset to default",
+            Time = 2
+        })
     end
-});
+})
 
-Tabs.CharacterTab:Toggle({
-    Title = "Block jumppower",
+CharacterGroup:AddToggle("BlockJumpPower", {
+    Text = "Block Jump Power",
     Default = false,
-    Callback = function(state)
-        CharacterSettings.JumpPower.Locked = state;
-        updateCharacter();
+    Tooltip = "Prevent jump power from being changed",
+    Callback = function(Value)
+        CharacterSettings.JumpPower.Locked = Value
+        updateCharacter()
     end
-});
+})
 
 -- Teleport Tab Content
-Tabs.TeleportTab:Section({
-    Title = gradient("Default TP", Color3.fromHex("#00448c"), Color3.fromHex("#0affd6"))
-});
-
-local teleportTarget = nil;
-local teleportDropdown = nil;
+local TeleportGroup = Tabs.Teleport:AddLeftGroupbox("Teleport System", "user")
+local teleportTarget = nil
 
 local function updateTeleportPlayers()
-    local playersList = {"Select Player"};
+    local playersList = {"Select Player"}
     for _, player in pairs(Players:GetPlayers()) do
-        if (player ~= LocalPlayer) then
-            table.insert(playersList, player.Name);
+        if player ~= LocalPlayer then
+            table.insert(playersList, player.Name)
         end
     end
-    return playersList;
+    return playersList
 end
 
-local function initializeTeleportDropdown()
-    teleportDropdown = Tabs.TeleportTab:Dropdown({
-        Title = "Players",
-        Values = updateTeleportPlayers(),
-        Value = "Select Player",
-        Callback = function(selected)
-            if (selected ~= "Select Player") then
-                teleportTarget = Players:FindFirstChild(selected);
-            else
-                teleportTarget = nil;
+TeleportGroup:AddDropdown("TeleportPlayers", {
+    Values = updateTeleportPlayers(),
+    Default = "Select Player",
+    Text = "Players",
+    Tooltip = "Select a player to teleport to",
+    Callback = function(Value)
+        if Value ~= "Select Player" then
+            teleportTarget = Players:FindFirstChild(Value)
+        else
+            teleportTarget = nil
+        end
+    end
+})
+
+TeleportGroup:AddButton({
+    Text = "Teleport to Player",
+    Func = function()
+        if teleportTarget and teleportTarget.Character then
+            local targetRoot = teleportTarget.Character:FindFirstChild("HumanoidRootPart")
+            local localRoot = LocalPlayer.Character:FindFirstChild("HumanoidRootPart")
+            if targetRoot and localRoot then
+                localRoot.CFrame = targetRoot.CFrame
+                Library:Notify({
+                    Title = "Teleport",
+                    Description = "Successfully teleported to " .. teleportTarget.Name,
+                    Time = 3
+                })
             end
+        else
+            Library:Notify({
+                Title = "Error",
+                Description = "Target not found or unavailable",
+                Time = 3
+            })
         end
-    });
-end
-
-initializeTeleportDropdown();
-
-local function teleportToPlayer()
-    if (teleportTarget and teleportTarget.Character) then
-        local targetRoot = teleportTarget.Character:FindFirstChild("HumanoidRootPart");
-        local localRoot = LocalPlayer.Character:FindFirstChild("HumanoidRootPart");
-        if (targetRoot and localRoot) then
-            localRoot.CFrame = targetRoot.CFrame;
-            WindUI:Notify({
-                Title = "Teleport",
-                Content = "Successfully teleported to " .. teleportTarget.Name,
-                Icon = "check-circle",
-                Duration = 3
-            });
-        end
-    else
-        WindUI:Notify({
-            Title = "Error",
-            Content = "Target not found or unavailable",
-            Icon = "x-circle",
-            Duration = 3
-        });
     end
-end
+})
 
-Tabs.TeleportTab:Button({
-    Title = "Teleport to player",
-    Callback = teleportToPlayer
-});
-
-Tabs.TeleportTab:Button({
-    Title = "Update players list",
-    Callback = function()
-        teleportDropdown:Refresh(updateTeleportPlayers());
+TeleportGroup:AddButton({
+    Text = "Update Players List",
+    Func = function()
+        Options.TeleportPlayers:SetValues(updateTeleportPlayers())
     end
-});
+})
 
 -- Weapon Spawner Tab Content
-Tabs.WeaponSpawnerTab:Section({ Title = "Weapon Spawner" })
+local WeaponSpawnerGroup = Tabs.WeaponSpawner:AddLeftGroupbox("Weapon Spawner", "sword")
+local weaponName = ""
+local selectedCrate = "Christmas2024Box"
 
-local weaponName = "";
-local selectedCrate = "Christmas2024Box";
-
-Tabs.WeaponSpawnerTab:Input({
-    Title = "Weapon Name",
-    PlaceholderText = "Enter weapon name (e.g., CandyBlade)",
-    Callback = function(text)
-        weaponName = text
+WeaponSpawnerGroup:AddInput("WeaponName", {
+    Text = "Weapon Name",
+    Default = "",
+    Placeholder = "Enter weapon name (e.g., CandyBlade)",
+    Tooltip = "Enter the name of the weapon to spawn",
+    Callback = function(Value)
+        weaponName = Value
     end
 })
 
-Tabs.WeaponSpawnerTab:Dropdown({
-    Title = "Select Crate",
+WeaponSpawnerGroup:AddDropdown("CrateType", {
     Values = {"Christmas2024Box", "StandardBox", "MysteryBox", "PremiumBox"},
     Default = "Christmas2024Box",
-    Callback = function(val)
-        selectedCrate = val
+    Text = "Select Crate",
+    Tooltip = "Choose the crate type to open",
+    Callback = function(Value)
+        selectedCrate = Value
     end
 })
 
-Tabs.WeaponSpawnerTab:Button({
-    Title = "Spawn Weapon",
-    Callback = function()
+WeaponSpawnerGroup:AddButton({
+    Text = "Spawn Weapon",
+    Func = function()
         if weaponName ~= "" then
             opencrate(weaponName)
         else
-            WindUI:Notify({
+            Library:Notify({
                 Title = "Error",
-                Content = "Please enter a weapon name.",
-                Duration = 3,
-                Type = "error"
+                Description = "Please enter a weapon name.",
+                Time = 3
             })
         end
     end
 })
 
 -- Weapon Dupe Tab Content
-Tabs.WeaponDupeTab:Section({ Title = "Weapon Duplication" })
+local WeaponDupeGroup = Tabs.WeaponDupe:AddLeftGroupbox("Weapon Duplication", "copy")
 
-Tabs.WeaponDupeTab:Input({
-    Title = "Weapon Name",
-    PlaceholderText = "Enter weapon name (e.g., Lightbringer)",
-    Callback = function(text)
-        WeaponName = text
-        WindUI:Notify({ 
-            Title = "Weapon Dupe", 
-            Content = "Selected Weapon: " .. tostring(WeaponName), 
-            Duration = 3 
+WeaponDupeGroup:AddInput("DupeWeaponName", {
+    Text = "Weapon Name",
+    Default = "",
+    Placeholder = "Enter weapon name (e.g., Lightbringer)",
+    Tooltip = "Enter the name of the weapon to duplicate",
+    Callback = function(Value)
+        WeaponName = Value
+        Library:Notify({
+            Title = "Weapon Dupe",
+            Description = "Selected Weapon: " .. tostring(WeaponName),
+            Time = 3
         })
     end
 })
 
-Tabs.WeaponDupeTab:Input({
-    Title = "Dupe Amount",
-    PlaceholderText = "Enter amount (e.g., 5)",
-    Callback = function(text)
-        FunctionCall = tonumber(text) or 1
-        WindUI:Notify({ 
-            Title = "Weapon Dupe", 
-            Content = "Selected Amount: " .. tostring(FunctionCall), 
-            Duration = 3 
+WeaponDupeGroup:AddInput("DupeAmount", {
+    Text = "Dupe Amount",
+    Default = "1",
+    Placeholder = "Enter amount (e.g., 5)",
+    Tooltip = "Enter how many times to duplicate",
+    Callback = function(Value)
+        FunctionCall = tonumber(Value) or 1
+        Library:Notify({
+            Title = "Weapon Dupe",
+            Description = "Selected Amount: " .. tostring(FunctionCall),
+            Time = 3
         })
     end
 })
 
-Tabs.WeaponDupeTab:Button({
-    Title = "Start Duplication Process",
-    Callback = function()
+WeaponDupeGroup:AddButton({
+    Text = "Start Duplication Process",
+    Func = function()
         if WeaponName == "" then
-            WindUI:Notify({ 
-                Title = "Weapon Dupe Error", 
-                Content = "Please enter a weapon name first!", 
-                Icon = "x-circle", 
-                Duration = 5 
+            Library:Notify({
+                Title = "Weapon Dupe Error",
+                Description = "Please enter a weapon name first!",
+                Time = 5
             })
             return
         end
         
-        WindUI:Notify({ 
-            Title = "Weapon Dupe", 
-            Content = "Started Duplication For: " .. tostring(WeaponName) .. ", " .. tostring(FunctionCall) .. " times.", 
-            Duration = 5 
+        Library:Notify({
+            Title = "Weapon Dupe",
+            Description = "Started Duplication For: " .. tostring(WeaponName) .. ", " .. tostring(FunctionCall) .. " times.",
+            Time = 5
         })
         
         for i = 1, FunctionCall do
             VisualDupe()
         end
         
-        WindUI:Notify({ 
-            Title = "Weapon Dupe Complete", 
-            Content = "Successfully duplicated " .. tostring(WeaponName) .. " " .. tostring(FunctionCall) .. " times.", 
-            Icon = "check-circle", 
-            Duration = 5 
+        Library:Notify({
+            Title = "Weapon Dupe Complete",
+            Description = "Successfully duplicated " .. tostring(WeaponName) .. " " .. tostring(FunctionCall) .. " times.",
+            Time = 5
         })
     end
 })
 
-Tabs.WeaponDupeTab:Section({ Title = "Inventory Duplication" })
-
-Tabs.WeaponDupeTab:Button({
-    Title = "Start Inventory Dupe Process",
-    Callback = function()
-        WindUI:Notify({ 
-            Title = "Inventory Dupe", 
-            Content = "Attempting To Duplicate Whole Weapon Inventory.", 
-            Duration = 5 
+local InventoryDupeGroup = Tabs.WeaponDupe:AddRightGroupbox("Inventory Duplication", "copy")
+InventoryDupeGroup:AddButton({
+    Text = "Start Inventory Dupe Process",
+    Func = function()
+        Library:Notify({
+            Title = "Inventory Dupe",
+            Description = "Attempting To Duplicate Whole Weapon Inventory.",
+            Time = 5
         })
         
         InventoryDupe()
         
-        WindUI:Notify({ 
-            Title = "Inventory Dupe Complete", 
-            Content = "Successfully Duplicated Whole Weapon Inventory, Enjoy!", 
-            Icon = "check-circle", 
-            Duration = 5 
+        Library:Notify({
+            Title = "Inventory Dupe Complete",
+            Description = "Successfully Duplicated Whole Weapon Inventory, Enjoy!",
+            Time = 5
         })
     end
 })
 
 -- Visual Tab Content
-Tabs.VisualTab:Section({ Title = "Visual Weapons" })
+local VisualGroup = Tabs.Visual:AddLeftGroupbox("Visual Weapons", "eye-off")
 
-Tabs.VisualTab:Input({
-    Title = "Weapon To Replace",
-    PlaceholderText = "Enter weapon name to replace (e.g., Blossom)",
-    Callback = function(text)
-        fromWeapon = text
-        WindUI:Notify({ 
-            Title = "Visual Weapons", 
-            Content = "Weapon To Replace: " .. text, 
-            Duration = 3 
+VisualGroup:AddInput("FromWeapon", {
+    Text = "Weapon To Replace",
+    Default = "",
+    Placeholder = "Enter weapon name to replace (e.g., Blossom)",
+    Tooltip = "Enter the weapon you want to replace",
+    Callback = function(Value)
+        fromWeapon = Value
+        Library:Notify({
+            Title = "Visual Weapons",
+            Description = "Weapon To Replace: " .. Value,
+            Time = 3
         })
     end
 })
 
-Tabs.VisualTab:Input({
-    Title = "Weapon To Receive",
-    PlaceholderText = "Enter weapon name to receive",
-    Callback = function(text)
-        toWeapon = text
-        WindUI:Notify({ 
-            Title = "Visual Weapons", 
-            Content = "Weapon To Receive: " .. text, 
-            Duration = 3 
+VisualGroup:AddInput("ToWeapon", {
+    Text = "Weapon To Receive",
+    Default = "",
+    Placeholder = "Enter weapon name to receive",
+    Tooltip = "Enter the weapon you want to receive",
+    Callback = function(Value)
+        toWeapon = Value
+        Library:Notify({
+            Title = "Visual Weapons",
+            Description = "Weapon To Receive: " .. Value,
+            Time = 3
         })
     end
 })
 
-Tabs.VisualTab:Button({
-    Title = "Change Weapon Visual",
-    Callback = function()
+VisualGroup:AddButton({
+    Text = "Change Weapon Visual",
+    Func = function()
         if fromWeapon == "" or toWeapon == "" then
-            WindUI:Notify({ 
-                Title = "Visual Weapons Error", 
-                Content = "Please enter both weapon names!", 
-                Icon = "x-circle", 
-                Duration = 5 
+            Library:Notify({
+                Title = "Visual Weapons Error",
+                Description = "Please enter both weapon names!",
+                Time = 5
             })
             return
         end
@@ -802,60 +799,56 @@ Tabs.VisualTab:Button({
                         game:GetService("ReplicatedStorage").Remotes.Inventory.Equip:FireServer(foundToWeapon)
                     end
                 end
-                WindUI:Notify({ 
-                    Title = "Visual Weapons Success", 
-                    Content = "Successfully changed weapon visual!", 
-                    Icon = "check-circle", 
-                    Duration = 5 
+                Library:Notify({
+                    Title = "Visual Weapons Success",
+                    Description = "Successfully changed weapon visual!",
+                    Time = 5
                 })
             else
-                WindUI:Notify({ 
-                    Title = "Visual Weapons Error", 
-                    Content = "Weapon NOT FOUND", 
-                    Icon = "x-circle", 
-                    Duration = 5 
+                Library:Notify({
+                    Title = "Visual Weapons Error",
+                    Description = "Weapon NOT FOUND",
+                    Time = 5
                 })
             end
         end)
         
         if not success then
-            WindUI:Notify({ 
-                Title = "Visual Weapons Error", 
-                Content = "Failed to change weapon visual", 
-                Icon = "x-circle", 
-                Duration = 5 
+            Library:Notify({
+                Title = "Visual Weapons Error",
+                Description = "Failed to change weapon visual",
+                Time = 5
             })
         end
     end
 })
 
 -- Trade Scam Tab Content
-Tabs.TradeScamTab:Section({ Title = "Trade-Scam" })
-
+local TradeScamGroup = Tabs.TradeScam:AddLeftGroupbox("Trade-Scam", "shield-alert")
 local visualTradeEnabled = false
 
-Tabs.TradeScamTab:Toggle({
-    Title = "Toggle Visual Trade",
+TradeScamGroup:AddToggle("VisualTrade", {
+    Text = "Toggle Visual Trade",
     Default = false,
-    Callback = function(v)
-        visualTradeEnabled = v
-        WindUI:Notify({ 
-            Title = "Visual Trade", 
-            Content = visualTradeEnabled and "Visual Trade Enabled" or "Visual Trade Disabled", 
-            Duration = 3 
+    Tooltip = "Enable/disable visual trade mode",
+    Callback = function(Value)
+        visualTradeEnabled = Value
+        Library:Notify({
+            Title = "Visual Trade",
+            Description = visualTradeEnabled and "Visual Trade Enabled" or "Visual Trade Disabled",
+            Time = 3
         })
     end
 })
 
-Tabs.TradeScamTab:Button({
-    Title = "Start Visual Trade",
-    Callback = function()
+TradeScamGroup:AddButton({
+    Text = "Start Visual Trade",
+    Func = function()
         if not visualTradeEnabled then
-            WindUI:Notify({ 
-                Title = "Visual Trade Error", 
-                Content = "Please enable Visual Trade first!", 
-                Icon = "x-circle", 
-                Duration = 5 
+            Library:Notify({
+                Title = "Visual Trade Error",
+                Description = "Please enable Visual Trade first!",
+                Time = 5
             })
             return
         end
@@ -865,65 +858,62 @@ Tabs.TradeScamTab:Button({
 })
 
 -- Anti Stealer Tab Content
-Tabs.AntiStealerTab:Section({ Title = "Script Protection" })
+local AntiStealerGroup = Tabs.AntiStealer:AddLeftGroupbox("Script Protection", "shield")
 
-Tabs.AntiStealerTab:Toggle({
-    Title = "Enable Anti Stealer",
+AntiStealerGroup:AddToggle("AntiStealer", {
+    Text = "Enable Anti Stealer",
     Default = false,
-    Callback = function(v)
-        antiStealerEnabled = v
-        if v then
-            WindUI:Notify({ 
-                Title = "Anti Stealer Enabled", 
-                Content = "Script protection is now active!", 
-                Icon = "shield-check", 
-                Duration = 5 
+    Tooltip = "Enable anti-stealer protection",
+    Callback = function(Value)
+        antiStealerEnabled = Value
+        if Value then
+            Library:Notify({
+                Title = "Anti Stealer Enabled",
+                Description = "Script protection is now active!",
+                Time = 5
             })
         else
-            WindUI:Notify({ 
-                Title = "Anti Stealer Disabled", 
-                Content = "Script protection has been turned off.", 
-                Icon = "shield-off", 
-                Duration = 3 
+            Library:Notify({
+                Title = "Anti Stealer Disabled",
+                Description = "Script protection has been turned off.",
+                Time = 3
             })
         end
     end
 })
 
-Tabs.AntiStealerTab:Toggle({
-    Title = "Trade Scam Protection",
+AntiStealerGroup:AddToggle("TradeScamProtection", {
+    Text = "Trade Scam Protection",
     Default = false,
-    Callback = function(v)
-        tradeScamProtectionEnabled = v
-        if v then
-            WindUI:Notify({ 
-                Title = "Trade Scam Protection Enabled", 
-                Content = "You are now protected against trade scams!", 
-                Icon = "alert-triangle", 
-                Duration = 5 
+    Tooltip = "Protect against trade scams",
+    Callback = function(Value)
+        tradeScamProtectionEnabled = Value
+        if Value then
+            Library:Notify({
+                Title = "Trade Scam Protection Enabled",
+                Description = "You are now protected against trade scams!",
+                Time = 5
             })
         else
-            WindUI:Notify({ 
-                Title = "Trade Scam Protection Disabled", 
-                Content = "Trade scam protection has been turned off.", 
-                Icon = "alert-circle", 
-                Duration = 3 
+            Library:Notify({
+                Title = "Trade Scam Protection Disabled",
+                Description = "Trade scam protection has been turned off.",
+                Time = 3
             })
         end
     end
 })
 
 -- Server Lagger Tab Content
-Tabs.LaggerTab:Section({ Title = "Server Lagger" })
+local LaggerGroup = Tabs.Lagger:AddLeftGroupbox("Server Lagger", "zap")
 
-Tabs.LaggerTab:Button({
-    Title = "Start Server Lag",
-    Callback = function()
-        WindUI:Notify({ 
-            Title = "Server Lagger", 
-            Content = "Server Is Now In Lagging, There Is A Chance To Be Disconnected!", 
-            Icon = "alert-triangle", 
-            Duration = 5 
+LaggerGroup:AddButton({
+    Text = "Start Server Lag",
+    Func = function()
+        Library:Notify({
+            Title = "Server Lagger",
+            Description = "Server Is Now In Lagging, There Is A Chance To Be Disconnected!",
+            Time = 5
         })
         
         local success = pcall(function()
@@ -944,60 +934,351 @@ Tabs.LaggerTab:Button({
         end)
         
         if not success then
-            WindUI:Notify({ 
-                Title = "Server Lagger Error", 
-                Content = "Failed to start server lag!", 
-                Icon = "x-circle", 
-                Duration = 5 
+            Library:Notify({
+                Title = "Server Lagger Error",
+                Description = "Failed to start server lag!",
+                Time = 5
             })
         end
     end
 })
 
--- Anti AFK Tab
-Tabs.AntiAFKTab:Section({ Title = "Anti AFK Protection" })
+-- Anti AFK Tab Content
+local AntiAFKGroup = Tabs.AntiAFK:AddLeftGroupbox("Anti AFK Protection", "moon")
 
-Tabs.AntiAFKTab:Button({
-    Title = "Enable Anti AFK",
-    Callback = function()
+AntiAFKGroup:AddButton({
+    Text = "Enable Anti AFK",
+    Func = function()
         local success = pcall(function()
             loadstring(game:HttpGet("https://raw.githubusercontent.com/hassanxzayn-lua/Anti-afk/main/antiafkbyhassanxzyn"))()
         end)
         
         if success then
-            WindUI:Notify({ Title = "Anti AFK", Content = "Anti AFK script executed successfully!", Icon = "check-circle", Duration = 3 })
+            Library:Notify({
+                Title = "Anti AFK",
+                Description = "Anti AFK script executed successfully!",
+                Time = 3
+            })
         else
-            WindUI:Notify({ Title = "Anti AFK Error", Content = "Failed to load Anti AFK script!", Icon = "x-circle", Duration = 5 })
+            Library:Notify({
+                Title = "Anti AFK Error",
+                Description = "Failed to load Anti AFK script!",
+                Time = 5
+            })
         end
     end
 })
 
-Tabs.AntiAFKTab:Paragraph({
-    Title = "About Anti AFK",
-    Content = "This feature prevents you from being kicked for inactivity. Click the button above to activate anti-AFK protection."
+AntiAFKGroup:AddLabel("About Anti AFK", true)
+AntiAFKGroup:AddLabel("This feature prevents you from being kicked for inactivity. Click the button above to activate anti-AFK protection.", true)
+
+-- Advanced Tab Content
+local AdvancedESPGroup = Tabs.Advanced:AddLeftGroupbox("Advanced ESP Features", "zap")
+
+AdvancedESPGroup:AddToggle("AdvancedESP", {
+    Text = "Advanced ESP",
+    Default = false,
+    Tooltip = "Enable advanced ESP features",
+    Callback = function(Value)
+        advancedESPEnabled = Value
+        Library:Notify({
+            Title = "Advanced ESP",
+            Description = advancedESPEnabled and "Advanced ESP Enabled" or "Advanced ESP Disabled",
+            Time = 3
+        })
+    end
 })
 
--- ========================================
--- ROLE-SPECIFIC TABS (SEPARATED SECTION)
--- ========================================
+AdvancedESPGroup:AddToggle("RainbowESP", {
+    Text = "Rainbow ESP",
+    Default = false,
+    Tooltip = "Make ESP colors cycle through rainbow",
+    Callback = function(Value)
+        rainbowESPEnabled = Value
+        Library:Notify({
+            Title = "Rainbow ESP",
+            Description = rainbowESPEnabled and "Rainbow ESP Enabled" or "Rainbow ESP Disabled",
+            Time = 3
+        })
+    end
+})
 
--- Innocent Tab Content
-Tabs.InnocentTab:Section({
-    Title = gradient("Gun System", Color3.fromHex("#00F260"), Color3.fromHex("#0575E6"))
-});
+AdvancedESPGroup:AddToggle("DistanceESP", {
+    Text = "Distance ESP",
+    Default = false,
+    Tooltip = "Show distance to players",
+    Callback = function(Value)
+        distanceESPEnabled = Value
+        Library:Notify({
+            Title = "Distance ESP",
+            Description = distanceESPEnabled and "Distance ESP Enabled" or "Distance ESP Disabled",
+            Time = 3
+        })
+    end
+})
 
+AdvancedESPGroup:AddToggle("HealthESP", {
+    Text = "Health ESP",
+    Default = false,
+    Tooltip = "Show player health above their heads",
+    Callback = function(Value)
+        healthESPEnabled = Value
+        Library:Notify({
+            Title = "Health ESP",
+            Description = healthESPEnabled and "Health ESP Enabled" or "Health ESP Disabled",
+            Time = 3
+        })
+    end
+})
+
+local AdvancedMovementGroup = Tabs.Advanced:AddRightGroupbox("Advanced Movement", "zap")
+
+AdvancedMovementGroup:AddToggle("FlyMode", {
+    Text = "Fly Mode",
+    Default = false,
+    Tooltip = "Enable fly mode (WASD + Space/Shift)",
+    Callback = function(Value)
+        flyEnabled = Value
+        if Value then
+            Library:Notify({
+                Title = "Fly Mode",
+                Description = "Fly mode enabled! Use WASD to move.",
+                Time = 3
+            })
+        else
+            Library:Notify({
+                Title = "Fly Mode",
+                Description = "Fly mode disabled.",
+                Time = 3
+            })
+        end
+    end
+})
+
+AdvancedMovementGroup:AddSlider("FlySpeed", {
+    Text = "Fly Speed",
+    Default = 50,
+    Min = 10,
+    Max = 200,
+    Rounding = 0,
+    Suffix = " speed",
+    Tooltip = "Set fly speed",
+    Callback = function(Value)
+        flySpeed = Value
+        Library:Notify({
+            Title = "Fly Speed",
+            Description = "Fly speed set to " .. Value,
+            Time = 2
+        })
+    end
+})
+
+AdvancedMovementGroup:AddToggle("Noclip", {
+    Text = "Noclip",
+    Default = false,
+    Tooltip = "Walk through walls",
+    Callback = function(Value)
+        noclipEnabled = Value
+        Library:Notify({
+            Title = "Noclip",
+            Description = noclipEnabled and "Noclip enabled!" or "Noclip disabled.",
+            Time = 3
+        })
+    end
+})
+
+-- Auto Farm Tab Content
+local AutoFarmGroup = Tabs.AutoFarm:AddLeftGroupbox("Auto Farming System", "trending-up")
+
+AutoFarmGroup:AddToggle("AutoFarm", {
+    Text = "Auto Farm",
+    Default = false,
+    Tooltip = "Enable auto farming",
+    Callback = function(Value)
+        autoFarmEnabled = Value
+        Library:Notify({
+            Title = "Auto Farm",
+            Description = autoFarmEnabled and "Auto farming started!" or "Auto farming stopped.",
+            Time = 3
+        })
+    end
+})
+
+AutoFarmGroup:AddToggle("AutoCollectCoins", {
+    Text = "Auto Collect Coins",
+    Default = false,
+    Tooltip = "Automatically collect nearby coins",
+    Callback = function(Value)
+        autoCollectCoins = Value
+        Library:Notify({
+            Title = "Auto Collect",
+            Description = autoCollectCoins and "Auto collecting coins!" or "Stopped collecting coins.",
+            Time = 3
+        })
+    end
+})
+
+AutoFarmGroup:AddToggle("AutoCollectGuns", {
+    Text = "Auto Collect Guns",
+    Default = false,
+    Tooltip = "Automatically collect dropped guns",
+    Callback = function(Value)
+        autoCollectGuns = Value
+        Library:Notify({
+            Title = "Auto Collect",
+            Description = autoCollectGuns and "Auto collecting guns!" or "Stopped collecting guns.",
+            Time = 3
+        })
+    end
+})
+
+AutoFarmGroup:AddToggle("AutoCollectKnives", {
+    Text = "Auto Collect Knives",
+    Default = false,
+    Tooltip = "Automatically collect dropped knives",
+    Callback = function(Value)
+        autoCollectKnives = Value
+        Library:Notify({
+            Title = "Auto Collect",
+            Description = autoCollectKnives and "Auto collecting knives!" or "Stopped collecting knives.",
+            Time = 3
+        })
+    end
+})
+
+-- Fun Tab Content
+local FunGroup = Tabs.Fun:AddLeftGroupbox("Fun Features", "smile")
+
+FunGroup:AddToggle("RainbowCharacter", {
+    Text = "Rainbow Character",
+    Default = false,
+    Tooltip = "Make your character cycle through rainbow colors",
+    Callback = function(Value)
+        rainbowCharacter = Value
+        Library:Notify({
+            Title = "Rainbow Character",
+            Description = rainbowCharacter and "Rainbow character enabled!" or "Rainbow character disabled.",
+            Time = 3
+        })
+    end
+})
+
+FunGroup:AddSlider("CharacterSize", {
+    Text = "Character Size",
+    Default = 1,
+    Min = 0.1,
+    Max = 5,
+    Rounding = 1,
+    Suffix = "x",
+    Tooltip = "Change your character's size",
+    Callback = function(Value)
+        if LocalPlayer.Character and LocalPlayer.Character:FindFirstChild("Humanoid") then
+            LocalPlayer.Character.Humanoid.HipHeight = Value
+            LocalPlayer.Character.Humanoid.WalkSpeed = 16 * Value
+            Library:Notify({
+                Title = "Size Changer",
+                Description = "Character size set to " .. Value,
+                Time = 3
+            })
+        end
+    end
+})
+
+FunGroup:AddSlider("Gravity", {
+    Text = "Gravity",
+    Default = 196,
+    Min = 0,
+    Max = 500,
+    Rounding = 0,
+    Suffix = " gravity",
+    Tooltip = "Change world gravity",
+    Callback = function(Value)
+        currentGravity = Value
+        workspace.Gravity = Value
+        Library:Notify({
+            Title = "Gravity Changer",
+            Description = "Gravity set to " .. Value,
+            Time = 3
+        })
+    end
+})
+
+FunGroup:AddButton({
+    Text = "Reset Gravity",
+    Func = function()
+        workspace.Gravity = 196.2
+        Library:Notify({
+            Title = "Gravity Reset",
+            Description = "Gravity reset to normal!",
+            Time = 3
+        })
+    end
+})
+
+local VisualEffectsGroup = Tabs.Fun:AddRightGroupbox("Visual Effects", "smile")
+
+VisualEffectsGroup:AddToggle("ScreenShake", {
+    Text = "Screen Shake",
+    Default = false,
+    Tooltip = "Add screen shake effects",
+    Callback = function(Value)
+        screenShake = Value
+        Library:Notify({
+            Title = "Screen Shake",
+            Description = screenShake and "Screen shake enabled!" or "Screen shake disabled.",
+            Time = 3
+        })
+    end
+})
+
+VisualEffectsGroup:AddToggle("ParticleEffects", {
+    Text = "Particle Effects",
+    Default = false,
+    Tooltip = "Enable particle effects",
+    Callback = function(Value)
+        particleEffects = Value
+        Library:Notify({
+            Title = "Particle Effects",
+            Description = particleEffects and "Particle effects enabled!" or "Particle effects disabled.",
+            Time = 3
+        })
+    end
+})
+
+VisualEffectsGroup:AddButton({
+    Text = "Explode Everyone",
+    Func = function()
+        Library:Notify({
+            Title = "Explosion",
+            Description = "Creating explosions around all players!",
+            Time = 3
+        })
+        
+        for _, player in ipairs(Players:GetPlayers()) do
+            if player ~= LocalPlayer and player.Character and player.Character:FindFirstChild("HumanoidRootPart") then
+                local explosion = Instance.new("Explosion")
+                explosion.Position = player.Character.HumanoidRootPart.Position
+                explosion.BlastRadius = 50
+                explosion.BlastPressure = 1000000
+                explosion.Parent = workspace
+            end
+        end
+    end
+})
+
+-- Innocent Tab Content (Gun System)
 local GunSystem = {
     AutoGrabEnabled = false,
     NotifyGunDrop = true,
     GunDropCheckInterval = 1,
     ActiveGunDrops = {},
     GunDropHighlights = {}
-};
+}
 
 local mapPaths = {
     "ResearchFacility", "Hospital3", "MilBase", "House2", "Workplace",
     "Mansion2", "BioLab", "Hotel", "Factory", "Bank2", "PoliceStation"
-};
+}
 
 local function ScanForGunDrops()
     GunSystem.ActiveGunDrops = {};
@@ -1020,11 +1301,10 @@ local function GrabGun(gunDrop)
     if not gunDrop then
         ScanForGunDrops();
         if #GunSystem.ActiveGunDrops == 0 then
-            WindUI:Notify({
+            Library:Notify({
                 Title = "Gun System",
-                Content = "No guns available on the map",
-                Icon = "x-circle",
-                Duration = 3
+                Description = "No guns available on the map",
+                Time = 3
             });
             return false;
         end
@@ -1051,11 +1331,10 @@ local function GrabGun(gunDrop)
             local prompt = gunDrop:FindFirstChildOfClass("ProximityPrompt");
             if prompt then
                 fireproximityprompt(prompt);
-                WindUI:Notify({
+                Library:Notify({
                     Title = "Gun System",
-                    Content = "Successfully grabbed the gun!",
-                    Icon = "check-circle",
-                    Duration = 3
+                    Description = "Successfully grabbed the gun!",
+                    Time = 3
                 });
                 return true;
             end
@@ -1097,11 +1376,10 @@ end
 local function GrabAndShootMurderer()
     if not (LocalPlayer.Character and LocalPlayer.Character:FindFirstChild("Gun")) then
         if not GrabGun() then
-            WindUI:Notify({
+            Library:Notify({
                 Title = "Gun System",
-                Content = "Failed to get gun!",
-                Icon = "x-circle",
-                Duration = 3
+                Description = "Failed to get gun!",
+                Time = 3
             });
             return;
         end
@@ -1118,11 +1396,10 @@ local function GrabAndShootMurderer()
     end
     
     if not murderer or not murderer.Character then
-        WindUI:Notify({
+        Library:Notify({
             Title = "Gun System",
-            Content = "Murderer not found!",
-            Icon = "x-circle",
-            Duration = 3
+            Description = "Murderer not found!",
+            Time = 3
         });
         return;
     end
@@ -1136,11 +1413,10 @@ local function GrabAndShootMurderer()
     
     local gun = LocalPlayer.Character:FindFirstChild("Gun");
     if not gun then
-        WindUI:Notify({
+        Library:Notify({
             Title = "Gun System",
-            Content = "Gun not equipped!",
-            Icon = "x-circle",
-            Duration = 3
+            Description = "Gun not equipped!",
+            Time = 3
         });
         return;
     end
@@ -1156,69 +1432,66 @@ local function GrabAndShootMurderer()
     
     if gun:FindFirstChild("KnifeLocal") and gun.KnifeLocal:FindFirstChild("CreateBeam") then
         gun.KnifeLocal.CreateBeam.RemoteFunction:InvokeServer(unpack(args));
-        WindUI:Notify({
+        Library:Notify({
             Title = "Gun System",
-            Content = "Successfully shot the murderer!",
-            Icon = "check-circle",
-            Duration = 3
+            Description = "Successfully shot the murderer!",
+            Time = 3
         });
     end
 end
 
-Tabs.InnocentTab:Toggle({
-    Title = "Notify GunDrop",
+local InnocentGroup = Tabs.Innocent:AddLeftGroupbox("Gun System", "circle")
+
+InnocentGroup:AddToggle("NotifyGunDrop", {
+    Text = "Notify GunDrop",
     Default = true,
-    Callback = function(state)
-        GunSystem.NotifyGunDrop = state;
+    Tooltip = "Get notified when guns are available",
+    Callback = function(Value)
+        GunSystem.NotifyGunDrop = Value
     end
-});
+})
 
-Tabs.InnocentTab:Button({
-    Title = "Grab Gun",
-    Callback = function()
-        GrabGun();
+InnocentGroup:AddButton({
+    Text = "Grab Gun",
+    Func = function()
+        GrabGun()
     end
-});
+})
 
-Tabs.InnocentTab:Toggle({
-    Title = "Auto Grab Gun",
+InnocentGroup:AddToggle("AutoGrabGun", {
+    Text = "Auto Grab Gun",
     Default = false,
-    Callback = function(state)
-        GunSystem.AutoGrabEnabled = state;
-        if state then
-            coroutine.wrap(AutoGrabGun)();
-            WindUI:Notify({
+    Tooltip = "Automatically grab guns",
+    Callback = function(Value)
+        GunSystem.AutoGrabEnabled = Value
+        if Value then
+            coroutine.wrap(AutoGrabGun)()
+            Library:Notify({
                 Title = "Gun System",
-                Content = "Auto Grab Gun enabled!",
-                Icon = "check-circle",
-                Duration = 3
-            });
+                Description = "Auto Grab Gun enabled!",
+                Time = 3
+            })
         else
-            WindUI:Notify({
+            Library:Notify({
                 Title = "Gun System",
-                Content = "Auto Grab Gun disabled",
-                Icon = "check-circle",
-                Duration = 3
-            });
+                Description = "Auto Grab Gun disabled",
+                Time = 3
+            })
         end
     end
-});
+})
 
-Tabs.InnocentTab:Button({
-    Title = "Grab Gun & Shoot Murderer",
-    Callback = function()
-        GrabAndShootMurderer();
+InnocentGroup:AddButton({
+    Text = "Grab Gun & Shoot Murderer",
+    Func = function()
+        GrabAndShootMurderer()
     end
-});
+})
 
 -- Murder Tab Content
-Tabs.MurderTab:Section({
-    Title = gradient("Kill Functions", Color3.fromHex("#e80909"), Color3.fromHex("#630404"))
-});
-
-local killActive = false;
-local attackDelay = 0.5;
-local targetRoles = {"Sheriff", "Hero", "Innocent"};
+local killActive = false
+local attackDelay = 0.5
+local targetRoles = {"Sheriff", "Hero", "Innocent"}
 
 local function getPlayerRole(player)
     local roles = ReplicatedStorage:FindFirstChild("GetPlayerData", true):InvokeServer();
@@ -1279,11 +1552,10 @@ local function attackTarget(target)
     if not humanoid or humanoid.Health <= 0 then return false; end
     
     if not equipKnife() then
-        WindUI:Notify({
+        Library:Notify({
             Title = "Kill Targets",
-            Content = "No knife found!",
-            Icon = "x-circle",
-            Duration = 2
+            Description = "No knife found!",
+            Time = 2
         });
         return false;
     end
@@ -1308,33 +1580,30 @@ local function killTargets()
     if killActive then return; end
     killActive = true;
     
-    WindUI:Notify({
+    Library:Notify({
         Title = "Kill Targets",
-        Content = "Starting attack on nearest targets...",
-        Icon = "alert-circle",
-        Duration = 2
+        Description = "Starting attack on nearest targets...",
+        Time = 2
     });
     
     local function attackSequence()
         while killActive do
             local target = getNearestTarget();
             if not target then
-                WindUI:Notify({
+                Library:Notify({
                     Title = "Kill Targets",
-                    Content = "No valid targets found!",
-                    Icon = "check-circle",
-                    Duration = 3
+                    Description = "No valid targets found!",
+                    Time = 3
                 });
                 killActive = false;
                 break;
             end
             
             if attackTarget(target) then
-                WindUI:Notify({
+                Library:Notify({
                     Title = "Kill Targets",
-                    Content = "Attacked " .. target.Name,
-                    Icon = "check-circle",
-                    Duration = 1
+                    Description = "Attacked " .. target.Name,
+                    Time = 1
                 });
             end
             task.wait(attackDelay);
@@ -1346,87 +1615,67 @@ end
 
 local function stopKilling()
     killActive = false;
-    WindUI:Notify({
+    Library:Notify({
         Title = "Kill Targets",
-        Content = "Attack sequence stopped",
-        Icon = "x-circle",
-        Duration = 2
+        Description = "Attack sequence stopped",
+        Time = 2
     });
 end
 
-Tabs.MurderTab:Toggle({
-    Title = "Kill All",
+local MurderGroup = Tabs.Murder:AddLeftGroupbox("Kill Functions", "circle")
+
+MurderGroup:AddToggle("KillAll", {
+    Text = "Kill All",
     Default = false,
-    Callback = function(state)
-        if state then
-            killTargets();
+    Tooltip = "Automatically kill all targets",
+    Callback = function(Value)
+        if Value then
+            killTargets()
         else
-            stopKilling();
+            stopKilling()
         end
     end
-});
+})
 
-Tabs.MurderTab:Slider({
-    Title = "Attack Delay",
-    Step = 0.1,
-    Value = {
-        Min = 0.1,
-        Max = 2,
-        Default = 0.5
-    },
-    Callback = function(value)
-        attackDelay = value;
-        WindUI:Notify({
+MurderGroup:AddSlider("AttackDelay", {
+    Text = "Attack Delay",
+    Default = 0.5,
+    Min = 0.1,
+    Max = 2,
+    Rounding = 1,
+    Suffix = "s",
+    Tooltip = "Delay between attacks",
+    Callback = function(Value)
+        attackDelay = Value
+        Library:Notify({
             Title = "Kill Targets",
-            Content = "Delay set to " .. value .. "s",
-            Icon = "check-circle",
-            Duration = 2
-        });
+            Description = "Delay set to " .. Value .. "s",
+            Time = 2
+        })
     end
-});
+})
 
-Tabs.MurderTab:Button({
-    Title = "Equip Knife",
-    Callback = function()
+MurderGroup:AddButton({
+    Text = "Equip Knife",
+    Func = function()
         if equipKnife() then
-            WindUI:Notify({
+            Library:Notify({
                 Title = "Knife",
-                Content = "Knife equipped!",
-                Icon = "check-circle",
-                Duration = 2
-            });
+                Description = "Knife equipped!",
+                Time = 2
+            })
         else
-            WindUI:Notify({
+            Library:Notify({
                 Title = "Knife",
-                Content = "No knife found!",
-                Icon = "x-circle",
-                Duration = 2
-            });
+                Description = "No knife found!",
+                Time = 2
+            })
         end
     end
-});
+})
 
 -- Sheriff Tab Content
-Tabs.SheriffTab:Section({
-    Title = gradient("Shot functions", Color3.fromHex("#001e80"), Color3.fromHex("#16f2d9"))
-});
-
-local shotType = "Default";
-
-Tabs.SheriffTab:Dropdown({
-    Title = "Shot Type",
-    Values = {"Default", "Teleport"},
-    Value = "Default",
-    Callback = function(selectedType)
-        shotType = selectedType;
-        WindUI:Notify({
-            Title = "Sheriff System",
-            Content = "Shot Type: " .. selectedType,
-            Icon = "check-circle",
-            Duration = 3
-        });
-    end
-});
+local shotType = "Default"
 
 local function ShootMurderer()
     if not LocalPlayer.Character or not LocalPlayer.Character:FindFirstChild("Humanoid") or LocalPlayer.Character.Humanoid.Health <= 0 then
@@ -1484,247 +1733,396 @@ local function ShootMurderer()
     end
 end
 
-Tabs.SheriffTab:Button({
-    Title = "Shoot murderer",
-    Callback = function()
-        ShootMurderer();
-    end
-});
+local SheriffGroup = Tabs.Sheriff:AddLeftGroupbox("Shot Functions", "circle")
 
-Tabs.SheriffTab:Section({
-    Title = gradient("Shot Button", Color3.fromHex("#001e80"), Color3.fromHex("#16f2d9"))
-});
-
-local shotButton = nil;
-local shotButtonFrame = nil;
-local shotButtonActive = false;
-local buttonSize = 50;
-local isDragging = false;
-
-local function CreateShotButton()
-    if shotButton then return; end
-    
-    local screenGui = game:GetService("CoreGui"):FindFirstChild("WindUI_SheriffGui") or Instance.new("ScreenGui");
-    screenGui.Name = "WindUI_SheriffGui";
-    screenGui.Parent = game:GetService("CoreGui");
-    screenGui.ResetOnSpawn = false;
-    screenGui.DisplayOrder = 999;
-    screenGui.IgnoreGuiInset = true;
-    
-    shotButtonFrame = Instance.new("Frame");
-    shotButtonFrame.Name = "ShotButtonFrame";
-    shotButtonFrame.Size = UDim2.new(0, buttonSize, 0, buttonSize);
-    shotButtonFrame.Position = UDim2.new(1, -buttonSize - 20, 0.5, -buttonSize / 2);
-    shotButtonFrame.AnchorPoint = Vector2.new(1, 0.5);
-    shotButtonFrame.BackgroundTransparency = 1;
-    shotButtonFrame.ZIndex = 100;
-    
-    shotButton = Instance.new("TextButton");
-    shotButton.Name = "SheriffShotButton";
-    shotButton.Size = UDim2.new(1, 0, 1, 0);
-    shotButton.BackgroundColor3 = Color3.fromRGB(120, 120, 120);
-    shotButton.BackgroundTransparency = 0.5;
-    shotButton.TextColor3 = Color3.fromRGB(255, 255, 255);
-    shotButton.Text = "SHOT";
-    shotButton.TextSize = 14;
-    shotButton.Font = Enum.Font.GothamBold;
-    shotButton.BorderSizePixel = 0;
-    shotButton.ZIndex = 101;
-    shotButton.AutoButtonColor = false;
-    shotButton.TextScaled = true;
-    
-    local stroke = Instance.new("UIStroke");
-    stroke.Color = Color3.fromRGB(0, 40, 150);
-    stroke.Thickness = 2;
-    stroke.ApplyStrokeMode = Enum.ApplyStrokeMode.Border;
-    stroke.Transparency = 0.3;
-    stroke.Parent = shotButton;
-    
-    local corner = Instance.new("UICorner");
-    corner.CornerRadius = UDim.new(0.3, 0);
-    corner.Parent = shotButton;
-    
-    shotButton.MouseButton1Click:Connect(function()
-        ShootMurderer();
-    end);
-    
-    shotButton.Parent = shotButtonFrame;
-    shotButtonFrame.Parent = screenGui;
-    shotButtonActive = true;
-    
-    WindUI:Notify({
-        Title = "Sheriff System",
-        Content = "Shot button activated",
-        Icon = "check-circle",
-        Duration = 3
-    });
-end
-
-local function RemoveShotButton()
-    if not shotButton then return; end
-    
-    if shotButton then
-        shotButton:Destroy();
-        shotButton = nil;
-    end
-    
-    if shotButtonFrame then
-        shotButtonFrame:Destroy();
-        shotButtonFrame = nil;
-    end
-    
-    local screenGui = game:GetService("CoreGui"):FindFirstChild("WindUI_SheriffGui");
-    if screenGui then
-        screenGui:Destroy();
-    end
-    
-    shotButtonActive = false;
-    
-    WindUI:Notify({
-        Title = "Shot Button",
-        Content = "Deactivated",
-        Icon = "check-circle",
-        Duration = 3
-    });
-end
-
-Tabs.SheriffTab:Button({
-    Title = "Toggle Shot Button",
-    Callback = function()
-        if shotButtonActive then
-            RemoveShotButton();
-        else
-            CreateShotButton();
-        end
-    end
-});
-
-Tabs.SheriffTab:Slider({
-    Title = "Button Size",
-    Step = 1,
-    Value = {
-        Min = 10,
-        Max = 100,
-        Default = 50
-    },
-    Callback = function(size)
-        buttonSize = size;
-        if shotButtonActive then
-            local currentPos = shotButtonFrame and shotButtonFrame.Position or UDim2.new(1, -buttonSize - 20, 0.5, -buttonSize / 2);
-            RemoveShotButton();
-            CreateShotButton();
-            if shotButtonFrame then
-                shotButtonFrame.Position = currentPos;
-            end
-        end
-        WindUI:Notify({
+SheriffGroup:AddDropdown("ShotType", {
+    Values = {"Default", "Teleport"},
+    Default = "Default",
+    Text = "Shot Type",
+    Tooltip = "Choose shot type",
+    Callback = function(Value)
+        shotType = Value
+        Library:Notify({
             Title = "Sheriff System",
-            Content = "Size: " .. size,
-            Icon = "check-circle",
-            Duration = 3
-        });
+            Description = "Shot Type: " .. Value,
+            Time = 3
+        })
     end
-});
-
--- ========================================
--- INFORMATION AND SOCIALS TABS (AT THE END)
--- ========================================
-
--- Information Tab
-Tabs.InfoTab:Section({ Title = "Script Information" })
-
-Tabs.InfoTab:Paragraph({
-    Title = "Latte MM2 Hub",
-    Content = "This is a merged version combining the best features from Latte Hub, providing a comprehensive MM2 experience."
 })
 
-Tabs.InfoTab:Paragraph({
-    Title = "Features Included",
-    Content = "• Player ESP with multiple options\n• Character customization (walkspeed, jumppower)\n• Teleport system\n• Weapon spawner with multiple methods\n• Weapon duplication system\n• Visual weapon changer\n• Trade scam protection\n• Server lagger\n• Anti-stealer protection\n• Anti AFK system\n• Role-specific functions (Innocent, Sheriff, Murder)\n• And much more!"
+SheriffGroup:AddButton({
+    Text = "Shoot Murderer",
+    Func = function()
+        ShootMurderer()
+    end
 })
 
-Tabs.InfoTab:Section({ Title = "Discord Community" })
+-- Information Tab Content
+local InfoGroup = Tabs.Info:AddLeftGroupbox("Script Information", "info")
+InfoGroup:AddLabel("Latte MM2 Hub", true)
+InfoGroup:AddLabel("This is a merged version combining the best features from Latte Hub, providing a comprehensive MM2 experience.", true)
+InfoGroup:AddLabel("Features Included", true)
+InfoGroup:AddLabel("• Player ESP with multiple options\n• Character customization (walkspeed, jumppower)\n• Teleport system\n• Weapon spawner with multiple methods\n• Weapon duplication system\n• Visual weapon changer\n• Trade scam protection\n• Server lagger\n• Anti-stealer protection\n• Anti AFK system\n• Role-specific functions (Innocent, Sheriff, Murder)\n• And much more!", true)
 
-Tabs.InfoTab:Paragraph({
-    Title = "Join Our Discord",
-    Content = "Join our Discord server for updates, support, and to connect with other users!"
-})
-
-Tabs.InfoTab:Button({
-    Title = "Copy Discord Invite",
-    Callback = function()
+local DiscordGroup = Tabs.Info:AddRightGroupbox("Discord Community", "info")
+DiscordGroup:AddLabel("Join Our Discord", true)
+DiscordGroup:AddLabel("Join our Discord server for updates, support, and to connect with other users!", true)
+DiscordGroup:AddButton({
+    Text = "Copy Discord Invite",
+    Func = function()
         setclipboard("https://discord.gg/pU8r42d6hd")
-        WindUI:Notify({ 
-            Title = "Discord Invite", 
-            Content = "Discord invite copied to clipboard!", 
-            Icon = "check-circle", 
-            Duration = 3 
+        Library:Notify({
+            Title = "Discord Invite",
+            Description = "Discord invite copied to clipboard!",
+            Time = 3
         })
     end
 })
 
 -- Socials Tab Content
-Tabs.SocialsTab:Paragraph({
-    Title = gradient("Latte Scripts", Color3.fromHex("#001e80"), Color3.fromHex("#16f2d9")),
-    Desc = "My socials",
-    Image = "bird",
-    Color = "Green",
-    Buttons = {
-        {
-            Icon = "circle",
-            Title = "Youtube Channel",
-            Callback = function()
-                if pcall(setclipboard, "https://www.youtube.com/@LatteHub") then
-                    WindUI:Notify({
-                        Title = "Follow for a cookie!",
-                        Content = "Youtube channel copied to clipboard.",
-                        Duration = 3,
-                        Icon = "check-fill"
-                    });
-                else
-                    WindUI:Notify({
-                        Title = "Copy Error",
-                        Content = "Could not copy link to clipboard.",
-                        Duration = 5,
-                        Icon = "x-fill"
-                    });
+local SocialsGroup = Tabs.Socials:AddLeftGroupbox("Latte Scripts", "star")
+SocialsGroup:AddLabel("My socials", true)
+SocialsGroup:AddButton({
+    Text = "Youtube Channel",
+    Func = function()
+        if pcall(setclipboard, "https://www.youtube.com/@LatteHub") then
+            Library:Notify({
+                Title = "Follow for a cookie!",
+                Description = "Youtube channel copied to clipboard.",
+                Time = 3
+            })
+        else
+            Library:Notify({
+                Title = "Copy Error",
+                Description = "Could not copy link to clipboard.",
+                Time = 5
+            })
+        end
+    end
+})
+
+local SocialsGroup2 = Tabs.Socials:AddRightGroupbox("Latte Hub", "star")
+SocialsGroup2:AddButton({
+    Text = "Tiktok Profile",
+    Func = function()
+        if pcall(setclipboard, "http://tiktok.com/@scriptsbylatte/") then
+            Library:Notify({
+                Title = "Follow for a cookie!",
+                Description = "Tiktok profile has been copied!",
+                Time = 3
+            })
+        else
+            Library:Notify({
+                Title = "Copy Error",
+                Description = "Could not copy link to clipboard.",
+                Time = 5
+            })
+        end
+    end
+})
+
+-- UI Settings Tab Content
+local MenuGroup = Tabs["UI Settings"]:AddLeftGroupbox("Menu", "wrench")
+MenuGroup:AddToggle("KeybindMenuOpen", {
+    Default = Library.KeybindFrame.Visible,
+    Text = "Open Keybind Menu",
+    Callback = function(value)
+        Library.KeybindFrame.Visible = value
+    end
+})
+
+MenuGroup:AddToggle("ShowCustomCursor", {
+    Text = "Custom Cursor",
+    Default = true,
+    Callback = function(Value)
+        Library.ShowCustomCursor = Value
+    end
+})
+
+MenuGroup:AddDropdown("NotificationSide", {
+    Values = {"Left", "Right"},
+    Default = "Right",
+    Text = "Notification Side",
+    Callback = function(Value)
+        Library:SetNotifySide(Value)
+    end
+})
+
+MenuGroup:AddDropdown("DPIDropdown", {
+    Values = {"50%", "75%", "100%", "125%", "150%", "175%", "200%"},
+    Default = "100%",
+    Text = "DPI Scale",
+    Callback = function(Value)
+        Value = Value:gsub("%%", "")
+        local DPI = tonumber(Value)
+        Library:SetDPIScale(DPI)
+    end
+})
+
+MenuGroup:AddDivider()
+MenuGroup:AddLabel("Menu bind")
+    :AddKeyPicker("MenuKeybind", {
+        Default = "RightShift",
+        NoUI = true,
+        Text = "Menu keybind"
+    })
+
+MenuGroup:AddButton("Unload", function()
+    Library:Unload()
+end)
+
+Library.ToggleKeybind = Options.MenuKeybind
+
+-- Advanced Features Implementation
+local flyBodyVelocity = nil
+local flyBodyPosition = nil
+
+local function startFly()
+    if not LocalPlayer.Character or not LocalPlayer.Character:FindFirstChild("HumanoidRootPart") then return end
+    
+    local rootPart = LocalPlayer.Character.HumanoidRootPart
+    
+    flyBodyVelocity = Instance.new("BodyVelocity")
+    flyBodyVelocity.MaxForce = Vector3.new(4000, 4000, 4000)
+    flyBodyVelocity.Velocity = Vector3.new(0, 0, 0)
+    flyBodyVelocity.Parent = rootPart
+    
+    flyBodyPosition = Instance.new("BodyPosition")
+    flyBodyPosition.MaxForce = Vector3.new(4000, 4000, 4000)
+    flyBodyPosition.Position = rootPart.Position
+    flyBodyPosition.Parent = rootPart
+end
+
+local function stopFly()
+    if flyBodyVelocity then
+        flyBodyVelocity:Destroy()
+        flyBodyVelocity = nil
+    end
+    if flyBodyPosition then
+        flyBodyPosition:Destroy()
+        flyBodyPosition = nil
+    end
+end
+
+-- Fly Controls
+UserInputService.InputBegan:Connect(function(input, gameProcessed)
+    if gameProcessed or not flyEnabled then return end
+    
+    local rootPart = LocalPlayer.Character and LocalPlayer.Character:FindFirstChild("HumanoidRootPart")
+    if not rootPart or not flyBodyVelocity then return end
+    
+    local camera = workspace.CurrentCamera
+    local moveVector = Vector3.new(0, 0, 0)
+    
+    if input.KeyCode == Enum.KeyCode.W then
+        moveVector = moveVector + camera.CFrame.LookVector
+    elseif input.KeyCode == Enum.KeyCode.S then
+        moveVector = moveVector - camera.CFrame.LookVector
+    elseif input.KeyCode == Enum.KeyCode.A then
+        moveVector = moveVector - camera.CFrame.RightVector
+    elseif input.KeyCode == Enum.KeyCode.D then
+        moveVector = moveVector + camera.CFrame.RightVector
+    elseif input.KeyCode == Enum.KeyCode.Space then
+        moveVector = moveVector + Vector3.new(0, 1, 0)
+    elseif input.KeyCode == Enum.KeyCode.LeftShift then
+        moveVector = moveVector - Vector3.new(0, 1, 0)
+    end
+    
+    flyBodyVelocity.Velocity = moveVector * flySpeed
+end)
+
+-- Noclip System
+local function noclipLoop()
+    if noclipEnabled and LocalPlayer.Character then
+        for _, part in pairs(LocalPlayer.Character:GetChildren()) do
+            if part:IsA("BasePart") and part.Name ~= "HumanoidRootPart" then
+                part.CanCollide = false
+            end
+        end
+    end
+end
+
+-- Rainbow Character
+local function rainbowCharacterLoop()
+    if rainbowCharacter and LocalPlayer.Character then
+        local hue = tick() % 10 / 10
+        local color = Color3.fromHSV(hue, 1, 1)
+        
+        for _, part in pairs(LocalPlayer.Character:GetChildren()) do
+            if part:IsA("BasePart") and part:FindFirstChild("Color") then
+                part.Color = color
+            end
+        end
+    end
+end
+
+-- Auto Collect System
+local function autoCollectLoop()
+    if not autoFarmEnabled then return end
+    
+    local character = LocalPlayer.Character
+    if not character or not character:FindFirstChild("HumanoidRootPart") then return end
+    
+    local rootPart = character.HumanoidRootPart
+    
+    -- Auto collect coins
+    if autoCollectCoins then
+        for _, obj in pairs(workspace:GetChildren()) do
+            if obj.Name == "Coin" and obj:IsA("BasePart") then
+                local distance = (rootPart.Position - obj.Position).Magnitude
+                if distance < 50 then
+                    rootPart.CFrame = obj.CFrame
+                    task.wait(0.1)
                 end
             end
-        }
-    }
-});
-
-Tabs.SocialsTab:Paragraph({
-    Title = gradient("Latte Hub", Color3.fromHex("#ffffff"), Color3.fromHex("#363636")),
-    Image = "star",
-    Color = "Green",
-    Buttons = {
-        {
-            Title = "Tiktok Profile",
-            Icon = "circle",
-            Callback = function()
-                if pcall(setclipboard, "http://tiktok.com/@scriptsbylatte/") then
-                    WindUI:Notify({
-                        Title = "Follow for a cookie!",
-                        Content = "Tiktok profile has been copied!",
-                        Duration = 3,
-                        Icon = "check-circle"
-                    });
-                else
-                    WindUI:Notify({
-                        Title = "Copy Error",
-                        Content = "Could not copy link to clipboard.",
-                        Duration = 5,
-                        Icon = "x-fill"
-                    });
+        end
+    end
+    
+    -- Auto collect guns
+    if autoCollectGuns then
+        for _, obj in pairs(workspace:GetChildren()) do
+            if obj.Name == "GunDrop" and obj:IsA("BasePart") then
+                local distance = (rootPart.Position - obj.Position).Magnitude
+                if distance < 50 then
+                    rootPart.CFrame = obj.CFrame
+                    task.wait(0.1)
                 end
             end
-        }
-    }
-});
+        end
+    end
+end
 
--- Initialize ESP
-updateESP()
+-- Screen Shake Effect
+local function screenShakeLoop()
+    if screenShake and workspace.CurrentCamera then
+        local camera = workspace.CurrentCamera
+        local shake = math.sin(tick() * 20) * 2
+        camera.CFrame = camera.CFrame * CFrame.new(shake, shake, 0)
+    end
+end
+
+-- Enhanced ESP with new features
+local function updateAdvancedESP()
+    if not advancedESPEnabled then return end
+    
+    for _, player in ipairs(Players:GetPlayers()) do
+        if player ~= LocalPlayer and player.Character then
+            local character = player.Character
+            local humanoid = character:FindFirstChild("Humanoid")
+            local rootPart = character:FindFirstChild("HumanoidRootPart")
+            
+            if humanoid and rootPart then
+                local highlight = character:FindFirstChild("AdvancedHighlight")
+                if not highlight then
+                    highlight = Instance.new("Highlight")
+                    highlight.Name = "AdvancedHighlight"
+                    highlight.FillTransparency = 0.3
+                    highlight.OutlineTransparency = 0
+                    highlight.DepthMode = Enum.HighlightDepthMode.AlwaysOnTop
+                    highlight.Adornee = character
+                    highlight.Parent = character
+                end
+                
+                -- Rainbow ESP
+                if rainbowESPEnabled then
+                    local hue = (tick() + player.UserId) % 10 / 10
+                    highlight.FillColor = Color3.fromHSV(hue, 1, 1)
+                    highlight.OutlineColor = Color3.fromHSV(hue, 1, 1)
+                else
+                    local role = getRole(player)
+                    local color = role == "Murderer" and Color3.new(1, 0, 0) or 
+                                 role == "Sheriff" and Color3.new(0, 0, 1) or 
+                                 Color3.new(0, 1, 0)
+                    highlight.FillColor = color
+                    highlight.OutlineColor = color
+                end
+                
+                -- Distance ESP
+                if distanceESPEnabled and LocalPlayer.Character and LocalPlayer.Character:FindFirstChild("HumanoidRootPart") then
+                    local distance = (LocalPlayer.Character.HumanoidRootPart.Position - rootPart.Position).Magnitude
+                    local billboard = character:FindFirstChild("DistanceBillboard")
+                    if not billboard then
+                        billboard = Instance.new("BillboardGui")
+                        billboard.Name = "DistanceBillboard"
+                        billboard.Size = UDim2.new(0, 100, 0, 50)
+                        billboard.StudsOffset = Vector3.new(0, 3, 0)
+                        billboard.Parent = character
+                        
+                        local label = Instance.new("TextLabel")
+                        label.Size = UDim2.new(1, 0, 1, 0)
+                        label.BackgroundTransparency = 1
+                        label.TextColor3 = Color3.new(1, 1, 1)
+                        label.TextStrokeTransparency = 0
+                        label.TextScaled = true
+                        label.Font = Enum.Font.GothamBold
+                        label.Parent = billboard
+                    end
+                    
+                    local label = billboard:FindFirstChild("TextLabel")
+                    if label then
+                        label.Text = math.floor(distance) .. " studs"
+                    end
+                end
+                
+                -- Health ESP
+                if healthESPEnabled then
+                    local healthBillboard = character:FindFirstChild("HealthBillboard")
+                    if not healthBillboard then
+                        healthBillboard = Instance.new("BillboardGui")
+                        healthBillboard.Name = "HealthBillboard"
+                        healthBillboard.Size = UDim2.new(0, 100, 0, 30)
+                        healthBillboard.StudsOffset = Vector3.new(0, 4, 0)
+                        healthBillboard.Parent = character
+                        
+                        local healthLabel = Instance.new("TextLabel")
+                        healthLabel.Size = UDim2.new(1, 0, 1, 0)
+                        healthLabel.BackgroundTransparency = 1
+                        healthLabel.TextColor3 = Color3.new(1, 1, 1)
+                        healthLabel.TextStrokeTransparency = 0
+                        healthLabel.TextScaled = true
+                        healthLabel.Font = Enum.Font.GothamBold
+                        healthLabel.Parent = healthBillboard
+                    end
+                    
+                    local healthLabel = healthBillboard:FindFirstChild("TextLabel")
+                    if healthLabel then
+                        healthLabel.Text = math.floor(humanoid.Health) .. "/" .. math.floor(humanoid.MaxHealth)
+                        healthLabel.TextColor3 = humanoid.Health > humanoid.MaxHealth * 0.5 and Color3.new(0, 1, 0) or Color3.new(1, 0, 0)
+                    end
+                end
+            end
+        end
+    end
+end
+
+-- Main Loop
+RunService.Heartbeat:Connect(function()
+    -- Fly system
+    if flyEnabled then
+        if not flyBodyVelocity then
+            startFly()
+        end
+    else
+        if flyBodyVelocity then
+            stopFly()
+        end
+    end
+    
+    -- Noclip
+    noclipLoop()
+    
+    -- Rainbow character
+    rainbowCharacterLoop()
+    
+    -- Auto collect
+    autoCollectLoop()
+    
+    -- Screen shake
+    screenShakeLoop()
+    
+    -- Update character settings
+    updateCharacter()
+end)
 
 -- Connect ESP updates
 RunService.RenderStepped:Connect(function()
@@ -1746,6 +2144,9 @@ RunService.RenderStepped:Connect(function()
         end
     end
 end)
+
+-- Connect advanced ESP updates
+RunService.Heartbeat:Connect(updateAdvancedESP)
 
 -- Monitor player changes for ESP
 local function monitorPlayer(player)
@@ -1789,9 +2190,30 @@ task.spawn(function()
     end
 end);
 
-WindUI:Notify({
-    Title = "Merged MM2 Hub",
-    Content = "Script loaded successfully! All features are now available.",
-    Icon = "check-circle",
-    Duration = 5
+-- Initialize ESP
+updateESP()
+
+-- Addons setup
+ThemeManager:SetLibrary(Library)
+SaveManager:SetLibrary(Library)
+
+SaveManager:IgnoreThemeSettings()
+SaveManager:SetIgnoreIndexes({ "MenuKeybind" })
+
+ThemeManager:SetFolder("LatteMM2Hub")
+SaveManager:SetFolder("LatteMM2Hub/MM2")
+
+SaveManager:BuildConfigSection(Tabs["UI Settings"])
+ThemeManager:ApplyToTab(Tabs["UI Settings"])
+
+SaveManager:LoadAutoloadConfig()
+
+Library:OnUnload(function()
+    print("Latte MM2 Hub Unloaded!")
+end)
+
+Library:Notify({
+    Title = "Enhanced MM2 Hub",
+    Description = "Script loaded successfully! All features including new advanced functions are now available.",
+    Time = 5
 })
