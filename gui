@@ -869,18 +869,18 @@ do
     
     ESPTab:Toggle({
         Flag = "HighlightESP",
-        Title = "Highlight ESP",
+    Title = "Highlight ESP",
         Desc = "Enable player highlighting (shows all by default)",
-        Default = true,
+    Default = true,
         Callback = function(state)
             highlightEnabled = state
             if state then
                 currentESPOptions = {"Esp All"}
             end
-            updateESP()
-        end
-    })
-    
+        updateESP()
+    end
+})
+
     ESPTab:Space()
     
     ESPTab:Dropdown({
@@ -906,16 +906,16 @@ do
         Flag = "LineESP",
         Title = "Line ESP (Tracers)",
         Desc = "Draw lines to players",
-        Default = false,
+    Default = false,
         Callback = function(state)
             lineESPEnabled = state
             if not state then
-                for _, line in pairs(tracers) do line:Remove() end
-                tracers = {}
-            end
-            updateESP()
+            for _, line in pairs(tracers) do line:Remove() end
+            tracers = {}
         end
-    })
+        updateESP()
+    end
+})
 end
 
 -- */  Auto Farm Tab  /* --
@@ -1249,7 +1249,7 @@ do
     end
 })
 
-    WeaponSpawnerTab:Space({ Columns = 2 })
+    WeaponSpawnerTab:Divider()
     
     WeaponSpawnerTab:Section({
         Title = "Quick Spawn Godlies",
@@ -1363,11 +1363,11 @@ do
     end
 })
 
-    WeaponDupeTab:Space({ Columns = 3 })
+    WeaponDupeTab:Divider()
     
     WeaponDupeTab:Section({
         Title = "Inventory Duplication",
-        TextSize = 18,
+        TextSize = 16,
         FontWeight = Enum.FontWeight.SemiBold,
     })
     
@@ -1856,11 +1856,11 @@ do
         end
     })
     
-    SettingsTab:Space({ Columns = 2 })
+    SettingsTab:Divider()
     
     SettingsTab:Section({
         Title = "Config Management",
-        TextSize = 18,
+        TextSize = 16,
         FontWeight = Enum.FontWeight.SemiBold,
     })
     
@@ -1958,15 +1958,13 @@ do
         FontWeight = Enum.FontWeight.Medium,
     })
     
-    InfoTab:Space({ Columns = 3 })
+    InfoTab:Divider()
     
     InfoTab:Section({
         Title = "Features",
-        TextSize = 18,
+        TextSize = 16,
         FontWeight = Enum.FontWeight.SemiBold,
     })
-    
-    InfoTab:Space()
     
     InfoTab:Section({
         Title = "Player ESP • Auto Farm • Character Mods • Teleportation • Weapon Spawner • Weapon Duplication • Visual Weapons • Trade Scam • Role Functions • Anti-AFK • Server Utilities",
@@ -1975,11 +1973,11 @@ do
         FontWeight = Enum.FontWeight.Medium,
     })
     
-    InfoTab:Space({ Columns = 3 })
+    InfoTab:Divider()
     
     InfoTab:Section({
         Title = "Community & Support",
-        TextSize = 18,
+        TextSize = 16,
         FontWeight = Enum.FontWeight.SemiBold,
     })
     
